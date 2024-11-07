@@ -1,0 +1,22 @@
+.loginCFrame {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 999;
+    background-color: #050505b8;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginC {
+    margin: 80px auto;
+    background-color: #edf4ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 80%;
+    height: 380px;
+}

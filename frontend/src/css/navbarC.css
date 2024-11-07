@@ -1,0 +1,24 @@
+.header {
+    /* border-top: #00632d 5px solid; */
+    border-bottom: #006d31 5px solid;
+    border-radius: 0 0 10px 10px;
+    /* width: 110%; */
+    box-shadow: #919191 0 0 2px 2px;
+    z-index: 1;
+}
+
+
+.profileImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profileImg:hover {
+    box-shadow: 1px 1px 1px 1px;
+}
+
+/* delete the arrow icon on dropdown */
+.no-arrow-dropdown .dropdown-toggle::after {
+    display: none !important;
+}
