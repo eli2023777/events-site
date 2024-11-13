@@ -1,6 +1,5 @@
 import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 
 import React, { useState, useEffect, createContext } from 'react';
@@ -19,14 +18,18 @@ import MyEvents from './pages/MyEvents.jsx';
 import Loader from './components/Loader.jsx';
 import LogInC from './components/LogInC.jsx';
 
+
+
+// Create context
 export const GeneralContext = createContext();
 
 
 function App() {
 
-  const [loading, setLoading] = useState();
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [loading, setLoading] = useState(false);
   const [loginC, setLoginC] = useState();
-
+  const API = 'http://localhost:7000';
 
   // -- Token --
   const isTokenExpired = () => {
@@ -67,11 +70,17 @@ function App() {
   }, []);
 
 
+  // Check if the token expired and if so Ask to Login every 15 minutes
+  useEffect(() => {
+    localStorage.setItem('loading', loading);
+  }, []);
+
+
 
 
   return (
 
-    <GeneralContext.Provider value={{ setLoading, setLoginC }}>
+    <GeneralContext.Provider value={{ API, setLoading, setLoginC, token, setToken }}>
 
       <div className="App">
         <NavbarC />
