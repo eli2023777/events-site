@@ -1,5 +1,4 @@
 class FullUser {
-    _id;
     first;
     last;
     phone;
@@ -14,9 +13,8 @@ class FullUser {
     houseNumber;
     zip;
 
-    constructor(_id, first, last, phone, email, password, url, alt,
+    constructor(first, last, phone, email, password, url, alt,
         state, country, city, street, houseNumber, zip) {
-        this._id = _id;
         this.first = first;
         this.last = last;
         this.phone = phone;
@@ -35,6 +33,7 @@ class FullUser {
     validate = () => {
         const formErrors = {};
         const stringReg = /^.{2,256}$/;
+        const numReg = /^\d+$/;
         const nameReg = /^[a-zA-Z0-9]{2,20}$/;
         const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d{4})(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,30}$/;
         const urlReg = /^[\s\S]{14,}$/;
@@ -43,16 +42,16 @@ class FullUser {
 
         // Validate firstName field
         if (!this.first) {
-            formErrors['firstName'] = "First Name field must not be empty."
+            formErrors['first'] = "First Name field must not be empty."
         } else if (!nameReg.test(this.first)) {
-            formErrors['firstName'] = "First Name must be from 2 to 256 characters."
+            formErrors['first'] = "First Name must be from 2 to 256 characters."
         }
 
         // Validate lastName field
         if (!this.last) {
-            formErrors['lastName'] = "Last Name field must not be empty."
+            formErrors['last'] = "Last Name field must not be empty."
         } else if (!nameReg.test(this.last)) {
-            formErrors['lastName'] = "Last Name must be from 2 to 256 characters."
+            formErrors['last'] = "Last Name must be from 2 to 256 characters."
         }
 
         // Validate phone field
@@ -87,9 +86,16 @@ class FullUser {
             formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
         }
 
+        // Validate State field
+        if (!this.state) {
+            formErrors['alt'] = "'Image-alt' field must not be empty."
+        } else if (!stringReg.test(this.state)) {
+            formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
+        }
+
         // Validate country field
         if (!this.country) {
-            formErrors['country'] = "'Country field must not be empty."
+            formErrors['country'] = "Country field must not be empty."
         } else if (!stringReg.test(this.country)) {
             formErrors['country'] = "Country must be from 2 to 256 characters."
         }
@@ -103,22 +109,22 @@ class FullUser {
 
         // Validate street field
         if (!this.street) {
-            formErrors['street'] = "'Street field must not be empty."
+            formErrors['street'] = "Street field must not be empty."
         } else if (!stringReg.test(this.street)) {
             formErrors['street'] = "Street must be from 2 to 256 characters."
         }
 
         // Validate houseNumber field
         if (!this.houseNumber) {
-            formErrors['houseNumber'] = "'House Number field must not be empty."
-        } else if (!stringReg.test(this.houseNumber)) {
+            formErrors['houseNumber'] = "House Number field must not be empty."
+        } else if (!numReg.test(this.houseNumber)) {
             formErrors['houseNumber'] = "House Number must be from 2 to 256 Digits."
         }
 
         // Validate zip field
         if (!this.zip) {
-            formErrors['zip'] = "'Zip field must not be empty."
-        } else if (!stringReg.test(this.zip)) {
+            formErrors['zip'] = "Zip field must not be empty."
+        } else if (!numReg.test(this.zip)) {
             formErrors['zip'] = "Zip must be from 2 to 256 Digits."
         }
 
@@ -126,8 +132,12 @@ class FullUser {
     }
 
     updateField(fieldName, value) {
-        if (Object.hasOwnProperty.call(this, fieldName))
+        // Check if the field exists in the class instance
+        if (this.hasOwnProperty(fieldName)) {
             this[fieldName] = value;
+        } else {
+            console.warn(`Field ${fieldName} does not exist on this object.`);
+        }
     }
 }
 
