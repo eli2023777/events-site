@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from '../components/Calendar.jsx';
 import EventsList from '../components/EventsList.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { UI_STATE } from '../helpers/uiStateObj.jsx';
+
+
 
 const Home = () => {
 
-    const UI_STATE = {
-        CALENDAR: 'CALANDER',
-        EVENTS: 'EVENTS'
-    };
-
-    const [uiState, setUIState] = useState(UI_STATE.CALENDAR);
+    const location = useLocation();
+    const [uiState, setUIState] = useState(location.state ? UI_STATE.EVENTS : UI_STATE.CALENDAR);
     const [isView, setIsView] = useState(false);
     const [eventID, setEventID] = useState();
 
@@ -18,7 +17,7 @@ const Home = () => {
 
     useEffect(() => {
         if (isView) {
-            navigate(`/view-event`, { state: { eventID, isView } });
+            navigate(`/view-event`, { state: { eventID, isView, uiState } });
         }
     }, [isView, eventID]);
 
