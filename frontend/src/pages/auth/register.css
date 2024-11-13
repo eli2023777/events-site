@@ -3,3 +3,7 @@ form {
     grid-template-columns: auto auto;
     gap: 30px;
 }
+
+button {
+    color: #000;
+}

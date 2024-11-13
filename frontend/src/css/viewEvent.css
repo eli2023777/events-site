@@ -1,0 +1,31 @@
+/* .gallery {
+    width: 800px;
+    height: 500px;
+} */
+
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+
+.text {
+    text-align-last: left;
+}
+
+.eventImage {
+    width: 800px;
+    height: 370px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+section {
+    color: #050258;
+}
+
+.topText {
+    margin-bottom: 100px;
+}
