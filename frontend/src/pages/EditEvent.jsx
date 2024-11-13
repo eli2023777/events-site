@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { GeneralContext } from '../App';
 
 
 
@@ -12,9 +13,10 @@ const EditEvent = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
+    const { API, setLoading } = useContext(GeneralContext);
 
 
-    const url = `http://localhost:7000/events/${eventID}`;
+    const url = `${API}/events/${eventID}`;
 
 
     const getEvent = async () => {
