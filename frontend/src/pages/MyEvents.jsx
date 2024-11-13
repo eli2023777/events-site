@@ -10,29 +10,31 @@ const MyEvents = () => {
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const url = 'http://localhost:7000';
-    const { setLoading } = useContext(GeneralContext);
+    const decodedToken = token ? jwtDecode(token) : null;
+    const { API, setLoading } = useContext(GeneralContext);
 
 
     const fetchEvents = async () => {
-        setLoading(true);
+        if (token) {
 
-        try {
-            const response = await axios.get(`${url}/events/my-events`, {
-                headers: {
-                    'x-auth-token': token
+            setLoading(true);
+
+            try {
+                const response = await axios.get(`${API}/events/my-events`, {
+                    headers: {
+                        'x-auth-token': token
+                    }
                 }
+
+                );
+
+                setEvents(response.data);
+
+            } catch (error) {
+                console.log('Error fetching events:', error);
+            } finally {
+                setLoading(false);
             }
-
-            );
-
-            setEvents(response.data);
-
-        } catch (error) {
-            console.log('Error fetching events:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -48,7 +50,7 @@ const MyEvents = () => {
 
     const deleteEvent = async (eventID) => {
         try {
-            await axios.delete(`${url}/events/${eventID}`);
+            await axios.delete(`${API}/events/${eventID}`);
             navigate(-1);
         } catch (error) {
             console.log('Error delete Event:', error);
@@ -58,17 +60,20 @@ const MyEvents = () => {
     return (
         <div>
             <h1>My Events</h1>
-            <div>
+            {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
+
                 <button onClick={() => navigate('/new-event')}>
                     Add new event
                 </button>
+            }
+
+            <div className='grid'>
 
 
                 {events.map(
                     (event, index) => {
                         const eventDate = new Date(event.date);
                         const eventID = event._id;
-                        console.log('event:', event);
 
 
                         return (
@@ -79,7 +84,6 @@ const MyEvents = () => {
                                     backgroundPosition: 'center',
                                     padding: '20px',
                                 }}
-                                // backgroundImage={event.image.url}
                                 onClick={() => handleEventClick(eventID)} >
                                 <h2>{event.title}</h2>
                                 <p>Date: {eventDate.toLocaleDateString("en-US", {
@@ -91,7 +95,7 @@ const MyEvents = () => {
                                 <p>Time: {event.time}</p>
                                 <p>Zoom Link: {event.zoomLink}</p>
 
-                                {decodedToken.isAdmin &&
+                                {decodedToken.isBusiness &&
                                     <>
                                         <button onClick={() =>
                                             navigate('/edit-event', { state: { eventID } })}
