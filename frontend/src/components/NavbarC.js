@@ -13,14 +13,11 @@ import { GeneralContext } from '../App';
 const NavbarC = () => {
 
 
-
     const navigate = useNavigate();
     const [inputSearch, setInputSearch] = useState('');
     const [results, setResults] = useState([]);
-    const url = 'http://localhost:7000';
-    const token = localStorage.getItem('token');
-    const { setLoading } = useContext(GeneralContext);
-
+    // const [] = useContext(localStorage.getItem('token'));
+    const { API, setLoading, token, setToken } = useContext(GeneralContext);
     const [user, setUser] = useState({});
 
 
@@ -44,7 +41,7 @@ const NavbarC = () => {
     const fetchSearchData = async (value) => {
         let response;
         try {
-            response = await axios.get(`${url}/events`);
+            response = await axios.get(`${API}/events`);
         } catch (e) {
             console.log(e);
         }
@@ -55,7 +52,7 @@ const NavbarC = () => {
             return (
                 value &&
                 event &&
-                event.title.toLowerCase().includes(value))
+                event.title?.toLowerCase().includes(value))
         });
 
         console.log(dataResult);
@@ -66,13 +63,14 @@ const NavbarC = () => {
 
     // Fetch user for log-in mode
     const fetchUser = async () => {
-        setLoading(true);
 
         if (token) {
+            setLoading(true);
+
             const decodedToken = jwtDecode(token);
             const userID = decodedToken._id;
             try {
-                const res = await axios.get(`${url}/users/${userID}`,
+                const res = await axios.get(`${API}/users/${userID}`,
                     {
                         headers: {
                             'x-auth-token': token
@@ -89,18 +87,15 @@ const NavbarC = () => {
         }
     };
 
+
     useEffect(() => {
-        fetchUser();
-    }, []);
-
-
-
-    // For logout button
-    useEffect(() => {
-        if (!token) {
-            localStorage.removeItem("token");
+        if (token) {
+            fetchUser();
+            setToken(token);
         }
     }, [token]);
+
+
 
 
 
@@ -200,6 +195,7 @@ const NavbarC = () => {
                                         <Button variant="none"
                                             onClick={() => {
                                                 localStorage.removeItem('token');
+                                                setToken(null);
                                             }
                                             }>
                                             <svg xmlns="http://www.w3.org/2000/svg" width={'22px'} viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" /></svg>

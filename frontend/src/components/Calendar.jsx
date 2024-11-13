@@ -13,16 +13,15 @@ const Calendar = ({ setIsView, setEventID }) => {
 
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
-    const { setLoading } = useContext(GeneralContext);
+    const { API, setLoading } = useContext(GeneralContext);
 
 
-    const url = 'http://localhost:7000/events';
 
     const fetchEvents = async () => {
         setLoading(true);
 
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(`${API}/events`);
 
             const formattedEvents = response.data.map(event => ({
                 id: event._id,

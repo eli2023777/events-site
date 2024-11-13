@@ -13,17 +13,17 @@ const LogInC = () => {
     const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
-    const { setLoginC } = useContext(GeneralContext);
+    const { API, setLoginC, setLoading, token, setToken } = useContext(GeneralContext);
 
 
-    const url = 'http://localhost:7000';
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
         const currUser = new User(user.email, user.password);
         currUser.updateField(e.target.name, e.target.value);
         setUser(currUser);
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -36,20 +36,21 @@ const LogInC = () => {
         onLogin();
     };
 
+
     const onLogin = async () => {
         try {
             const res =
-                await axios.post(`${url}/login`, {
+                await axios.post(`${API}/login`, {
                     email: user.email,
                     password: user.password,
                 });
 
             localStorage.setItem('token', res.data);
+            setToken(token);
 
             saveToken();
             setMesssage('You have logged in successfully!');
-            navigate('/');
-
+            setLoginC(false);
         } catch (e) {
             // setAPIError(true);
 
@@ -60,17 +61,8 @@ const LogInC = () => {
 
 
     const saveToken = () => {
-        const tokenExpTime = 60 * 60 * 1000; // 1 Hour
-        // const warningTime = 10 * 60 * 1000; // 10 Minutes before
         const expDate = Date.now() + 1;
         localStorage.setItem("expDate", expDate);
-
-        // setTimeout(() => {
-        //     alert("For your safety, please log in again.");
-        //     navigate('/login');
-        // }, tokenExpTime
-        //     // - warningTime
-        // );
     };
 
 
@@ -115,13 +107,13 @@ const LogInC = () => {
 
     return (
         <div>
-            <div className='loginCFrame'>
-                <div className="loginC">
+            <div className='loginCFrame' onClick={() => setLoginC(false)}>
+                <div className="loginC" onClick={(e) => {
+                    e.stopPropagation(); setLoginC(true);
+                }}>
 
-                    <div onClick={() => setLoginC(false)}>X</div>
 
-
-                    <h6>For your privacy, you have logged out.   </h6>
+                    <h6>For your privacy, you have logged out.</h6>
 
                     <h4>Please log in again</h4>
 
