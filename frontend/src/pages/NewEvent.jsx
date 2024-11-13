@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { replace, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { GeneralContext } from '../App';
 
 
 const NewEvent = () => {
@@ -9,13 +10,12 @@ const NewEvent = () => {
     const location = useLocation();
     const { date } = location.state || '';
     const [newDate, setNewDate] = useState(date)
-
     const [newEvent, setNewEvent] = useState({ date });
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const { API, setLoading } = useContext(GeneralContext);
 
     const token = localStorage.getItem('token');
 
-    const url = 'http://localhost:7000';
 
     const handleChange = (e) => {
         setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
@@ -35,11 +35,12 @@ const NewEvent = () => {
     const postNewEvent = async () => {
 
         try {
-            const response = await axios.post(`${url}/events`,
+            const response = await axios.post(`${API}/events`,
                 {
                     title: newEvent.title,
                     date: newEvent.date,
                     time: newEvent.time,
+                    location: newEvent.location,
                     zoomLink: newEvent.zoomLink,
                     url: newEvent.url,
                     alt: newEvent.title
@@ -90,8 +91,12 @@ const NewEvent = () => {
                 <input type="time" id="time" name="time" required
                     onChange={handleChange} />
 
+                <label htmlFor="time">Location:</label>
+                <input type="text" id="location" name="location"
+                    onChange={handleChange} />
+
                 <label htmlFor="zoomLink">Zoom Link:</label>
-                <input type="text" id="zoomLink" name="zoomLink" required
+                <input type="text" id="zoomLink" name="zoomLink"
                     onChange={handleChange} />
 
                 <label htmlFor="url">Image URL:</label>

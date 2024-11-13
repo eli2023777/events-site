@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './register.css';
 import FullUser from '../../models/FullUser';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { GeneralContext } from '../../App';
 
 
 const Register = () => {
@@ -14,31 +15,43 @@ const Register = () => {
     const [message, setMesssage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
     const [errors, setErrors] = useState({}); // errors is a JS object, with the key = field name, and value = error message
-    const url = 'http://localhost:7000';
-
+    const { API, setLoading } = useContext(GeneralContext);
+    const [isBusiness, setIsBusiness] = useState(false);
 
 
     const handelChange = (e) => {
-        const currUser = new FullUser(user.firstName, user.lastName, user.phone, user.email, user.password, user.url, user.alt,
+        const currUser = new FullUser(user.first, user.last, user.phone, user.email, user.password, user.url, user.alt,
             user.state, user.country, user.city, user.street, user.houseNumber, user.zip);
         currUser.updateField(e.target.name, e.target.value);
         setUser(currUser);
     };
 
+
+    // const handelChange = (e) => {
+    //     setUser(prevUser => {
+    //         const updatedUser = { ...prevUser, [e.target.name]: e.target.value };
+    //         return updatedUser;
+    //     });
+    // };
+
     const handelSubmit = (e) => {
         e.preventDefault();
+        setErrors({});
+        setMesssage('');
 
         const lclErrors = user.validate();
 
         // 1. Check if form is valid?
         if (Object.keys(lclErrors).length === 0) {
             // Delete errors
-            setErrors({});
 
             // 2. Success
             setMesssage('You have registered successfully!');
             setIsSuccess(true);
+
+            // Send to server
             onSignUp();
+
         } else {
             // 3. Fail
             setMesssage('Invalid form values. Please try again.');
@@ -50,14 +63,16 @@ const Register = () => {
 
     const onSignUp = async () => {
         try {
-            await axios.post(`${url}/users`, {
+            await axios.post(`${API}/users`, {
                 name: {
-                    first: user.firstName,
-                    last: user.lastName,
+                    first: user.first,
+                    last: user.last,
                 },
                 phone: user.phone,
                 email: user.email,
                 password: user.password,
+                isBusiness: isBusiness,
+
                 image: {
                     url: user.url,
                     alt: user.alt,
@@ -70,11 +85,12 @@ const Register = () => {
                     houseNumber: user.houseNumber,
                     zip: user.zip,
                 },
-                isBusiness: true,
             });
             setIsSignUp(true);
-        } catch (e) {
-            console.log(e);
+            setMesssage('You have registered successfully!');
+        } catch (error) {
+            console.error(error);
+            setMesssage('An error occurred. Please try again.');
         }
     }
 
@@ -95,21 +111,31 @@ const Register = () => {
 
     return (
         <div>
-            <h1>Sign Up</h1>
+            <h1>Register</h1>
             <br /><br />
 
             <Form onSubmit={handelSubmit}>
 
+
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check
+                        type="checkbox"
+                        label="Business Account"
+                        checked={isBusiness}
+                        onChange={(e) => setIsBusiness(e.target.checked)}
+                    />
+                </Form.Group>
+
                 <Form.Group className="mb-3 grid-item" controlId="formBasicName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="name" name='firstName' placeholder="First Name" onChange={handelChange} />
-                    <div style={{ color: 'red' }}>{errors && errors['firstName']}</div>
+                    <Form.Control type="name" name='first' placeholder="First Name" onChange={handelChange} />
+                    <div style={{ color: 'red' }}>{errors && errors['first']}</div>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" name="lastName" placeholder="Last Name" onChange={handelChange} />
-                    <div style={{ color: 'red' }}>{errors && errors['lastName']}</div>
+                    <Form.Control type="text" name="last" placeholder="Last Name" onChange={handelChange} />
+                    <div style={{ color: 'red' }}>{errors && errors['last']}</div>
 
                 </Form.Group>
 
@@ -189,9 +215,16 @@ const Register = () => {
                     <div style={{ color: 'red' }}>{errors && errors['zip']}</div>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" style={{ height: '50%', marginBottom: '2px' }}>
-                    Submit
-                </Button>
+                <div>
+                    <Button variant="primary" type="submit" style={{ height: '50%', marginBottom: '2px' }}>
+                        Submit
+                    </Button>
+
+                    <Button variant="primary" type="reset" style={{ height: '50%', marginBottom: '2px' }}>
+                        Reset
+                        {/* --- ADD HERE Reset icon --- */}
+                    </Button>
+                </div>
 
             </Form>
             <br />

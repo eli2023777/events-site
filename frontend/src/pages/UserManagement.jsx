@@ -1,8 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import bootstrap from 'bootstrap';
 import EditUser from './users/EditUser';
+import { DualIcon } from '../helpers/DualIcon';
+import { GeneralContext } from '../App';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 const UserManagement = () => {
@@ -13,29 +18,30 @@ const UserManagement = () => {
     };
 
     const [uiState, setUIState] = useState(UI_STATE.ALL_USERS);
-    const url = 'http://localhost:7000';
     const [users, setUsers] = useState([]);
     const token = localStorage.getItem('token');
+    const { API, setLoading } = useContext(GeneralContext);
+    const navigate = useNavigate();
 
 
     // Fetch users 
     const fetchUsers = async () => {
+
         if (token) {
 
             try {
-                const res = await axios.get(`${url}/users`,
+                const res = await axios.get(`${API}/users`,
                     {
                         headers: {
                             'x-auth-token': token
-                        },
-                        // withCredentials: true
+                        }
                     }
                 );
                 setUsers(res.data);
             } catch (e) {
                 console.log('Error fetching users:', e); // ניפוי שגיאות
             } finally {
-                // setIsLoading(false);
+                setLoading(false);
             }
         }
     };
@@ -43,6 +49,7 @@ const UserManagement = () => {
 
     useEffect(() => {
         // Fetch users First time
+        setLoading(true);
         fetchUsers();
 
         // fetch users Eevery 10 seconds for Update users (when add or delete)
@@ -63,6 +70,7 @@ const UserManagement = () => {
 
     };
 
+
     const handleDelete = async (id) => {
 
         const confirmed = window.confirm("Are you sure you want to delete?");
@@ -72,7 +80,7 @@ const UserManagement = () => {
 
 
         try {
-            await axios.delete(`${url}/users/${id}`, {
+            await axios.delete(`${API}/users/${id}`, {
                 headers: {
                     'x-auth-token': token
                 }
@@ -105,6 +113,11 @@ const UserManagement = () => {
 
 
                                 <div>
+                                    {/* ADD HERE 'Add User' icon */}
+                                    <button onClick={() => {
+                                        navigate('/register');
+                                    }
+                                    }>Add User</button>
                                     <table className="table table-bordered">
                                         <thead>
                                             <tr>
@@ -160,7 +173,7 @@ const UserManagement = () => {
                                                                 onClick={() =>
                                                                     setUIState(UI_STATE.EDIT_USER)}
                                                             >
-                                                                Edit
+                                                                <DualIcon iconName="edit" />
                                                             </button>
                                                         </td>
                                                         <td className='text-white'>
@@ -169,7 +182,7 @@ const UserManagement = () => {
                                                                 onClick={() => handleDelete(user._id)}
 
                                                             >
-                                                                Delete
+                                                                <DualIcon iconName="trash" />
                                                             </button>
                                                         </td>
                                                     </tr>

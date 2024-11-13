@@ -1,36 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import FullUser from '../../models/FullUser';
 import { jwtDecode } from "jwt-decode";
+import { GeneralContext } from '../../App';
 
 
 const EditUser = () => {
 
     const [user, setUser] = useState({});
-    const url = 'http://localhost:7000';
-
     const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const userID = decodedToken._id;
+    const decodedToken = token ? jwtDecode(token) : null;
+    const userID = decodedToken?._id;
+    const { API, setLoading } = useContext(GeneralContext);
+
 
     // -- For Get One --
     const fetchUser = async () => {
-        try {
-            const res = await axios.get(`${url}/users/${userID}`,
-                {
-                    headers: {
-                        'x-auth-token': token
-                    }
-                }
-            );
-            setUser(res.data);
+        if (token) {
 
-        } catch (e) {
-            console.log(e);
-        } finally {
-            // setIsLoading(false);
+            try {
+                const res = await axios.get(`${API}/users/${userID}`,
+                    {
+                        headers: {
+                            'x-auth-token': token
+                        }
+                    }
+                );
+                setUser(res.data);
+
+            } catch (e) {
+                console.log(e);
+            } finally {
+                // setIsLoading(false);
+            }
         }
     };
 
@@ -58,7 +62,7 @@ const EditUser = () => {
 
 
         try {
-            const res = await axios.put(`${url}/users/${userID}`, user,
+            const res = await axios.put(`${API}/users/${userID}`, user,
                 {
                     headers: {
                         'x-auth-token': token

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import User from '../../models/User';
 import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { GeneralContext } from '../../App';
 
 
 const LogIn = () => {
@@ -11,9 +12,8 @@ const LogIn = () => {
     const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
+    const { API, setLoading, token, setToken } = useContext(GeneralContext);
 
-    const url = 'http://localhost:7000';
-    const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
         const currUser = new User(user.email, user.password);
@@ -35,12 +35,13 @@ const LogIn = () => {
     const onLogin = async () => {
         try {
             const res =
-                await axios.post(`${url}/login`, {
+                await axios.post(`${API}/login`, {
                     email: user.email,
                     password: user.password,
                 });
 
             localStorage.setItem('token', res.data);
+            setToken(localStorage.getItem('token'));
 
             saveToken();
             setMesssage('You have logged in successfully!');
