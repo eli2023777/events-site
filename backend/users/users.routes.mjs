@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
         image: {
             url: req.body.url,
             alt: req.body.alt
-        }
+        },
     });
 
     const newUser = await user.save();

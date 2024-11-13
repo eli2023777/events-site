@@ -6,11 +6,11 @@ const eventSchema = new mongoose.Schema({
     time: String,
     // participants: [{ name: String, email: String }],
     zoomLink: String,
+    location: String,
     image: {
         url: String,
         alt: String,
     },
-
 
     // eventType: { type: String, enum: ['party', 'conference'] },
     user_id: {

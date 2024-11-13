@@ -32,7 +32,6 @@ export const isAuthenticated = (req, res, next) => {
 
 
 export const isSameUser = (req, res, next) => {
-    // const userReq = jwt.decode(token);
     if (req.user._id === req.params.id) {
         return next();
     } else {
@@ -42,7 +41,6 @@ export const isSameUser = (req, res, next) => {
 
 
 export const isSameUserOrAdmin = (req, res, next) => {
-    // const userReq = jwt.decode(token);
     if (req.user._id === req.params.id || req.user.isAdmin) {
         return next();
     } else {
@@ -53,7 +51,6 @@ export const isSameUserOrAdmin = (req, res, next) => {
 
 // Guard middleware to check if the user is admin
 export const isAdmin = (req, res, next) => {
-    // const user = jwt.verify(token, JWT_SECRET);
 
     if (!req.user.isAdmin) {
         res.status(403).send('Unauthorized');
@@ -66,7 +63,6 @@ export const isAdmin = (req, res, next) => {
 // Guard middleware to check if the user is business user
 
 export const isBusinessUser = (req, res, next) => {
-    // const user = jwt.verify(token, JWT_SECRET);
 
     if (!req.user.isBusiness) {
         res.status(403).send('Unauthorized');

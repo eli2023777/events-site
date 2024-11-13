@@ -1,4 +1,4 @@
-import { json, Router } from 'express';
+import { Router } from 'express';
 import { Event } from './events.model.mjs';
 import { isAuthenticated, isSameUser, isSameUserOrAdmin, isAdmin, isBusinessUser } from "../guard.mjs";
 import jwt from "jsonwebtoken";
@@ -14,16 +14,21 @@ router.get('/', async (req, res) => {
 
 
 // My Events (get events by user)
+// router.get('/my-events', isAuthenticated, isBusinessUser, async (req, res) => {
+//     const user = jwt.decode(req.headers['x-auth-token']);
+
+//     const events = await Event.find({ user_id: user._id });
+//     console.log(events);
+
+
+//     res.send(events);
+// });
+
 router.get('/my-events', isAuthenticated, isBusinessUser, async (req, res) => {
-    const user = jwt.decode(req.headers['x-auth-token']);
-
-    const events = await Event.find({ user_id: user._id });
+    const events = await Event.find({ user_id: req.user._id });
     console.log(events);
-
-
     res.send(events);
-});
-
+})
 
 // Get events By Date
 router.get('/by-date', async (req, res) => {
@@ -55,7 +60,7 @@ router.get('/:id', async (req, res) => {
 
 // Add new event
 router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
-    const { title, date, time, zoomLink, url, alt } = req.body;
+    const { title, date, time, location, zoomLink, url, alt } = req.body;
 
     const existingEvent = await Event.findOne({ title });
     if (existingEvent) {
@@ -72,6 +77,7 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
         title: req.body.title,
         date: req.body.date,
         time: req.body.time,
+        location: req.body.location,
         zoomLink: req.body.zoomLink,
         image: {
             url: req.body.url,
@@ -92,7 +98,7 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
 
 
 // Edit event
-router.put('/:id', isAuthenticated, async (req, res) => {
+router.put('/:id', isAuthenticated, isSameUser, isBusinessUser, async (req, res) => {
     const { title, date, time, zoomLink } = req.body;
 
     const event = await Event.findById(req.params.id);
@@ -103,6 +109,7 @@ router.put('/:id', isAuthenticated, async (req, res) => {
     event.date = date || event.date;
     event.time = time || event.time;
     event.zoomLink = zoomLink || event.zoomLink;
+    event.location = req.body.location || event.location;
 
     await event.save();
 
@@ -111,10 +118,10 @@ router.put('/:id', isAuthenticated, async (req, res) => {
 
 
 // Delete event
-router.delete('/:id', async (req, res) => {
-    const user = await Event.findByIdAndDelete(req.params.id);
+router.delete('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
+    const event = await Event.findByIdAndDelete(req.params.id);
 
-    res.send(user);
+    res.send(event);
 });
 
 
