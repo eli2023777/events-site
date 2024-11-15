@@ -1,9 +1,11 @@
-form {
+.grid {
     display: grid;
     grid-template-columns: auto auto;
     gap: 30px;
+
 }
 
 button {
     color: #000;
+    margin: 20px;
 }

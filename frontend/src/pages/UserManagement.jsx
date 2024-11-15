@@ -51,14 +51,6 @@ const UserManagement = () => {
         // Fetch users First time
         setLoading(true);
         fetchUsers();
-
-        // fetch users Eevery 10 seconds for Update users (when add or delete)
-        const interval = setInterval(() => {
-            fetchUsers();
-        }, 10000);
-
-        // Clear interval 
-        return () => clearInterval(interval);
     }, []);
 
 
@@ -86,10 +78,7 @@ const UserManagement = () => {
                 }
             });
 
-            // setUsers(users.filter((user) => user.id !== id));
-            // setUsers([...users.filter((user) => user.id !== id)]);
-            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-
+            setUsers(prevUsers => prevUsers.filter((user) => user._id !== id));
 
             alert('User successfully Deleted');
 
@@ -113,19 +102,23 @@ const UserManagement = () => {
 
 
                                 <div>
-                                    {/* ADD HERE 'Add User' icon */}
-                                    <button onClick={() => {
-                                        navigate('/register');
-                                    }
-                                    }>Add User</button>
+                                    <div className='text-end' style={{ marginBottom: '30px' }}>
+
+                                        {/* ADD HERE 'Add User' icon */}
+                                        <button onClick={() => {
+                                            navigate('/register');
+                                        }
+                                        }>Add User</button>
+
+                                    </div>
+
                                     <table className="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th
                                                 // className='text-white'
-                                                >First Name</th>
+                                                >Full Name</th>
 
-                                                <th>Last Name</th>
 
                                                 <th
                                                 // className='text-white'
@@ -151,13 +144,9 @@ const UserManagement = () => {
                                                     <tr>
                                                         <td
                                                         // className='text-white'
-                                                        >{user.name.first}</td>
+                                                        >{user.name.first} {user.name.last}</td>
 
 
-
-                                                        <td
-                                                        // className='text-white'
-                                                        >{user.name.last}</td>
                                                         {/* <td className='text-white'>{user.role}</td> */}
                                                         <td
                                                         // className='text-white'
