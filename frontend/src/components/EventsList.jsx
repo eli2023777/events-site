@@ -36,13 +36,13 @@ const EventsList = ({ setIsView, setEventID }) => {
         // Fetch events First time
         fetchEvents();
 
-        // fetch events Eevery 10 seconds for Update events (when add or delete)
-        const interval = setInterval(() => {
-            fetchEvents();
-        }, 10000);
+        // // fetch events Eevery 10 seconds for Update events (when add or delete)
+        // const interval = setInterval(() => {
+        //     fetchEvents();
+        // }, 10000);
 
         // Clear interval 
-        return () => clearInterval(interval);
+        // return () => clearInterval(interval);
     }, []);
 
 
