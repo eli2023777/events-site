@@ -81,96 +81,99 @@ const EditUser = () => {
 
     return (
         <div>
-            <h1>Edit Prophile</h1>
-            <br /><br />
+            <div className='frame'>
 
-            <Form onSubmit={handleSubmit}>
+                <h1>Edit Prophile</h1>
+                <br /><br />
 
-                <Form.Group className="mb-3 grid-item" controlId="formBasicName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name='first' placeholder={user.name?.first} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['firstName']}</div> */}
-                </Form.Group>
+                <Form onSubmit={handleSubmit}>
 
-                <Form.Group className="mb-3" controlId="formBasicName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" name="last" placeholder={user.name?.last} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['lastName']}</div> */}
+                    <Form.Group className="mb-3 grid-item" controlId="formBasicName">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control type="text" name='first' placeholder={user.name?.first} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['firstName']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control type="text" name="last" placeholder={user.name?.last} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['lastName']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasicPhone">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" name="phone" placeholder={user?.phone} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['phone']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPhone">
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control type="text" name="phone" placeholder={user?.phone} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['phone']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Image URL</Form.Label>
-                    <Form.Control type="text" name="url" placeholder={user.image?.url} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['url']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Image URL</Form.Label>
+                        <Form.Control type="text" name="url" placeholder={user.image?.url} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['url']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Image ALT</Form.Label>
-                    <Form.Control type="text" name="alt" placeholder={user.image?.alt} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['alt']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Image ALT</Form.Label>
+                        <Form.Control type="text" name="alt" placeholder={user.image?.alt} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['alt']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>State</Form.Label>
-                    <Form.Control type="text" name="state" placeholder={user.address?.state} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['state']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>State</Form.Label>
+                        <Form.Control type="text" name="state" placeholder={user.address?.state} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['state']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control type="text" name="country" placeholder={user.address?.country} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['country']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>Country</Form.Label>
+                        <Form.Control type="text" name="country" placeholder={user.address?.country} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['country']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control type="text" name="city" placeholder={user.address?.city} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['city']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>City</Form.Label>
+                        <Form.Control type="text" name="city" placeholder={user.address?.city} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['city']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>Street</Form.Label>
-                    <Form.Control type="text" name="street" placeholder={user.address?.street} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['street']}</div> */}
+                    </Form.Group>
 
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>Street</Form.Label>
+                        <Form.Control type="text" name="street" placeholder={user.address?.street} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['street']}</div> */}
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>House Number</Form.Label>
-                    <Form.Control type="number" name="houseNumber" placeholder={user.address?.houseNumber} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['houseNumber']}</div> */}
-                </Form.Group>
+                    </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasic">
-                    <Form.Label>Zip Code</Form.Label>
-                    <Form.Control type="number" name="zip" placeholder={user.address?.zip} onChange={handleChange} />
-                    {/* <div style={{ color: 'red' }}>{errors && errors['zip']}</div> */}
-                </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>House Number</Form.Label>
+                        <Form.Control type="number" name="houseNumber" placeholder={user.address?.houseNumber} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['houseNumber']}</div> */}
+                    </Form.Group>
 
-                <Button variant="primary" type="submit" >
-                    Submit
-                </Button>
+                    <Form.Group className="mb-3" controlId="formBasic">
+                        <Form.Label>Zip Code</Form.Label>
+                        <Form.Control type="number" name="zip" placeholder={user.address?.zip} onChange={handleChange} />
+                        {/* <div style={{ color: 'red' }}>{errors && errors['zip']}</div> */}
+                    </Form.Group>
 
-            </Form>
-            <br />
-            {/* <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div> */}
+                    <Button variant="primary" type="submit" >
+                        Submit
+                    </Button>
 
-            <br />
-            <br />
-            <br />
+                </Form>
+                <br />
+                {/* <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div> */}
+
+                <br />
+                <br />
+                <br />
+            </div>
         </div >
     )
 }

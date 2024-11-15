@@ -71,42 +71,44 @@ const NewEvent = () => {
 
     return (
         <div>
+            <div className='frame'>
 
-            <button onClick={() => navigate('/')}>Home</button>
+                <button onClick={() => navigate('/')}>Home</button>
 
-            <h1>New Event</h1>
+                <h1>New Event</h1>
 
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Title:</label>
-                <input type="text" id="title" name="title" required
-                    onChange={handleChange} />
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="title">Title:</label>
+                    <input type="text" id="title" name="title" required
+                        onChange={handleChange} />
 
-                <label htmlFor="date">Date:</label>
-                <input type="date" id="date" name="date" required
-                    onChange={handleChangeDate}
-                    value={newDate}
-                />
+                    <label htmlFor="date">Date:</label>
+                    <input type="date" id="date" name="date" required
+                        onChange={handleChangeDate}
+                        value={newDate}
+                    />
 
-                <label htmlFor="time">Time:</label>
-                <input type="time" id="time" name="time" required
-                    onChange={handleChange} />
+                    <label htmlFor="time">Time:</label>
+                    <input type="time" id="time" name="time" required
+                        onChange={handleChange} />
 
-                <label htmlFor="time">Location:</label>
-                <input type="text" id="location" name="location"
-                    onChange={handleChange} />
+                    <label htmlFor="time">Location:</label>
+                    <input type="text" id="location" name="location"
+                        onChange={handleChange} />
 
-                <label htmlFor="zoomLink">Zoom Link:</label>
-                <input type="text" id="zoomLink" name="zoomLink"
-                    onChange={handleChange} />
+                    <label htmlFor="zoomLink">Zoom Link:</label>
+                    <input type="text" id="zoomLink" name="zoomLink"
+                        onChange={handleChange} />
 
-                <label htmlFor="url">Image URL:</label>
-                <input type="text" id="url" name="url" required
-                    onChange={handleChange} />
+                    <label htmlFor="url">Image URL:</label>
+                    <input type="text" id="url" name="url" required
+                        onChange={handleChange} />
 
 
 
-                <button type="submit">Submit</button>
-            </form>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     )
 }

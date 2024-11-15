@@ -69,30 +69,33 @@ const EditEvent = () => {
 
     return (
         <div>
-            <button onClick={() => navigate(-1)}>Back</button>
-            <br />
-            <br />
+            <div className='frame'>
 
-            {event && (
-                <>
-                    <form onSubmit={handleSubmit}>
-                        <label for="title">Title</label>
-                        <input type="text" name="title" value={event.title || ''} onChange={handleChange} />
-                        <br />
-                        <br />
-                        <label for="time">Time</label>
-                        <input type="text" name="time" value={event.time || ''} onChange={handleChange} />
-                        <br />
-                        <br />
-                        <label for="zoom-link">Zoom Link </label>
-                        <input type="text" name="zoomLink" value={event.zoomLink || ''} onChange={handleChange} />
-                        <br />
-                        <br />
-                        <button type="submit">Submit</button>
-                    </form>
-                </>
+                <button onClick={() => navigate(-1)}>Back</button>
+                <br />
+                <br />
 
-            )}
+                {event && (
+                    <>
+                        <form onSubmit={handleSubmit}>
+                            <label for="title">Title</label>
+                            <input type="text" name="title" value={event.title || ''} onChange={handleChange} />
+                            <br />
+                            <br />
+                            <label for="time">Time</label>
+                            <input type="text" name="time" value={event.time || ''} onChange={handleChange} />
+                            <br />
+                            <br />
+                            <label for="zoom-link">Zoom Link </label>
+                            <input type="text" name="zoomLink" value={event.zoomLink || ''} onChange={handleChange} />
+                            <br />
+                            <br />
+                            <button type="submit">Submit</button>
+                        </form>
+                    </>
+
+                )}
+            </div>
         </div>
     )
 }

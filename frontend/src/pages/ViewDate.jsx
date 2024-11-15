@@ -48,32 +48,35 @@ const ViewDate = () => {
 
     return (
         <div>
-            <h2>{(new Date(date)).toLocaleDateString('en-GB')}</h2>
-            <button onClick={() => navigate('/')}>Back to Events</button>
-            {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
-                <button onClick={() => navigate('/new-event', { state: { date } })}>
-                    Add new Event
-                </button>
-            }
+            <div className='frame'>
 
-            {
-                events.length > 0 &&
-                events.map(event => (
-                    <div key={event._id}
-                        style={{
-                            backgroundImage: `url(${event.image?.url})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            padding: '20px',
-                        }}
-                        onClick={() => handleEventClick(event._id)}>
-                        <h3>{event.title}</h3>
-                        <p>Date: {new Date(event.date).toLocaleDateString('en-GB')}</p>
-                        <p>Time: {event.time}</p>
-                        <p>Zoom Link: {event.zoomLink}</p>
-                    </div>
-                ))
-            }
+                <h2>{(new Date(date)).toLocaleDateString('en-GB')}</h2>
+                <button onClick={() => navigate('/')}>Back to Events</button>
+                {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
+                    <button onClick={() => navigate('/new-event', { state: { date } })}>
+                        Add new Event
+                    </button>
+                }
+
+                {
+                    events.length > 0 &&
+                    events.map(event => (
+                        <div key={event._id}
+                            style={{
+                                backgroundImage: `url(${event.image?.url})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                padding: '20px',
+                            }}
+                            onClick={() => handleEventClick(event._id)}>
+                            <h3>{event.title}</h3>
+                            <p>Date: {new Date(event.date).toLocaleDateString('en-GB')}</p>
+                            <p>Time: {event.time}</p>
+                            <p>Zoom Link: {event.zoomLink}</p>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }

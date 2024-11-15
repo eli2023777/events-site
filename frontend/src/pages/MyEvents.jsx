@@ -59,59 +59,61 @@ const MyEvents = () => {
 
     return (
         <div>
-            <h1>My Events</h1>
-            {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
+            <div className='frame'>
 
-                <button onClick={() => navigate('/new-event')}>
-                    Add new event
-                </button>
-            }
+                <h1>My Events</h1>
+                {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
 
-            <div className='grid'>
+                    <button onClick={() => navigate('/new-event')}>
+                        Add new event
+                    </button>
+                }
 
-
-                {events.map(
-                    (event, index) => {
-                        const eventDate = new Date(event.date);
-                        const eventID = event._id;
+                <div className='grid'>
 
 
-                        return (
-                            <div key={index} className='event'
-                                style={{
-                                    backgroundImage: `url(${event.image?.url})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    padding: '20px',
-                                }}
-                                onClick={() => handleEventClick(eventID)} >
-                                <h2>{event.title}</h2>
-                                <p>Date: {eventDate.toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                }
-                                )}</p>
-                                <p>Time: {event.time}</p>
-                                <p>Zoom Link: {event.zoomLink}</p>
+                    {events.map(
+                        (event, index) => {
+                            const eventDate = new Date(event.date);
+                            const eventID = event._id;
 
-                                {decodedToken.isBusiness &&
-                                    <>
-                                        <button onClick={() =>
-                                            navigate('/edit-event', { state: { eventID } })}
-                                        >Edit</button>
 
-                                        <button onClick={() => deleteEvent(eventID)}>Delete</button>
-                                    </>
-                                }
-                            </div>
-                        )
-                    }
+                            return (
+                                <div key={index} className='event'
+                                    style={{
+                                        backgroundImage: `url(${event.image?.url})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        padding: '20px',
+                                    }}
+                                    onClick={() => handleEventClick(eventID)} >
+                                    <h2>{event.title}</h2>
+                                    <p>Date: {eventDate.toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    }
+                                    )}</p>
+                                    <p>Time: {event.time}</p>
+                                    <p>Zoom Link: {event.zoomLink}</p>
 
-                )}
+                                    {decodedToken.isBusiness &&
+                                        <>
+                                            <button onClick={() =>
+                                                navigate('/edit-event', { state: { eventID } })}
+                                            >Edit</button>
 
-            </div >
+                                            <button onClick={() => deleteEvent(eventID)}>Delete</button>
+                                        </>
+                                    }
+                                </div>
+                            )
+                        }
 
+                    )}
+
+                </div >
+            </div>
         </div>
     )
 }

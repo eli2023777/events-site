@@ -63,86 +63,89 @@ const ViewEvent = () => {
 
     return (
         <div>
-            <div>
-                <button onClick={() => {
-                    navigate('/', { state: { uiState } });
-                }}
-                >
-                    Back
-                </button>
-            </div>
-            <br />
-            {
-                event && (
-                    <>
+            <div className='frame'>
 
-                        <div className='flex'>
+                <div>
+                    <button onClick={() => {
+                        navigate('/', { state: { uiState } });
+                    }}
+                    >
+                        Back
+                    </button>
+                </div>
+                <br />
+                {
+                    event && (
+                        <>
 
-                            <section className='text'>
-                                <div className='topText'>
-                                    <p>{new Date(event.date).toLocaleDateString("en-US", {
-                                        month: "long",
-                                        day: "numeric",
+                            <div className='flex'>
+
+                                <section className='text'>
+                                    <div className='topText'>
+                                        <p>{new Date(event.date).toLocaleDateString("en-US", {
+                                            month: "long",
+                                            day: "numeric",
+                                        }
+                                        )}</p>
+                                        <h1>{event.title}</h1>
+                                    </div>
+
+                                    <div>
+                                        <h3>When?</h3>
+                                        <p>{new Date(event.date).toLocaleDateString("en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        }
+                                        )}</p>
+                                        <p>{event.time}</p>
+                                    </div>
+                                    <h3>Where?</h3>
+                                    {(event.zoomLink) ?
+                                        (
+                                            <p>
+                                                <a href={event.zoomLink}
+                                                    target="_blank" rel="noopener noreferrer">
+                                                    Zoom Link</a>
+                                            </p>
+                                        ) : (
+                                            <p>{event.location}</p>
+                                        )
                                     }
-                                    )}</p>
-                                    <h1>{event.title}</h1>
-                                </div>
 
-                                <div>
-                                    <h3>When?</h3>
-                                    <p>{new Date(event.date).toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
+
+                                    {token &&
+                                        (decodedToken.isBusiness && decodedToken._id === event.user_id) &&
+                                        <>
+                                            <button onClick={() => navigate('/edit-event', { state: { eventID } })}>
+                                                <DualIcon iconName="edit" />
+                                            </button>
+                                        </>
                                     }
-                                    )}</p>
-                                    <p>{event.time}</p>
-                                </div>
-                                <h3>Where?</h3>
-                                {(event.zoomLink) ?
-                                    (
-                                        <p>
-                                            <a href={event.zoomLink}
-                                                target="_blank" rel="noopener noreferrer">
-                                                Zoom Link</a>
-                                        </p>
-                                    ) : (
-                                        <p>{event.location}</p>
-                                    )
-                                }
 
-
-                                {token &&
-                                    (decodedToken.isBusiness && decodedToken._id === event.user_id) &&
-                                    <>
-                                        <button onClick={() => navigate('/edit-event', { state: { eventID } })}>
-                                            <DualIcon iconName="edit" />
+                                    {token &&
+                                        ((decodedToken.isBusiness && decodedToken._id === event.user_id)
+                                            || decodedToken.isAdmin) &&
+                                        <button onClick={deleteEvent}>
+                                            <DualIcon iconName="trash" />
                                         </button>
-                                    </>
-                                }
+                                    }
+                                </section>
 
-                                {token &&
-                                    ((decodedToken.isBusiness && decodedToken._id === event.user_id)
-                                        || decodedToken.isAdmin) &&
-                                    <button onClick={deleteEvent}>
-                                        <DualIcon iconName="trash" />
-                                    </button>
-                                }
-                            </section>
+                                <div className='gallery'
+                                //  onClick={image}
+                                >
+                                    <img src={event.image?.url} alt={event.image?.alt} className="eventImage" />
+                                    {/* <img src={event.image?.url} alt={event.image?.alt} className="eventImage" /> */}
+                                </div>
 
-                            <div className='gallery'
-                            //  onClick={image}
-                            >
-                                <img src={event.image?.url} alt={event.image?.alt} className="eventImage" />
-                                {/* <img src={event.image?.url} alt={event.image?.alt} className="eventImage" /> */}
+
                             </div>
 
-
-                        </div>
-
-                    </>
-                )
-            }
+                        </>
+                    )
+                }
+            </div>
         </div >
     )
 };

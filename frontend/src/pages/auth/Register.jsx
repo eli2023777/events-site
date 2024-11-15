@@ -115,129 +115,132 @@ const Register = () => {
 
     return (
         <div>
-            <h1>Register</h1>
-            <br /><br />
+            <div className='frame'>
 
-            <Form onSubmit={handelSubmit}>
+                <h1>Register</h1>
+                <br /><br />
 
-                <div class="grid">
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check
-                            type="checkbox"
-                            label="Business Account"
-                            checked={isBusiness}
-                            onChange={(e) => setIsBusiness(e.target.checked)}
-                        />
-                    </Form.Group>
+                <Form onSubmit={handelSubmit}>
 
-                    <Form.Group className="mb-3 grid-item" controlId="formBasicName">
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control type="name" name='first' placeholder="First Name" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['first']}</div>
-                    </Form.Group>
+                    <div class="grid">
+                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                            <Form.Check
+                                type="checkbox"
+                                label="Business Account"
+                                checked={isBusiness}
+                                onChange={(e) => setIsBusiness(e.target.checked)}
+                            />
+                        </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicName">
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="text" name="last" placeholder="Last Name" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['last']}</div>
+                        <Form.Group className="mb-3 grid-item" controlId="formBasicName">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="name" name='first' placeholder="First Name" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['first']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="text" name="last" placeholder="Last Name" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['last']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasicPhone">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control type="text" name="phone" placeholder="Phone" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['phone']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPhone">
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control type="text" name="phone" placeholder="Phone" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['phone']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" name='email' placeholder="Email" onChange={handelChange} />
-                        <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text>
-                    </Form.Group>
+                        </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" name="password" placeholder="Password" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['password']}</div>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type="email" name='email' placeholder="Email" onChange={handelChange} />
+                            <Form.Text className="text-muted">
+                                We'll never share your email with anyone else.
+                            </Form.Text>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" placeholder="Password" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['password']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Image URL</Form.Label>
-                        <Form.Control type="text" name="url" placeholder="url" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['url']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Image URL</Form.Label>
+                            <Form.Control type="text" name="url" placeholder="url" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['url']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Image ALT</Form.Label>
-                        <Form.Control type="text" name="alt" placeholder="alt" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['alt']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Image ALT</Form.Label>
+                            <Form.Control type="text" name="alt" placeholder="alt" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['alt']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>State</Form.Label>
-                        <Form.Control type="text" name="state" placeholder="State" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['state']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>State</Form.Label>
+                            <Form.Control type="text" name="state" placeholder="State" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['state']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>Country</Form.Label>
-                        <Form.Control type="text" name="country" placeholder="Country" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['country']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>Country</Form.Label>
+                            <Form.Control type="text" name="country" placeholder="Country" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['country']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>City</Form.Label>
-                        <Form.Control type="text" name="city" placeholder="City" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['city']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>City</Form.Label>
+                            <Form.Control type="text" name="city" placeholder="City" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['city']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>Street</Form.Label>
-                        <Form.Control type="text" name="street" placeholder="Street" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['street']}</div>
+                        </Form.Group>
 
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>Street</Form.Label>
+                            <Form.Control type="text" name="street" placeholder="Street" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['street']}</div>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>House Number</Form.Label>
-                        <Form.Control type="number" name="houseNumber" placeholder="House Number" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['houseNumber']}</div>
-                    </Form.Group>
+                        </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasic">
-                        <Form.Label>Zip Code</Form.Label>
-                        <Form.Control type="number" name="zip" placeholder="Zip Code" onChange={handelChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['zip']}</div>
-                    </Form.Group>
-                </div>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>House Number</Form.Label>
+                            <Form.Control type="number" name="houseNumber" placeholder="House Number" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['houseNumber']}</div>
+                        </Form.Group>
 
-                <div>
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
+                        <Form.Group className="mb-3" controlId="formBasic">
+                            <Form.Label>Zip Code</Form.Label>
+                            <Form.Control type="number" name="zip" placeholder="Zip Code" onChange={handelChange} />
+                            <div style={{ color: 'red' }}>{errors && errors['zip']}</div>
+                        </Form.Group>
+                    </div>
 
-                    <Button variant="primary" type="reset">
-                        Reset
-                        {/* --- ADD HERE Reset icon --- */}
-                    </Button>
-                </div>
+                    <div>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
 
-            </Form>
-            <br />
-            <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
+                        <Button variant="primary" type="reset">
+                            Reset
+                            {/* --- ADD HERE Reset icon --- */}
+                        </Button>
+                    </div>
 
-            <br />
-            <br />
-            <br />
+                </Form>
+                <br />
+                <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
+
+                <br />
+                <br />
+                <br />
+            </div>
         </div >
     )
 }

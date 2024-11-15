@@ -105,41 +105,43 @@ const LogIn = () => {
 
     return (
         <div>
-            <h1>Log In</h1>
-            <br />
-            <br />
-            <Form id='logInForm' onSubmit={handleSubmit} >
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" name='email' placeholder="Enter email" onChange={handleChange} />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                    <div style={{ color: 'red' }}>{errors && errors['email']}</div>
-                </Form.Group>
+            <div className='frame'>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
-                    <div style={{ color: 'red' }}>{errors && errors['password']}</div>
-                </Form.Group>
+                <h1>Log In</h1>
+                <br />
+                <br />
+                <Form id='logInForm' onSubmit={handleSubmit} >
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" name='email' placeholder="Enter email" onChange={handleChange} />
+                        <Form.Text className="text-muted">
+                            We'll never share your email with anyone else.
+                        </Form.Text>
+                        <div style={{ color: 'red' }}>{errors && errors['email']}</div>
+                    </Form.Group>
 
-            </Form>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
+                        <div style={{ color: 'red' }}>{errors && errors['password']}</div>
+                    </Form.Group>
 
-            <Button variant="primary" form='logInForm' type="submit" style={{ width: '100%' }} >
-                Submit
-            </Button>
+                </Form>
 
-            {APIError &&
-                <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
-            }
+                <Button variant="primary" form='logInForm' type="submit" style={{ width: '100%' }} >
+                    Submit
+                </Button>
 
-            <div style={{ color: 'green' }}>{message}</div>
+                {APIError &&
+                    <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
+                }
 
-            <br />
-            <br />
-            <br />
+                <div style={{ color: 'green' }}>{message}</div>
 
+                <br />
+                <br />
+                <br />
+            </div>
         </div >
     )
 }
