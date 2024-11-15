@@ -35,7 +35,8 @@ class FullUser {
         const stringReg = /^.{2,256}$/;
         const numReg = /^\d+$/;
         const nameReg = /^[a-zA-Z0-9]{2,20}$/;
-        const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d{4})(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,30}$/;
+        const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,20}$/;
+
         const urlReg = /^[\s\S]{14,}$/;
         const phoneReg = /^0([2345789])(-?\d){8,10}$/;;
 
