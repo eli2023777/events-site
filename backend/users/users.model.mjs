@@ -40,8 +40,8 @@ const userSchema = new Schema({
     phone: String,
     email: String,
     password: String,
-    address: addressSchema,
-    image: imageSchema
+    image: imageSchema,
+    address: addressSchema
 });
 
 export const User = mongoose.model('User', userSchema);

@@ -12,8 +12,8 @@ export const router = Router();
 
 // Add new user
 router.post('/', async (req, res) => {
-    const { first, last, phone, email, password, url, alt,
-        state, country, city, street, houseNumber, zip } = req.body;
+    const { name, isBusiness, phone, email, password, image, address } = req.body;
+    console.log('req.body', req.body);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -22,30 +22,34 @@ router.post('/', async (req, res) => {
 
     const user = new User({
         name: {
-            first: req.body.first,
-            last: req.body.last
+            first: name.first,
+            last: name.last
         },
 
-        isBusiness: req.body.isBusiness,
+        isBusiness: isBusiness,
 
-        phone: req.body.phone,
-        email: req.body.email,
+        phone: phone,
+        email: email,
         password: await bcrypt.hash(password, 10),
-        address: {
-            state: req.body.state,
-            country: req.body.country,
-            city: req.body.city,
-            street: req.body.street,
-            houseNumber: req.body.houseNumber,
-            zip: req.body.zip,
-        },
+
         image: {
-            url: req.body.url,
-            alt: req.body.alt
+            url: image.url,
+            alt: image.alt
         },
+
+        address: {
+            state: address.state,
+            country: address.country,
+            city: address.city,
+            street: address.street,
+            houseNumber: address.houseNumber,
+            zip: address.zip,
+        }
     });
 
     const newUser = await user.save();
+    console.log('newUser', newUser);
+
 
     res.send(newUser);
 });
