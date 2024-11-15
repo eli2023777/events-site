@@ -5,7 +5,9 @@
     z-index: 1000;
     position: fixed;
     top: 0;
-    width: 90%;
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 body {
