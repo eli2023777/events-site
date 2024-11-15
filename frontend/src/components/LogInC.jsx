@@ -46,7 +46,7 @@ const LogInC = () => {
                 });
 
             localStorage.setItem('token', res.data);
-            setToken(token);
+            setToken(localStorage.getItem('token'));
 
             saveToken();
             setMesssage('You have logged in successfully!');
