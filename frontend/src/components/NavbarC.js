@@ -102,6 +102,7 @@ const NavbarC = () => {
     return (
         <div>
 
+
             {['md'].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 header">
                     <Container fluid>
