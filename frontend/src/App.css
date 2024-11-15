@@ -12,10 +12,19 @@ button {
 }
 
 /* General styling */
-.frame {
+.lightFrame {
   font-size: 1.2rem;
-  /* background-color: #000000a0; */
-  background-color: #ffffffda;
+  background-color: #ffffffa2;
+  padding: 50px;
+  border-radius: 50px;
+  border: #999 solid 1px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.darkFrame {
+  font-size: 1.2rem;
+  background-color: #000000a0;
   padding: 50px;
   border-radius: 50px;
   border: #999 solid 1px;
