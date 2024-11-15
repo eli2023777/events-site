@@ -86,7 +86,7 @@ function App() {
         <NavbarC />
 
         <div>
-          <p>Welcome to our events website!</p>
+
 
           {/* Routes definition */}
           <Routes>
