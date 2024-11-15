@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   width: 100vw;
-  background-image: url('./images/close-up-beautiful-optical-fiber-details_23-2149212572.jpg');
+  background-image: url('../public/images/day-background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

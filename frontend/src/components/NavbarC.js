@@ -19,6 +19,7 @@ const NavbarC = () => {
     // const [] = useContext(localStorage.getItem('token'));
     const { API, setLoading, token, setToken } = useContext(GeneralContext);
     const [user, setUser] = useState({});
+    const [isDark, setIsDark] = useState(false);
 
 
     // For Search bar
@@ -94,6 +95,23 @@ const NavbarC = () => {
             setToken(token);
         }
     }, [token]);
+
+
+    // Change the body's background style dynamically
+    useEffect(() => {
+        if (isDark) {
+            document.body.style.backgroundImage = `url("/images/night-background.jpg")`;
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundRepeat = "no-repeat";
+            document.body.style.backgroundAttachment = "fixed";
+        }
+
+
+        // Cleanup function to reset style on component unmount
+        // return () => {
+        //     document.body.style.backgroundImage = null;
+        // };
+    }, [isDark]);
 
 
 
@@ -174,6 +192,11 @@ const NavbarC = () => {
                                     <Button variant="outline-success">Search</Button>
                                 </Form>
 
+                                <Nav className="justify-content-end flex-grow-1 pe-3">
+                                    <Button variant="none" onClick={() => setIsDark(true)} >
+                                        DARK
+                                    </Button>
+                                </Nav>
 
                                 {/* Register and Log-in */}
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
@@ -248,9 +271,10 @@ const NavbarC = () => {
                         </Navbar.Offcanvas>
                     </Container>
                 </Navbar>
-            ))}
+            ))
+            }
 
-        </div>
+        </div >
     )
 }
 
