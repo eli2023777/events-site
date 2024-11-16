@@ -14,6 +14,7 @@ const EditEvent = () => {
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const { API, setLoading } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
 
 
     const url = `${API}/events/${eventID}`;
@@ -69,7 +70,7 @@ const EditEvent = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <button onClick={() => navigate(-1)}>Back</button>
                 <br />

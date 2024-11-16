@@ -17,9 +17,9 @@ const NavbarC = () => {
     const [inputSearch, setInputSearch] = useState('');
     const [results, setResults] = useState([]);
     // const [] = useContext(localStorage.getItem('token'));
-    const { API, setLoading, token, setToken } = useContext(GeneralContext);
+    const { API, setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
     const [user, setUser] = useState({});
-    const [isDark, setIsDark] = useState(false);
+    // const [isDark, setIsDark] = useState(localStorage.getItem('isDark') || false);
 
 
     // For Search bar
@@ -104,15 +104,16 @@ const NavbarC = () => {
             document.body.style.backgroundSize = "cover";
             document.body.style.backgroundRepeat = "no-repeat";
             document.body.style.backgroundAttachment = "fixed";
+        } else {
+            document.body.style.backgroundImage = `url("/images/day-background.jpg")`;
         }
-
+        localStorage.setItem('isDark', isDark)
 
         // Cleanup function to reset style on component unmount
         // return () => {
         //     document.body.style.backgroundImage = null;
         // };
     }, [isDark]);
-
 
 
 
@@ -139,6 +140,9 @@ const NavbarC = () => {
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
 
+                                    {token &&
+                                        < Nav.Link href="/favourites">Favourites</Nav.Link>
+                                    }
 
                                     {/*  User Management - Only for Admin */}
                                     {token &&
@@ -189,12 +193,13 @@ const NavbarC = () => {
                                         onChange={(e) => handleChange(e.target.value)}
                                         onKeyDown={handleEnterSearch}
                                     />
-                                    <Button variant="outline-success">Search</Button>
+                                    {/* <Button variant="outline-success">Search</Button> */}
                                 </Form>
 
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Button variant="none" onClick={() => setIsDark(true)} >
-                                        DARK
+                                    <Button variant="none" onClick={() =>
+                                        setIsDark(isDark ? false : true)} >
+                                        {isDark ? 'light' : 'dark'}
                                     </Button>
                                 </Nav>
 

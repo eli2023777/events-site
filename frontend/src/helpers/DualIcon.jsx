@@ -8,7 +8,7 @@ import {
     faEdit as faEditSolid,
     faTrash as faTrashSolid,
     faCalendarDays as faCalendarDaysSolid,
-    faList as faListSolid
+    faList as faListSolid,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Regular icons
@@ -17,12 +17,12 @@ import {
     faEdit as faEditRegular,
     faTrashAlt as faTrashRegular,
     faCalendarDays as faCalendarDaysRegular,
-    faListAlt as faListRegular
+    faListAlt as faListRegular,
 } from '@fortawesome/free-regular-svg-icons';
 
 // Add all icons to library
 library.add(faUserSolid, faEditSolid, faTrashSolid, faCalendarDaysSolid, faListSolid,
-    faUserRegular, faEditRegular, faTrashRegular, faCalendarDaysRegular, faListRegular);
+    faUserRegular, faEditRegular, faTrashRegular, faCalendarDaysRegular, faListRegular,);
 
 
 export const DualIcon = ({ iconName }) => {
@@ -34,7 +34,7 @@ export const DualIcon = ({ iconName }) => {
         edit: { solid: faEditSolid, regular: faEditRegular },
         trash: { solid: faTrashSolid, regular: faTrashRegular },
         calendar: { solid: faCalendarDaysSolid, regular: faCalendarDaysRegular },
-        list: { solid: faListSolid, regular: faListRegular }
+        list: { solid: faListSolid, regular: faListRegular },
     };
 
     // Choose regular or solid
@@ -46,6 +46,8 @@ export const DualIcon = ({ iconName }) => {
     return (
         <FontAwesomeIcon icon={currentIcon}
             onMouseEnter={() => setIsSolid(true)}
-            onMouseLeave={() => setIsSolid(false)} />
+            onMouseLeave={() => setIsSolid(false)}
+        // onClick={() => setIsSolid(isLiked ? true : false)}
+        />
     );
 };
