@@ -17,6 +17,7 @@ import EditUser from './pages/users/EditUser.jsx';
 import MyEvents from './pages/MyEvents.jsx';
 import Loader from './components/Loader.jsx';
 import LogInC from './components/LogInC.jsx';
+import Favourites from './pages/Favourites.jsx';
 
 
 
@@ -30,6 +31,13 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [loginC, setLoginC] = useState();
   const API = 'http://localhost:7000';
+  const savedIsDark = localStorage.getItem('isDark') === 'true';
+  const [isDark, setIsDark] = useState(savedIsDark);
+
+  // Dark Mode
+  useEffect(() => {
+    localStorage.setItem('isDark', isDark);
+  }, [isDark]);
 
   // -- Token --
   const isTokenExpired = () => {
@@ -80,7 +88,7 @@ function App() {
 
   return (
 
-    <GeneralContext.Provider value={{ API, setLoading, setLoginC, token, setToken }}>
+    <GeneralContext.Provider value={{ API, setLoading, setLoginC, token, setToken, isDark, setIsDark }}>
 
       <div className="App">
         <NavbarC />
@@ -95,12 +103,13 @@ function App() {
             <Route path="/view-event" element={<ViewEvent />} />
             <Route path="/view-date" element={<ViewDate />} />
             <Route path="/edit-event" element={<EditEvent />} />
+            <Route path='/my-events' element={<MyEvents />} />
             <Route path='/results' element={<Results />} />
             <Route path='/register' element={<Register />} />
             <Route path='/logIn' element={<LogIn />} />
             <Route path='/user-management' element={<UserManagement />} />
             <Route path='/edit-user' element={<EditUser />} />
-            <Route path='/my-events' element={<MyEvents />} />
+            <Route path='/favourites' element={<Favourites />} />
 
           </Routes >
 
