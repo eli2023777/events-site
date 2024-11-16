@@ -13,6 +13,9 @@ const NewEvent = () => {
     const [newEvent, setNewEvent] = useState({ date });
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { API, setLoading } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
+    const [message, setMesssage] = useState('');
+
 
     const token = localStorage.getItem('token');
 
@@ -53,9 +56,11 @@ const NewEvent = () => {
             );
 
             setNewEvent(response.data);
-            console.log(newEvent);
-
-
+            setMesssage('New event successfully added!');
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 1000);
+            return () => clearTimeout(timer);
         } catch (error) {
             console.log('Error posting events:', error);
         }
@@ -71,7 +76,7 @@ const NewEvent = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <button onClick={() => navigate('/')}>Home</button>
 
@@ -104,9 +109,10 @@ const NewEvent = () => {
                     <input type="text" id="url" name="url" required
                         onChange={handleChange} />
 
-
-
                     <button type="submit">Submit</button>
+
+                    <div style={{ color: 'green' }}>{message}</div>
+
                 </form>
             </div>
         </div>

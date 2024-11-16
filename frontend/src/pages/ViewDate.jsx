@@ -14,9 +14,9 @@ const ViewDate = () => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
     console.log(decodedToken);
+    const isDark = localStorage.getItem('isDark');
 
 
-    // const url = `http://localhost:7000/events/by-date?date=${date}`;
 
 
     const getEvents = async () => {
@@ -48,7 +48,7 @@ const ViewDate = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h2>{(new Date(date)).toLocaleDateString('en-GB')}</h2>
                 <button onClick={() => navigate('/')}>Back to Events</button>

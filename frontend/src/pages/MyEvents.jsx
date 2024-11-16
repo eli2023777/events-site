@@ -5,13 +5,15 @@ import { jwtDecode } from 'jwt-decode';
 import { GeneralContext } from '../App';
 
 
+
 const MyEvents = () => {
 
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
-    const { API, setLoading } = useContext(GeneralContext);
+    const { API, setLoading, isDark } = useContext(GeneralContext);
+
 
 
     const fetchEvents = async () => {
@@ -48,18 +50,39 @@ const MyEvents = () => {
     }
 
 
-    const deleteEvent = async (eventID) => {
-        try {
-            await axios.delete(`${API}/events/${eventID}`);
-            navigate(-1);
-        } catch (error) {
-            console.log('Error delete Event:', error);
-        }
+    const editEvent = (e, eventID) => {
+        e.stopPropagation();
+        navigate('/edit-event', { state: { eventID } })
     }
+
+
+
+
+    const deleteEvent = async (e, eventID) => {
+        e.stopPropagation();
+        if (window.confirm(`Are you sure you want to delete this event?`)) {
+
+            try {
+                await axios.delete(`${API}/events/${eventID}`,
+                    {
+                        headers: {
+                            'x-auth-token': token
+                        }
+                    });
+                alert('Event successfully deleted');
+                setEvents(prevEvents => prevEvents.filter(event => event._id !== eventID));
+            } catch (error) {
+                console.log('Error delete Event:', error);
+            }
+
+        } else {
+            return; // If the user is not confirmed
+        }
+    };
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h1>My Events</h1>
                 {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
@@ -98,12 +121,15 @@ const MyEvents = () => {
                                     <p>Zoom Link: {event.zoomLink}</p>
 
                                     {decodedToken.isBusiness &&
+                                        decodedToken._id === event.user_id &&
                                         <>
-                                            <button onClick={() =>
-                                                navigate('/edit-event', { state: { eventID } })}
-                                            >Edit</button>
+                                            <button onClick={(e) => editEvent(e, eventID)}
+                                            >Edit
+                                            </button>
 
-                                            <button onClick={() => deleteEvent(eventID)}>Delete</button>
+                                            <button onClick={(e) => deleteEvent(e, eventID)}>
+                                                Delete
+                                            </button>
                                         </>
                                     }
                                 </div>
@@ -116,6 +142,7 @@ const MyEvents = () => {
             </div>
         </div>
     )
-}
 
-export default MyEvents
+};
+
+export default MyEvents;

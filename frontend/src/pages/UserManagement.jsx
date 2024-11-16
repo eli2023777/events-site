@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { jwtDecode } from "jwt-decode";
-import bootstrap from 'bootstrap';
-import EditUser from './users/EditUser';
 import { DualIcon } from '../helpers/DualIcon';
 import { GeneralContext } from '../App';
 import { useNavigate } from 'react-router-dom';
@@ -10,18 +7,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 
+
 const UserManagement = () => {
 
-    const UI_STATE = {
-        ALL_USERS: 'ALL_USERS',
-        EDIT_USER: 'EDIT_USER'
-    };
 
-    const [uiState, setUIState] = useState(UI_STATE.ALL_USERS);
     const [users, setUsers] = useState([]);
     const token = localStorage.getItem('token');
     const { API, setLoading } = useContext(GeneralContext);
     const navigate = useNavigate();
+    const isDark = localStorage.getItem('isDark');
 
 
     // Fetch users 
@@ -95,87 +89,90 @@ const UserManagement = () => {
             <header id="userManagement" className="masthead">
                 <section className="d-flex align-items-center">
                     <div className="container position-relative">
-                        <div className='frame'>
+                        <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
 
-                            {uiState === UI_STATE.ALL_USERS &&
 
 
-                                <div>
-                                    <div className='text-end' style={{ marginBottom: '30px' }}>
+                            <div>
+                                <div className='text-end' style={{ marginBottom: '30px' }}>
 
-                                        {/* ADD HERE 'Add User' icon */}
-                                        <button onClick={() => {
-                                            navigate('/register');
-                                        }
-                                        }>Add User</button>
+                                    {/* ADD HERE 'Add User' icon */}
+                                    <button onClick={() => {
+                                        navigate('/register');
+                                    }
+                                    }>Add User</button>
 
-                                    </div>
+                                </div>
 
-                                    <table className="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th
-                                                // className='text-white'
-                                                >Full Name</th>
-
-
-                                                <th
-                                                // className='text-white'
-
-                                                // >Role</th>
-                                                // <th
-                                                // className='text-white'
-                                                >Email</th>
-                                                <th
-                                                // className='text-white'
-                                                // >סיסמא</th>
-                                                // <th
-                                                // className='text-white'
-                                                >Edit</th>
-                                                <th
-                                                // className='text-white'
-                                                >Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {users.map((user) => (
-                                                <React.Fragment key={user.id}>
-                                                    <tr>
-                                                        <td
-                                                        // className='text-white'
-                                                        >{user.name.first} {user.name.last}</td>
+                                <table className="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                            // className='text-white'
+                                            >Full Name</th>
 
 
-                                                        {/* <td className='text-white'>{user.role}</td> */}
-                                                        <td
-                                                        // className='text-white'
-                                                        >{user.email}</td>
-                                                        <td
-                                                        // className='text-white'
-                                                        // >{user.password}</td>
-                                                        // <td
-                                                        // className='text-white'
+                                            <th
+                                            // className='text-white'
+
+                                            // >Role</th>
+                                            // <th
+                                            // className='text-white'
+                                            >Email</th>
+                                            <th
+                                            // className='text-white'
+                                            // >סיסמא</th>
+                                            // <th
+                                            // className='text-white'
+                                            >Edit</th>
+                                            <th
+                                            // className='text-white'
+                                            >Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {users.map((user) => (
+                                            <React.Fragment key={user.id}>
+                                                <tr>
+                                                    <td
+                                                    // className='text-white'
+                                                    >{user.name.first} {user.name.last}</td>
+
+
+                                                    {/* <td className='text-white'>{user.role}</td> */}
+                                                    <td
+                                                    // className='text-white'
+                                                    >{user.email}</td>
+                                                    <td
+                                                    // className='text-white'
+                                                    // >{user.password}</td>
+                                                    // <td
+                                                    // className='text-white'
+                                                    >
+
+                                                        <button className="btn btn-success btn-sm"
+                                                            onClick={() => {
+                                                                const id = user._id;
+                                                                navigate('/edit-user',
+                                                                    { state: { id } })
+                                                            }}
+
                                                         >
+                                                            <DualIcon iconName="edit" />
+                                                        </button>
+                                                    </td>
+                                                    <td className='text-white'>
+                                                        <button className="btn btn-danger btn-sm"
 
-                                                            <button className="btn btn-success btn-sm"
-                                                                onClick={() =>
-                                                                    setUIState(UI_STATE.EDIT_USER)}
-                                                            >
-                                                                <DualIcon iconName="edit" />
-                                                            </button>
-                                                        </td>
-                                                        <td className='text-white'>
-                                                            <button className="btn btn-danger btn-sm"
+                                                            onClick={() => handleDelete(user._id)}
 
-                                                                onClick={() => handleDelete(user._id)}
-
-                                                            >
-                                                                <DualIcon iconName="trash" />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    {/* 
+                                                        >
+                                                            <DualIcon iconName="trash" />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                {/* 
                                                 {editingUserId === user.id && (
                                                     <tr>
                                                         <td colSpan="6">
@@ -237,18 +234,13 @@ const UserManagement = () => {
                                                         </td>
                                                     </tr>
                                                 )} */}
-                                                </React.Fragment>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            }
+                                            </React.Fragment>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
 
 
-
-                            {uiState === UI_STATE.EDIT_USER &&
-                                <EditUser />
-                            }
 
 
                             {/* <div className='text-end' style={{ marginBottom: '30px' }}>
@@ -285,7 +277,7 @@ const UserManagement = () => {
                 </section>
             </header>
 
-        </div>
+        </div >
 
     )
 }

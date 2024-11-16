@@ -17,6 +17,7 @@ const ViewEvent = () => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
     const { API, setLoading } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
 
 
 
@@ -63,7 +64,7 @@ const ViewEvent = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <div>
                     <button onClick={() => {

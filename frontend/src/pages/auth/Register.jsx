@@ -17,6 +17,7 @@ const Register = () => {
     const [errors, setErrors] = useState({}); // errors is a JS object, with the key = field name, and value = error message
     const { API, setLoading } = useContext(GeneralContext);
     const [isBusiness, setIsBusiness] = useState(false);
+    const isDark = localStorage.getItem('isDark');
 
 
     const handelChange = (e) => {
@@ -115,7 +116,7 @@ const Register = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h1>Register</h1>
                 <br /><br />

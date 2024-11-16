@@ -13,6 +13,7 @@ const LogIn = () => {
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
     const { API, setLoading, token, setToken } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
 
 
     const handleChange = (e) => {
@@ -44,11 +45,11 @@ const LogIn = () => {
             setToken(localStorage.getItem('token'));
 
             saveToken();
+            setAPIError(false);
             setMesssage('You have logged in successfully!');
-            navigate('/');
 
         } catch (e) {
-            // setAPIError(true);
+            setAPIError(true);
 
             console.log(e);
 
@@ -58,7 +59,6 @@ const LogIn = () => {
 
     const saveToken = () => {
         const tokenExpTime = 60 * 60 * 1000; // 1 Hour
-        // const warningTime = 10 * 60 * 1000; // 10 Minutes before
         const expDate = Date.now() + tokenExpTime;
         localStorage.setItem("expDate", expDate);
     };
@@ -105,7 +105,7 @@ const LogIn = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h1>Log In</h1>
                 <br />

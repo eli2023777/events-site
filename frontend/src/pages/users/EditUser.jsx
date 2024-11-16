@@ -5,15 +5,18 @@ import axios from 'axios';
 import FullUser from '../../models/FullUser';
 import { jwtDecode } from "jwt-decode";
 import { GeneralContext } from '../../App';
+import { useLocation } from 'react-router-dom';
 
 
 const EditUser = () => {
 
+    const location = useLocation();
     const [user, setUser] = useState({});
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
     const userID = decodedToken?._id;
     const { API, setLoading } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
 
 
     // -- For Get One --
@@ -21,7 +24,11 @@ const EditUser = () => {
         if (token) {
 
             try {
-                const res = await axios.get(`${API}/users/${userID}`,
+                setLoading(true);
+
+                // 'location.state.id' = From User Managment page(from Admin),
+                // OR 'userID' from Regular user.
+                const res = await axios.get(`${API}/users/${location.state ? location.state.id : userID}`,
                     {
                         headers: {
                             'x-auth-token': token
@@ -33,7 +40,7 @@ const EditUser = () => {
             } catch (e) {
                 console.log(e);
             } finally {
-                // setIsLoading(false);
+                setLoading(false);
             }
         }
     };
@@ -81,7 +88,7 @@ const EditUser = () => {
 
     return (
         <div>
-            <div className='frame'>
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h1>Edit Prophile</h1>
                 <br /><br />

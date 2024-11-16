@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Calendar from '../components/Calendar.jsx';
 import EventsList from '../components/EventsList.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UI_STATE } from '../helpers/uiStateObj.jsx';
 import { DualIcon } from '../helpers/DualIcon.jsx';
+import { GeneralContext } from '../App';
 
 
 
 const Home = () => {
 
+    const { isDark } = useContext(GeneralContext);
     const location = useLocation();
     const [uiState, setUIState] = useState(location.state ? UI_STATE.EVENTS : UI_STATE.CALENDAR);
     const [isView, setIsView] = useState(false);
     const [eventID, setEventID] = useState();
 
-    const [isIconHover, setIsIconHover] = useState(false);
+
+    // const [isIconHover, setIsIconHover] = useState(false);
 
     const navigate = useNavigate();
 
@@ -30,7 +33,7 @@ const Home = () => {
 
         <div>
 
-            <div class="frame">
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <p>Welcome to our events website!</p>
 

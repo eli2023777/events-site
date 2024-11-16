@@ -9,6 +9,8 @@ const Results = () => {
     const location = useLocation();
     const { results } = location.state || '';
     const { API, setLoading } = useContext(GeneralContext);
+    const isDark = localStorage.getItem('isDark');
+
 
     const handleEventClick = (eventID) => {
         navigate(`/view-event`, { state: { eventID } })
@@ -27,7 +29,7 @@ const Results = () => {
 
     return (
         <div>
-            <div class="frame">
+            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
                 <h1>Results</h1>
 
                 <div className='grid'>
