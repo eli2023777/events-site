@@ -3,19 +3,27 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { GeneralContext } from '../App';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DualIcon } from '../helpers/DualIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 
+library.add(faHeartSolid, faHeartRegular);
 
 const EventsList = ({ setIsView, setEventID }) => {
 
     const [events, setEvents] = useState([]);
+    const [likes, setLikes] = useState(() => {
+        // Load likes from localStorage or initialize as empty object
+        const savedLikes = localStorage.getItem('likes');
+        return savedLikes ? JSON.parse(savedLikes) : {};
+    });
+    const [hoveredEventID, setHoveredEventID] = useState(false)
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
     const { API, setLoading } = useContext(GeneralContext);
-
-
 
     const fetchEvents = async () => {
         setLoading(true);
@@ -32,6 +40,7 @@ const EventsList = ({ setIsView, setEventID }) => {
         }
     };
 
+
     useEffect(() => {
         // Fetch events First time
         fetchEvents();
@@ -46,10 +55,48 @@ const EventsList = ({ setIsView, setEventID }) => {
     }, []);
 
 
-
     const handleEventClick = (eventID) => {
         setIsView(true);
         setEventID(eventID);
+    }
+
+    const LikeEvent = async (e, eventID) => {
+        e.stopPropagation();
+        if (!token) {
+            alert('You need to log-in or register to like events')
+        } else {
+
+            try {
+                const response = await axios.patch(`${API}/events/${eventID}`,
+                    {},
+                    {
+                        headers: {
+                            'x-auth-token': token
+                        }
+                    });
+
+                // setLikes((prevLikes) => {
+                //     const updatedLikes = {
+                //         ...prevLikes,
+                //         [eventID]: !prevLikes[eventID], // Toggle like state
+                //     };
+                //     localStorage.setItem('likes', JSON.stringify(updatedLikes));
+                //     return updatedLikes;
+                // });
+
+                // Update the events with the new likes count from the server
+                setEvents(prevEvents =>
+                    prevEvents.map(event =>
+                        event._id === eventID
+                            ? { ...event, likes: response.data.likes } // Update likes from server response
+                            : event
+                    )
+                );
+
+            } catch (error) {
+                console.error('Error liking/unliking event:', error);
+            }
+        }
     }
 
     const deleteEvent = async (e, eventID) => {
@@ -78,13 +125,14 @@ const EventsList = ({ setIsView, setEventID }) => {
     }
 
     useEffect(() => {
+        setLikes(likes);
         setEvents(events);
-    }, [events]);
+    }, [events, likes]);
 
 
     return (
         <div>
-            {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
+            {decodedToken && decodedToken.isBusiness &&
 
                 <button onClick={() => navigate('/new-event')}>
                     Add new event
@@ -97,6 +145,10 @@ const EventsList = ({ setIsView, setEventID }) => {
                     (event, index) => {
                         const eventDate = new Date(event.date);
                         const eventID = event._id;
+                        // const isLiked = likes[eventID] || false; // Check if event is already liked
+                        const isLiked = event.likes.includes(decodedToken?._id);
+
+
 
                         return (
                             <div key={index} className='event'
@@ -116,21 +168,21 @@ const EventsList = ({ setIsView, setEventID }) => {
                                 )}</p>
                                 <p>{event.time}</p>
                                 <p>{event.location}</p>
+                                <p>{event.zoomLink}</p>
+
+                                <div
+                                    onMouseEnter={() => setHoveredEventID(eventID)}
+                                    onMouseLeave={() => setHoveredEventID(null)}
+                                    onClick={(e) => LikeEvent(e, eventID)}>
+                                    {event.likes.length}{<FontAwesomeIcon
+                                        icon={(isLiked || hoveredEventID === eventID) ?
+                                            faHeartSolid : faHeartRegular} />
+                                    }
+                                </div>
 
                                 {token &&
-                                    (decodedToken.isBusiness && decodedToken._id === event.user_id) &&
-                                    <>
-                                        <button onClick={() => navigate('/edit-event', { state: { eventID } })}>
-                                            <DualIcon iconName="edit" />
-                                        </button>
-                                    </>
-                                }
-
-
-                                {token &&
-                                    ((decodedToken.isBusiness && decodedToken._id === event.user_id)
-                                        || decodedToken.isAdmin) &&
-                                    <button onClick={(e) => deleteEvent(e, eventID)}            >
+                                    decodedToken.isAdmin &&
+                                    <button onClick={(e) => deleteEvent(e, eventID)}>
                                         <DualIcon iconName="trash" />
                                     </button>
                                 }
@@ -141,7 +193,7 @@ const EventsList = ({ setIsView, setEventID }) => {
 
                 )}
             </div>
-        </div >
+        </div>
     )
 }
 

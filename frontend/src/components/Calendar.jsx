@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GeneralContext } from '../App';
+import { jwtDecode } from 'jwt-decode';
 
 
 const Calendar = ({ setIsView, setEventID }) => {
@@ -13,7 +14,8 @@ const Calendar = ({ setIsView, setEventID }) => {
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
     const { API, setLoading } = useContext(GeneralContext);
-
+    const token = localStorage.getItem('token');
+    const decodedToken = token ? jwtDecode(token) : null;
 
 
     const fetchEvents = async () => {
@@ -66,9 +68,13 @@ const Calendar = ({ setIsView, setEventID }) => {
 
     return (
         <div>
-            <button onClick={() => navigate('/new-event')}>
-                Add new event
-            </button>
+            {decodedToken && decodedToken.isBusiness &&
+
+                <button onClick={() => navigate('/new-event')}>
+                    Add new event
+                </button>
+
+            }
 
             {/* } */}
             <FullCalendar
