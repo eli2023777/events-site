@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { Event } from './events.model.mjs';
-import { isAuthenticated, isSameUser, isSameUserOrAdmin, isAdmin, isBusinessUser } from "../guard.mjs";
+import {
+    isAuthenticated, isSameUser, isSameUserOrAdmin,
+    isSameUserOrAdminForEvents, isAdmin, isBusinessUser
+} from "../guard.mjs";
 import jwt from "jsonwebtoken";
 
 
@@ -13,24 +16,13 @@ router.get('/', async (req, res) => {
 });
 
 
-// My Events (get events by user)
-// router.get('/my-events', isAuthenticated, isBusinessUser, async (req, res) => {
-//     const user = jwt.decode(req.headers['x-auth-token']);
-
-//     const events = await Event.find({ user_id: user._id });
-//     console.log(events);
-
-
-//     res.send(events);
-// });
-
 router.get('/my-events', isAuthenticated, isBusinessUser, async (req, res) => {
     const events = await Event.find({ user_id: req.user._id });
     console.log(events);
     res.send(events);
 })
 
-// Get events By Date
+// Get Events By Date
 router.get('/by-date', async (req, res) => {
     try {
         const { date } = req.query;
@@ -42,6 +34,20 @@ router.get('/by-date', async (req, res) => {
         res.send(eventsByDate);
     } catch (error) {
         return res.status(404).send('Events not found');
+    }
+});
+
+
+// Get Favourites Events
+router.get('/favourites', isAuthenticated, async (req, res) => {
+    const user = jwt.decode(req.headers['x-auth-token']);
+    try {
+        const events = await Event.find();
+        const favouritesEvents = events.filter(event => event.likes.includes(user._id));
+
+        res.send(favouritesEvents);
+    } catch (error) {
+        return res.status(404).send('Favourites Events not found');
     }
 });
 
@@ -117,11 +123,44 @@ router.put('/:id', isAuthenticated, isSameUser, isBusinessUser, async (req, res)
 });
 
 
-// Delete event
-router.delete('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
-    const event = await Event.findByIdAndDelete(req.params.id);
+// Patch event (Like/Unlike)
+router.patch('/:id', isAuthenticated, async (req, res) => {
 
+    const user = jwt.decode(req.headers['x-auth-token']);
+
+    if (!user) return res.status(401).send('Unauthorized');
+
+    const event = await Event.findById(req.params.id);
+    if (!event)
+        return res.status(404).send('Event not found');
+
+    // Check if user did like the event before, (if so - unlike the card).
+    if (event.likes.includes(user._id)) {
+        event.likes = event.likes.filter(like => like.toString() !== user._id.toString()); // Unlike
+
+    } else {
+        event.likes.push(user._id); // Like
+    }
+
+    await event.save();
     res.send(event);
+});
+
+
+// Delete event
+router.delete('/:id', isAuthenticated, isSameUserOrAdminForEvents, async (req, res) => {
+    try {
+        const event = await Event.findByIdAndDelete(req.params.id);
+
+        if (!event) {
+            return res.status(404).send('Event not found');
+        }
+
+        res.send(event);
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+
 });
 
 

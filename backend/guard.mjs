@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { Event } from './events/events.model.mjs';
 
 dotenv.config();
 
@@ -11,7 +12,6 @@ export const JWT_SECRET = process.env.JWT_SECRET;
 export const isAuthenticated = (req, res, next) => {
 
     const token = req.headers['x-auth-token'];
-    console.log('Received token:', token);
 
     if (!token) {
         return res.status(401).send('No token provided');
@@ -41,10 +41,31 @@ export const isSameUser = (req, res, next) => {
 
 
 export const isSameUserOrAdmin = (req, res, next) => {
-    if (req.user._id === req.params.id || req.user.isAdmin) {
+    if (req.user._id === req.params.id || req.user._id === req.params.id || req.user.isAdmin) {
         return next();
     } else {
         return res.status(403).send('Access denied');
+    }
+};
+
+
+export const isSameUserOrAdminForEvents = async (req, res, next) => {
+    console.log(req.params.id);
+
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            return res.status(404).send('Event not found');
+        }
+
+        if (req.user.isAdmin || event.user_id.toString() === req.user._id.toString()) {
+            return next();
+        }
+
+        return res.status(403).send('Access denied');
+    } catch (error) {
+        return res.status(500).send('Internal Server Error');
     }
 };
 
