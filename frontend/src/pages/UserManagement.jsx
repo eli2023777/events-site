@@ -150,9 +150,9 @@ const UserManagement = () => {
 
                                                         <button className="btn btn-success btn-sm"
                                                             onClick={() => {
-                                                                const id = user._id;
+                                                                // const id = user._id;
                                                                 navigate('/edit-user',
-                                                                    { state: { id } })
+                                                                    { state: { user } })
                                                             }}
 
                                                         >
@@ -169,68 +169,7 @@ const UserManagement = () => {
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                {/* 
-                                                {editingUserId === user.id && (
-                                                    <tr>
-                                                        <td colSpan="6">
-                                                            <div className='text-white'>
-                                                                <h3>עריכת משתמש</h3>
-                                                                <form>
-                                                                    <div className="form-group">
-                                                                        <label htmlFor="name">שם:</label>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="name"
-                                                                            name="name"
-                                                                            value={editedUser.name}
-                                                                            onChange={handleInputChange}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="form-group">
-                                                                        <label htmlFor="role">תפקיד:</label>
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            id="role"
-                                                                            name="role"
-                                                                            value={editedUser.role}
-                                                                            onChange={handleInputChange}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="form-group">
-                                                                        <label htmlFor="email">מייל:</label>
-                                                                        <input
-                                                                            type="email"
-                                                                            className="form-control"
-                                                                            id="email"
-                                                                            name="email"
-                                                                            value={editedUser.email}
-                                                                            onChange={handleInputChange}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="form-group">
-                                                                        <label htmlFor="password">סיסמא:</label>
-                                                                        <input
-                                                                            type="password"
-                                                                            className="form-control"
-                                                                            id="password"
-                                                                            name="password"
-                                                                            value={editedUser.password}
-                                                                            onChange={handleInputChange}
-                                                                        />
-                                                                    </div>
-                                                                    <button type="button" className="btn btn-success" style={{ marginLeft: '30px' }} onClick={handleSaveEdit}>
-                                                                        שמור שינויים
-                                                                    </button>
-                                                                    <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>
-                                                                        ביטול
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                )} */}
+
                                             </React.Fragment>
                                         ))}
                                     </tbody>
@@ -240,35 +179,7 @@ const UserManagement = () => {
 
 
 
-                            {/* <div className='text-end' style={{ marginBottom: '30px' }}>
-                                <button className="btn btn-primary btn-lg text-dark"
-                                //  onClick={handleAddUserClick}
-                                >
-                                    הוסף משתמש
-                                </button>
-                            </div> */}
 
-
-                            {/* {users.map(
-                                user => (
-                                    <div key={user._id}>
-                                        <h3>{user.name.first} {user.name.last}</h3>
-                                        <p>{user.email}</p>
-                                        {user.isAdmin && (
-                                            <button onClick={() => handleAdminToggle(user._id)}>Toggle Admin</button>
-                                        )} */}
-                            {/* {!user.isAdmin && (
-                            <button onClick={() => handleAdminToggle(user._id)}>Make Admin</button>
-                        )} */}
-                            {/* {user.isBusiness && (
-                                            <button onClick={() => handleBusinessToggle(user._id)}>Toggle Business</button>
-                                        )} */}
-                            {/* {!user.isBusiness && (
-                            <button onClick={() => handleBusinessToggle(user._id)}>Make Business</button>
-                        )} */}
-                            {/* </div> */}
-                            {/* ) */}
-                            {/* )} */}
                         </div>
                     </div>
                 </section>
@@ -282,191 +193,5 @@ const UserManagement = () => {
 export default UserManagement
 
 
-
-
-
-{/* 
-                    <header id="allUsers" className="masthead">
-                        <section className="d-flex align-items-center">
-                            <div className="container position-relative">
-                                <h1>כל המשתמשים</h1>
-                                <div className='frame'>
-
-                                    <div className='text-end' style={{ marginBottom: '30px' }}>
-                                        <button className="btn btn-primary btn-lg text-dark" onClick={handleAddUserClick}>
-                                            הוסף משתמש
-                                        </button>
-                                    </div>
-
-                                    {showAddUserForm && (
-                                        <div className='text-white mb-5'>
-                                            <h3>הוסף משתמש חדש</h3>
-                                            <form>
-                                                <div className="form-group">
-                                                    <label htmlFor="newName">שם:</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="newName"
-                                                        name="name"
-                                                        value={newUser.name}
-                                                        onChange={handleInputChangeNewUser}
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="newRole">תפקיד</label>
-                                                    <select
-                                                        className="form-control"
-                                                        id="newRole"
-                                                        name="role"
-                                                        value={newUser.role}
-                                                        onChange={handleInputChangeNewUser}
-                                                        required
-                                                    >
-                                                        <option value="">בחר תפקיד</option>
-                                                        <option value="user">משתמש רגיל</option>
-                                                        <option value="admin">מנהל</option>
-                                                    </select>
-                                                </div>
-
-                                                <div className="form-group">
-                                                    <label htmlFor="newEmail">מייל</label>
-                                                    <input
-                                                        type="email"
-                                                        className="form-control"
-                                                        id="newEmail"
-                                                        name="email"
-                                                        value={newUser.email}
-                                                        onChange={handleInputChangeNewUser}
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="newPassword">סיסמא</label>
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="newPassword"
-                                                        name="password"
-                                                        value={newUser.password}
-                                                        onChange={handleInputChangeNewUser}
-                                                    />
-                                                </div>
-                                                <button type="button" className="btn btn-success" style={{ marginLeft: '30px' }} onClick={handleSaveNewUser}>
-                                                    שמור משתמש חדש
-                                                </button>
-                                                <button type="button" className="btn btn-secondary" onClick={handleCancelAdd}>
-                                                    ביטול
-                                                </button>
-                                            </form>
-                                        </div>
-                                    )}
-
-                                    <div>
-                                        <table className="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th className='text-white'>שם</th>
-                                                    <th className='text-white'>תפקיד</th>
-                                                    <th className='text-white'>מייל</th>
-                                                    <th className='text-white'>סיסמא</th>
-                                                    <th className='text-white'>עריכת משתמש</th>
-                                                    <th className='text-white'>מחיקת משתמש</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {users.map((user) => (
-                                                    <React.Fragment key={user.id}>
-                                                        <tr>
-                                                            <td className='text-white'>{user.name}</td>
-                                                            <td className='text-white'>{user.role}</td>
-                                                            <td className='text-white'>{user.email}</td>
-                                                            <td className='text-white'>{user.password}</td>
-                                                            <td className='text-white'>
-                                                                <button className="btn btn-success btn-sm" onClick={() => handleEditClick(user)}>
-                                                                    ערוך
-                                                                </button>
-                                                            </td>
-                                                            <td className='text-white'>
-                                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>
-                                                                    מחק
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-
-                                                        {editingUserId === user.id && (
-                                                            <tr>
-                                                                <td colSpan="6">
-                                                                    <div className='text-white'>
-                                                                        <h3>עריכת משתמש</h3>
-                                                                        <form>
-                                                                            <div className="form-group">
-                                                                                <label htmlFor="name">שם:</label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control"
-                                                                                    id="name"
-                                                                                    name="name"
-                                                                                    value={editedUser.name}
-                                                                                    onChange={handleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="form-group">
-                                                                                <label htmlFor="role">תפקיד:</label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control"
-                                                                                    id="role"
-                                                                                    name="role"
-                                                                                    value={editedUser.role}
-                                                                                    onChange={handleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="form-group">
-                                                                                <label htmlFor="email">מייל:</label>
-                                                                                <input
-                                                                                    type="email"
-                                                                                    className="form-control"
-                                                                                    id="email"
-                                                                                    name="email"
-                                                                                    value={editedUser.email}
-                                                                                    onChange={handleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="form-group">
-                                                                                <label htmlFor="password">סיסמא:</label>
-                                                                                <input
-                                                                                    type="password"
-                                                                                    className="form-control"
-                                                                                    id="password"
-                                                                                    name="password"
-                                                                                    value={editedUser.password}
-                                                                                    onChange={handleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <button type="button" className="btn btn-success" style={{ marginLeft: '30px' }} onClick={handleSaveEdit}>
-                                                                                שמור שינויים
-                                                                            </button>
-                                                                            <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>
-                                                                                ביטול
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        )}
-                                                    </React.Fragment>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </section>
-                    </header>
-
-
-                    )
-} */}
 
 

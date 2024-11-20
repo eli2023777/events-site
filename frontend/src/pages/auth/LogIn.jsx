@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import User from '../../models/User';
 import { Form, Button, Container } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../../App';
 import useAPI from '../../hooks/useAPI';
@@ -11,8 +10,8 @@ import { METHOD } from '../../hooks/useAPI';
 const LogIn = () => {
     const [user, setUser] = useState(new User());
     const [errors, setErrors] = useState(null);
-    const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
+    const [isSuccess, setIsSuccess] = useState();
     const navigate = useNavigate();
     const { setLoading, token, setToken } = useContext(GeneralContext);
     const isDark = localStorage.getItem('isDark');
@@ -33,6 +32,10 @@ const LogIn = () => {
         setUser(currUser);
         if (validateUser())
             callAPI(METHOD.LOG_IN, 'login', user);
+        else {
+            setIsSuccess(false);
+            setMesssage('Email or password is incorrect.Please try again.')
+        }
     };
 
 
@@ -88,6 +91,7 @@ const LogIn = () => {
             setToken(localStorage.getItem('token'));
 
             saveToken();
+            setIsSuccess(true)
             setMesssage('You have logged in successfully!');
         }
     }, [data]);
@@ -122,11 +126,8 @@ const LogIn = () => {
                     Submit
                 </Button>
 
-                {APIError &&
-                    <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
-                }
 
-                <div style={{ color: 'green' }}>{message}</div>
+                <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
 
                 <br />
                 <br />

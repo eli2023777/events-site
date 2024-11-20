@@ -16,6 +16,7 @@ const LogInC = () => {
     const navigate = useNavigate();
     const { setLoginC, setLoading, token, setToken } = useContext(GeneralContext);
     const [error, callAPI, payload, data] = useAPI();
+    const [isSuccess, setIsSuccess] = useState();
 
 
     const handleChange = (e) => {
@@ -32,6 +33,10 @@ const LogInC = () => {
         setUser(currUser);
         if (validateUser())
             callAPI(METHOD.LOG_IN, 'login', user);
+        else {
+            setIsSuccess(false);
+            setMesssage('Email or password is incorrect.Please try again.')
+        }
     };
 
 
@@ -87,6 +92,7 @@ const LogInC = () => {
             setToken(localStorage.getItem('token'));
 
             saveToken();
+            setIsSuccess(true)
             setMesssage('You have logged in successfully!');
             setLoginC(false);
 
@@ -143,7 +149,7 @@ const LogInC = () => {
                         <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
                     }
 
-                    <div style={{ color: 'green' }}>{message}</div>
+                    <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
 
 
                 </div>

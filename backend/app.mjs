@@ -15,10 +15,6 @@ import eventRoutes from './events/events.routes.mjs';
 import userRoutes from './users/users.routes.mjs';
 import loginRoutes from './users/login.routes.mjs';
 
-// -- For production/Development definitions --
-// dotenv.config();
-// const isProduction = process.env.NODE_ENV === 'production';
-// const port = process.env.PORT || 3000;
 
 
 // Create initial Users
@@ -104,35 +100,49 @@ const createInitialUsers = async () => {
 
 // Create initial Events
 const createInitialEvents = async () => {
-    // const businessUser = await User.findOne({ email: 'business@10.com' });
-    // if (businessUser) {
+
 
 
     const event1 = new Event({
-        title: 'Event 1',
-        date: new Date('2024-10-15'),
-        time: '10:30',
-        zoomLink: ''
+        title: 'Tech Innovators Conference 2024',
+
+        date: new Date('2024-11-20'),
+        time: '09:30',
+        location: 'Silicon Valley Convention Center',
+        description: `Explore the latest advancements in technology with industry leaders and innovators. Keynote speakers include top CEOs and tech pioneers.`,
+        image: {
+            url: '',
+            alt: '',
+        },
     });
+
     await event1.save();
 
     const event2 = new Event({
-        title: 'Event 2',
+        title: 'Summer Beach Party 2024',
 
-        // date: (Check out how to write a date),
-
-        time: '15:00',
-        zoomLink: ''
+        date: new Date('2024-12-05'),
+        time: '16:00',
+        location: 'Miami Beach, Florida',
+        description: `Celebrate the summer with good vibes, live DJ music, and refreshing cocktails. Don't forget your swimsuit!`,
+        image: {
+            url: '',
+            alt: '',
+        },
     });
     await event2.save();
 
     const event3 = new Event({
-        title: 'Event 3',
+        title: 'Annual Soccer Tournament',
 
-        // date: (Check out how to write a date),
-
-        time: '21:00',
-        zoomLink: ''
+        date: new Date('2024-10-22'),
+        time: '10:00',
+        location: 'National Stadium, Los Angeles',
+        description: `Watch your favorite teams compete in this exciting annual soccer tournament. Cheer for the players and experience the thrill of the game!`,
+        image: {
+            url: '',
+            alt: '',
+        },
     });
     await event3.save();
 

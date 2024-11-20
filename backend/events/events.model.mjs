@@ -1,17 +1,16 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const eventSchema = new mongoose.Schema({
     title: String,
     date: Date,
     time: String,
-    // participants: [{ name: String, email: String }],
     location: String,
+    description: String,
     image: {
         url: String,
         alt: String,
     },
 
-    // eventType: { type: String, enum: ['party', 'conference'] },
     user_id: {
         type: Schema.Types.ObjectId,
         ref: 'User',

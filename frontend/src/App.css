@@ -24,8 +24,7 @@ button {
 /* General styling */
 .lightFrame {
   font-size: 1.2rem;
-  background-color: #ffffffb1;
-  /* background-color: #2be406a2; */
+  background-color: #ffffffd0;
   padding: 50px;
   border-radius: 50px;
   border: #999 solid 1px;
@@ -35,8 +34,7 @@ button {
 
 .darkFrame {
   font-size: 1.2rem;
-  /* background-color: #ee0707a0; */
-  background-color: #1d1d1da0;
+  background-color: #ffffffc7;
   padding: 50px;
   border-radius: 50px;
   border: #999 solid 1px;
@@ -68,12 +66,6 @@ button {
   border-radius: 20px;
   box-shadow: '0 10px 10px 10px';
 }
-
-/* .event {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
 
 
 .grid {

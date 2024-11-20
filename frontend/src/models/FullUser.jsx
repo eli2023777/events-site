@@ -77,18 +77,10 @@ class FullUser {
 
 
         // Validate Image-url field
-        if (!isEditUser && !this.url) {
-            formErrors['url'] = "'Image-url' field must not be empty."
-        } else if (this.url && !urlReg.test(this.url)) {
+
+        if (this.url && !urlReg.test(this.url)) {
             formErrors['url'] = "Image-url must be at lest 14 characters."
         }
-
-        // Validate Image-alt field
-        // if (!isEditUser && !this.alt) {
-        //     formErrors['alt'] = "'Image-alt' field must not be empty."
-        // } else if (this.alt && !stringReg.test(this.alt)) {
-        //     formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
-        // }
 
         // Validate State field
         if (!isEditUser && !this.state) {

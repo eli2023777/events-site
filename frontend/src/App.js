@@ -19,8 +19,14 @@ import Loader from './components/Loader.jsx';
 import LogInC from './components/LogInC.jsx';
 import Favourites from './pages/Favourites.jsx';
 import Footer from './components/Footer.jsx';
+import About from './pages/About.jsx';
 
 
+/*!
+ * Events-Site Project
+ * Copyright (c) 2024 Eli eli770440@gmail.com.com
+ * Licensed under the MIT License
+ */
 
 // Create context
 export const GeneralContext = createContext();
@@ -108,6 +114,7 @@ function App() {
           {/* Routes definition */}
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/new-event" element={<NewEvent />} />
             <Route path="/view-event" element={<ViewEvent />} />
             <Route path="/view-date" element={<ViewDate />} />

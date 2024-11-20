@@ -68,7 +68,7 @@ router.get('/:id', async (req, res) => {
 
 // Add new event
 router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
-    const { title, date, time, location, image } = req.body;
+    const { title, date, time, location, description, image } = req.body;
 
     const existingEvent = await Event.findOne({ title });
     if (existingEvent) {
@@ -86,6 +86,7 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
         date: date,
         time: time,
         location: location,
+        description: description,
         image: {
             url: image.url,
             alt: image.alt,
@@ -106,7 +107,7 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
 
 // Edit event
 router.put('/:id', isAuthenticated, isSameUserForEvents, isBusinessUser, async (req, res) => {
-    const { title, date, time, location, image } = req.body;
+    const { title, date, time, location, description, image } = req.body;
 
     const event = await Event.findById(req.params.id);
     if (!event)
@@ -116,6 +117,7 @@ router.put('/:id', isAuthenticated, isSameUserForEvents, isBusinessUser, async (
     event.date = date || event.date;
     event.time = time || event.time;
     event.location = location || event.location;
+    event.description = description || event.description;
     event.image.url = image.url || event.image.url;
 
     await event.save();

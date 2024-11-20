@@ -35,7 +35,7 @@ const EditUser = () => {
         if (token) {
             // 'location.state.id' = From User Managment page(from Admin),
             // OR 'userID' from Regular user.
-            callAPI(METHOD.GET_ONE, 'users', location.state ? location.state.id : userID);
+            callAPI(METHOD.GET_ONE, 'users', location.state ? location.state._id : userID);
         }
 
     }, []);
@@ -100,7 +100,7 @@ const EditUser = () => {
     const updateUser = async () => {
 
         try {
-            callAPI(METHOD.UPDATE, 'users', location.state ? location.state : user._id);
+            callAPI(METHOD.UPDATE, 'users', location.state ? location.state : user);
 
             if (data) {
                 setMesssage('Uesr updated successfully!');
@@ -178,13 +178,6 @@ const EditUser = () => {
 
                     </Form.Group>
 
-                    {/* 
-                    <Form.Group className="mb-3" controlId="formBasicPhone">
-                        <Form.Label>New Password</Form.Label>
-                        <Form.Control type="password" name="password" placeholder={user?.password} onChange={handleChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['password']}</div>
-
-                    </Form.Group> */}
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Image URL</Form.Label>
@@ -196,7 +189,6 @@ const EditUser = () => {
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Image ALT</Form.Label>
                         <Form.Control type="text" name="image.alt" placeholder={user.image?.alt} onChange={handleChange} />
-                        <div style={{ color: 'red' }}>{errors && errors['alt']}</div>
 
                     </Form.Group>
 
@@ -259,7 +251,6 @@ const EditUser = () => {
                 </Form>
                 <br />
                 <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
-
                 <br />
                 <br />
                 <br />

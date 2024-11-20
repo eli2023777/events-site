@@ -34,6 +34,7 @@ const useAPI = () => {
                 date: payload.date,
                 time: payload.time,
                 location: payload.location,
+                description: payload.description,
                 image: {
                     url: payload.url,
                     alt: payload.title,

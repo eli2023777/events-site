@@ -163,6 +163,8 @@ const ViewEvent = () => {
 
                             </div>
 
+                            <div>{event.description}</div>
+
                         </>
                     )
                 }

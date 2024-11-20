@@ -7,6 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 
+/*!
+ * Events-Site Project
+ * Copyright (c) 2024 Eli eli770440@gmail.com.com
+ * Licensed under the MIT License
+ */
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

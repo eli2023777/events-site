@@ -11,14 +11,14 @@ import useAPI from '../hooks/useAPI';
 import { DualIcon } from '../helpers/DualIcon';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import{
+import {
     faCalendarAlt,
-faUser,
-faUserTie,
-faKey
+    faUser,
+    faUserTie,
+    faKey
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCalendarAlt,faUser, faUserTie, faKey);
+library.add(faCalendarAlt, faUser, faUserTie, faKey);
 
 
 const NavbarC = () => {
@@ -29,11 +29,11 @@ const NavbarC = () => {
     const [searchValue, setSearchValue] = useState(''); // for search value
     const [results, setResults] = useState([]);
     // const [] = useContext(localStorage.getItem('token'));
-    const {setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
+    const { setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
     const [user, setUser] = useState({});
     // const [isDark, setIsDark] = useState(localStorage.getItem('isDark') || false);
     const [error, callAPI, payload, data] = useAPI();
-    
+
     const [routes, setRoutes] = useState('users');
 
 
@@ -84,17 +84,17 @@ const NavbarC = () => {
                 // event?.title?.toLowerCase() === searchValue.toLowerCase()
             );
             setResults(filteredResults);
-            
+
             navigate('/results', { state: { results: filteredResults } });
         }
 
 
     }, [data, routes, searchValue]);
 
-    useEffect(()=>{
+    useEffect(() => {
         if (data && routes === 'users')  // 2. GET ONE case - fetch user.
-        setUser(data);
-    },[data])
+            setUser(data);
+    }, [data])
 
 
 
@@ -121,13 +121,13 @@ const NavbarC = () => {
 
 
             {['md'].map((expand) => (
-                <Navbar key={expand} expand={expand} className="mb-3 header" 
+                <Navbar key={expand} expand={expand} className="mb-3 header"
                     bg={isDark ? "dark" : 'light'} variant={isDark ? "dark" : 'light'}  >
                     <Container fluid>
-                        
+
                         <Navbar.Brand href="/" className="me-auto">
                             <FontAwesomeIcon icon={faCalendarAlt} size="2x" className="me-2 text-warning" />
-</Navbar.Brand>
+                        </Navbar.Brand>
 
                         <Navbar.Toggle aria-controls={`offcanvasNavbar - expand - ${expand}`} />
                         <Navbar.Offcanvas
@@ -161,7 +161,7 @@ const NavbarC = () => {
                                     />
                                     {/* <Button variant="outline-success">Search</Button> */}
                                 </Form>
-                                <Nav className="justify-content-end flex-grow-1 pe-3">
+                                <Nav className="mx-auto d-flex align-items-center">
 
                                     {token &&
                                         < Nav.Link href="/favourites">Favourites</Nav.Link>
@@ -170,7 +170,7 @@ const NavbarC = () => {
                                     {/*  User Management - Only for Admin */}
                                     {token &&
                                         user.isAdmin &&
-                                  
+
                                         < Nav.Link href="/user-management">User Management</Nav.Link>
                                     }
 
@@ -184,29 +184,29 @@ const NavbarC = () => {
 
                                 </Nav>
 
-                       
+
 
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Button variant={isDark ? 'light' : ''}   
-                                        className='darkIcon'  
-                                    onClick={() =>
-                                        setIsDark(isDark ? false : true)} >
-                                            
-                                        {isDark ? 
+                                    <Button variant={isDark ? 'light' : ''}
+                                        className='darkIcon'
+                                        onClick={() =>
+                                            setIsDark(isDark ? false : true)} >
+
+                                        {isDark ?
                                             <DualIcon iconName="sun" />
-                                         : 
+                                            :
                                             <DualIcon iconName="moon" />
-                                    }
-                                    
+                                        }
+
                                     </Button>
                                 </Nav>
 
 
 
                                 {/* Register and Log-in */}
-                                    {!token && (
-                                        <>
-                                        <Nav className="justify-content-end flex-grow-1 pe-3">
+                                {!token && (
+                                    <>
+                                        <Nav className="mx-auto d-flex align-items-center">
                                             <Nav.Item>
                                                 <Nav.Link as={Link} to="/register">
                                                     Register
@@ -219,13 +219,13 @@ const NavbarC = () => {
                                             </Nav.Item>
                                         </Nav>
                                     </>
-                                    )}
+                                )}
 
                                 {/* Log out */}
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
 
                                     {token && (
-                                        <Button variant={isDark ? 'light' : ''} 
+                                        <Button variant={isDark ? 'light' : ''}
                                             onClick={() => {
                                                 localStorage.removeItem('token');
                                                 setToken(null);
@@ -236,11 +236,11 @@ const NavbarC = () => {
                                     )}
 
                                     {token &&
-                                        <Nav  className="justify-content-end flex-grow-1 pe-3">
+                                        <Nav className="mx-auto d-flex align-items-center">
                                             <span className="navbar-text">
                                                 Welcome back <br /> {user.name?.first} {user.name?.last}
                                             </span>
-                                                                                    </Nav>
+                                        </Nav>
                                     }
 
                                     {token &&
@@ -248,41 +248,27 @@ const NavbarC = () => {
                                         <NavDropdown title={
                                             // Check if there is a image url,
                                             // if not - put default image by role
-                                            
-                                                user.image?.url ? (
-                                                    <img
-                                                        className="profileImg"
-                                                        src={user.image.url}
-                                                        alt={user.image.alt}
-                                                    />
-                                                ) : (
-                                                    <FontAwesomeIcon
-                                                        icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
-                                                        size="3x" 
-                                                        className="profileIcon" 
-                                                    />
-                                                )
-                                            
+
+                                            user.image?.url ? (
+                                                <img
+                                                    className="profileImg"
+                                                    src={user.image.url}
+                                                    alt={user.image.alt}
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
+                                                    size="3x"
+                                                    className="profileIcon"
+                                                />
+                                            )
 
 
-                                            // <img className='profileImg'
-                                            //     src={user.image?.url || <FontAwesomeIcon icon={faUser} size="1x" />
-                                                    
-                                            //         // `/images/${user.isAdmin ? (isDark ? 'darkAdmin' : 'admin')
-                                            //         // : user.isBusiness ? (isDark ? 'darkBusiness' :'business') 
-                                            //         //     : (isDark ? 'darkUser' :'user')}.png`
-                                            //         }
-
-                                            //     alt={user.image?.alt ||
-                                            //          (user.isAdmin ? 'admin' :
-                                            //         user.isBusiness ? 'business' : 'user'
-                                            //     )} 
-                                                
-                                            // />
                                         }
                                             id="navbarScrollingDropdown"
                                             // Addinng a class for CSS to delete the arrow icon
-                                            className="no-arrow-dropdown"
+                                            className="no-arrow-dropdown mx-auto d-flex align-items-center"
+                                            align="end"
                                         >
                                             <NavDropdown.Item href="/edit-user">
                                                 Edit prophile
@@ -294,14 +280,6 @@ const NavbarC = () => {
                                                 rel="noopener noreferrer"
                                             >
                                                 View image prophile                                                    </NavDropdown.Item>
-                                            {/* <NavDropdown.Divider /> */}
-                                            {/* <NavDropdown.Item
-                                                href={user.image?.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Log Out
-                                            </NavDropdown.Item> */}
 
                                         </NavDropdown>
                                     }
@@ -319,61 +297,3 @@ const NavbarC = () => {
 }
 
 export default NavbarC
-
-
-
-// For Search bar when using Enter key
-// const handleEnterSearch = (e) => {
-//     if (e.key === 'Enter') {
-//         e.preventDefault();
-//         window.location.href = '/results';
-//         setSearchValue(e.target.value);
-//     }
-// };
-
-
-
-
-// -- FETCH USER --
-
-// try {
-//     const res = await axios.get(`${API}/users/${userID}`,
-//         {
-//             headers: {
-//                 'x-auth-token': token
-//             }
-//         }
-//     );
-
-// } catch (e) {
-//     console.log(e);
-// } finally {
-//     setLoading(false);
-// }
-
-
-
-    // useEffect(() => {
-
-
-    //     if (data && Array.isArray(data)) { 
-    //         console.log(data);
-
-    //         const dataResult = data.filter((event) => {
-
-    //             event?.title?.toLowerCase().includes(searchValue.toLowerCase());
-
-    //             // return (
-    //             //     value &&
-    //             //     event &&
-    //             // event.title?.toLowerCase().includes(value))
-    //         });
-
-    //         setResults(dataResult);
-    //         navigate('/results', { state: { results: dataResult } });
-
-    //     } else if (token && data && !Array.isArray(data)) {  
-    //         setUser(data);
-    //     }
-
-    // }, [token, data, searchValue]);

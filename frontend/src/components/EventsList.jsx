@@ -34,7 +34,7 @@ const EventsList = ({ setIsView, setEventID }) => {
 
             if (Array.isArray(apiData)) {// 1. Check if data is array of events - GET events case.
                 setEvents(apiData);
-            } else if (decodedToken.isAdmin && !isPatch) { // 2. DELETE event case.
+            } else if (decodedToken?.isAdmin && !isPatch) { // 2. DELETE event case.
                 alert('Event succesfully deleted')
                 setEvents(prevEvents => prevEvents.filter(event => event._id !== payload));
             }
