@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -101,52 +100,74 @@ const createInitialUsers = async () => {
 // Create initial Events
 const createInitialEvents = async () => {
 
+    const event1_title = 'Tech Innovators Conference 2024';
+    const event2_title = 'Summer Beach Party 2024';
+    const event3_title = 'Annual Soccer Tournament';
+
+    const existingEvent1 = await Event.findOne({ title: event1_title });
+    const existingEvent2 = await Event.findOne({ title: event2_title });
+    const existingEvent3 = await Event.findOne({ title: event3_title });
+
+    if (!existingEvent1) {
+
+        const event1 = new Event({
+            title: event1_title,
+
+            date: new Date('2024-11-20'),
+            time: '09:30',
+            location: 'Silicon Valley Convention Center',
+            description: `Explore the latest advancements in technology with industry leaders and innovators. Keynote speakers include top CEOs and tech pioneers.`,
+            image: {
+                url: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                alt: 'Tech Innovators Conference 2024',
+            },
+        });
+
+        await event1.save();
+
+        console.log('Event 1 created successfully.');
 
 
-    const event1 = new Event({
-        title: 'Tech Innovators Conference 2024',
+    }
 
-        date: new Date('2024-11-20'),
-        time: '09:30',
-        location: 'Silicon Valley Convention Center',
-        description: `Explore the latest advancements in technology with industry leaders and innovators. Keynote speakers include top CEOs and tech pioneers.`,
-        image: {
-            url: '',
-            alt: '',
-        },
-    });
 
-    await event1.save();
+    if (!existingEvent2) {
 
-    const event2 = new Event({
-        title: 'Summer Beach Party 2024',
+        const event2 = new Event({
+            title: event2_title,
 
-        date: new Date('2024-12-05'),
-        time: '16:00',
-        location: 'Miami Beach, Florida',
-        description: `Celebrate the summer with good vibes, live DJ music, and refreshing cocktails. Don't forget your swimsuit!`,
-        image: {
-            url: '',
-            alt: '',
-        },
-    });
-    await event2.save();
+            date: new Date('2024-12-05'),
+            time: '16:00',
+            location: 'Miami Beach, Florida',
+            description: `Celebrate the summer with good vibes, live DJ music, and refreshing cocktails. Don't forget your swimsuit!`,
+            image: {
+                url: 'https://images.pexels.com/photos/1387037/pexels-photo-1387037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                alt: 'Summer Beach Party 2024',
+            },
+        });
+        await event2.save();
+        console.log('Event 2 created successfully.');
 
-    const event3 = new Event({
-        title: 'Annual Soccer Tournament',
+    }
 
-        date: new Date('2024-10-22'),
-        time: '10:00',
-        location: 'National Stadium, Los Angeles',
-        description: `Watch your favorite teams compete in this exciting annual soccer tournament. Cheer for the players and experience the thrill of the game!`,
-        image: {
-            url: '',
-            alt: '',
-        },
-    });
-    await event3.save();
+    if (!existingEvent3) {
 
-    console.log('Events created successfully.');
+        const event3 = new Event({
+            title: event3_title,
+
+            date: new Date('2024-10-22'),
+            time: '10:00',
+            location: 'National Stadium, Los Angeles',
+            description: `Watch your favorite teams compete in this exciting annual soccer tournament. Cheer for the players and experience the thrill of the game!`,
+            image: {
+                url: 'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600',
+                alt: 'Annual Soccer Tournament',
+            },
+        });
+        await event3.save();
+
+        console.log('Event 3 created successfully.');
+    }
 
 };
 
@@ -159,7 +180,7 @@ const main = async () => {
             .catch(err => console.error('Error connecting to MongoDB', err));
 
         await createInitialUsers();
-        // await createInitialEvents();
+        await createInitialEvents();
 
 
     } catch (error) {
