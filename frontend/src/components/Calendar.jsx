@@ -4,59 +4,56 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { GeneralContext } from '../App';
 import { jwtDecode } from 'jwt-decode';
+import { METHOD } from '../hooks/useAPI';
+import useAPI from '../hooks/useAPI';
 
 
-const Calendar = ({ setIsView, setEventID }) => {
 
-    const [events, setEvents] = useState([]);
+const Calendar = ({ events, setEvents, setIsView, setEventID }) => {
+
     const navigate = useNavigate();
-    const { API, setLoading } = useContext(GeneralContext);
+    const { apiData, setApiData, setLoading } = useContext(GeneralContext);
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
+    const [calendarEvents, setCalendarEvents] = useState()
+
+    const [error, callAPI] = useAPI();
 
 
-    const fetchEvents = async () => {
-        setLoading(true);
+    useEffect(() => {
 
-        try {
-            const response = await axios.get(`${API}/events`);
+        callAPI(METHOD.GET_ALL, 'events');
+    }, []);
 
-            const formattedEvents = response.data.map(event => ({
+
+    useEffect(() => {
+        if (apiData && Array.isArray(apiData)) {
+
+            setEvents(apiData);
+
+            const formattedEvents = apiData.map(event => ({
                 id: event._id,
                 title: event.title,
                 start: event.date,
                 time: event.time,
-                zoomLink: event.zoomLink,
+                location: event.location,
             }));
+            setCalendarEvents(formattedEvents);
 
-            setEvents(formattedEvents);
-
-
-        } catch (error) {
-            console.log('Error fetching Events:', error);
-        } finally {
-            setLoading(false);
+            // Reset apiData
+            setApiData(null);
         }
-    };
 
-    useEffect(() => {
-        fetchEvents();
-    }, []);
+    }, [apiData]);
+
 
 
     const handleEventClick = (info) => {
+        console.log(info.event);
         setIsView(true);
         setEventID(info.event.id.toString());
-
-
-        // פונקציה להוספת אירוע חדש על בסיס לחיצה על תאריך ביומן
-        // const title = prompt('Enter event title:');
-        // if (title) {
-        //     setEvents([...events, { title, date: info.dateStr }]);
-        // }
     };
 
     const handleDateClick = (info) => {
@@ -68,19 +65,12 @@ const Calendar = ({ setIsView, setEventID }) => {
 
     return (
         <div>
-            {decodedToken && decodedToken.isBusiness &&
 
-                <button onClick={() => navigate('/new-event')}>
-                    Add new event
-                </button>
 
-            }
-
-            {/* } */}
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
-                events={events}
+                events={calendarEvents}
                 eventClick={handleEventClick}
                 dateClick={handleDateClick}
             />

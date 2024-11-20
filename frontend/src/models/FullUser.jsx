@@ -30,35 +30,38 @@ class FullUser {
         this.zip = zip;
     }
 
-    validate = () => {
+    validate = (isEditUser) => {
         const formErrors = {};
         const stringReg = /^.{2,256}$/;
         const numReg = /^\d+$/;
-        const nameReg = /^[a-zA-Z0-9]{2,20}$/;
+        const nameReg = /^.{2,20}$/;
         const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,20}$/;
 
         const urlReg = /^[\s\S]{14,}$/;
         const phoneReg = /^0([2345789])(-?\d){8,10}$/;;
 
+        // For Edit user case:
+        // 1. Check if the feild is empty just when it is NOT for Edit User.
+        // 2. check regex just if is not empty.
 
         // Validate firstName field
-        if (!this.first) {
+        if (!isEditUser && !this.first) {
             formErrors['first'] = "First Name field must not be empty."
-        } else if (!nameReg.test(this.first)) {
+        } else if (this.first && !nameReg.test(this.first)) {
             formErrors['first'] = "First Name must be from 2 to 256 characters."
         }
 
         // Validate lastName field
-        if (!this.last) {
+        if (!isEditUser && !this.last) {
             formErrors['last'] = "Last Name field must not be empty."
-        } else if (!nameReg.test(this.last)) {
+        } else if (this.last && !nameReg.test(this.last)) {
             formErrors['last'] = "Last Name must be from 2 to 256 characters."
         }
 
         // Validate phone field
-        if (!this.phone) {
+        if (!isEditUser && !this.phone) {
             formErrors['phone'] = "Phone field must not be empty."
-        } else if (!phoneReg.test(this.phone)) {
+        } else if (this.phone && !phoneReg.test(this.phone)) {
             formErrors['phone'] = "Phone must be a valid Israeli phone number ."
         }
 
@@ -66,66 +69,66 @@ class FullUser {
         // NO NEED for Email Validate, bec. there is a bootstrap validate on that.
 
 
-        if (!this.password) {
-            formErrors['password'] = "'Password' field must not be empty."
-        } else if (!passwordRegExp.test(this.password)) {
+        if (!isEditUser && !this.password) {
+            formErrors['password'] = "Password field must not be empty."
+        } else if (this.password && !passwordRegExp.test(this.password)) {
             formErrors['password'] = "Password must contain at least 7 and max 20 characters and max 20, with upper and lower case letters, numbers and symbols."
         }
 
 
         // Validate Image-url field
-        if (!this.url) {
+        if (!isEditUser && !this.url) {
             formErrors['url'] = "'Image-url' field must not be empty."
-        } else if (!urlReg.test(this.url)) {
+        } else if (this.url && !urlReg.test(this.url)) {
             formErrors['url'] = "Image-url must be at lest 14 characters."
         }
 
         // Validate Image-alt field
-        if (!this.alt) {
-            formErrors['alt'] = "'Image-alt' field must not be empty."
-        } else if (!stringReg.test(this.alt)) {
-            formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
-        }
+        // if (!isEditUser && !this.alt) {
+        //     formErrors['alt'] = "'Image-alt' field must not be empty."
+        // } else if (this.alt && !stringReg.test(this.alt)) {
+        //     formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
+        // }
 
         // Validate State field
-        if (!this.state) {
+        if (!isEditUser && !this.state) {
             formErrors['alt'] = "'Image-alt' field must not be empty."
-        } else if (!stringReg.test(this.state)) {
+        } else if (this.state && !stringReg.test(this.state)) {
             formErrors['alt'] = "Image-alt must be from 2 to 256 characters."
         }
 
         // Validate country field
-        if (!this.country) {
+        if (!isEditUser && !this.country) {
             formErrors['country'] = "Country field must not be empty."
-        } else if (!stringReg.test(this.country)) {
+        } else if (this.country && !stringReg.test(this.country)) {
             formErrors['country'] = "Country must be from 2 to 256 characters."
         }
 
         // Validate city field
-        if (!this.city) {
+        if (!isEditUser && !this.city) {
             formErrors['city'] = "City field must not be empty."
-        } else if (!stringReg.test(this.city)) {
+        } else if (this.city && !stringReg.test(this.city)) {
             formErrors['city'] = "City must be from 2 to 256 characters."
         }
 
         // Validate street field
-        if (!this.street) {
+        if (!isEditUser && !this.street) {
             formErrors['street'] = "Street field must not be empty."
-        } else if (!stringReg.test(this.street)) {
+        } else if (this.street && !stringReg.test(this.street)) {
             formErrors['street'] = "Street must be from 2 to 256 characters."
         }
 
         // Validate houseNumber field
-        if (!this.houseNumber) {
+        if (!isEditUser && !this.houseNumber) {
             formErrors['houseNumber'] = "House Number field must not be empty."
-        } else if (!numReg.test(this.houseNumber)) {
+        } else if (this.houseNumber && !numReg.test(this.houseNumber)) {
             formErrors['houseNumber'] = "House Number must be from 2 to 256 Digits."
         }
 
         // Validate zip field
-        if (!this.zip) {
+        if (!isEditUser && !this.zip) {
             formErrors['zip'] = "Zip field must not be empty."
-        } else if (!numReg.test(this.zip)) {
+        } else if (this.zip && !numReg.test(this.zip)) {
             formErrors['zip'] = "Zip must be from 2 to 256 Digits."
         }
 

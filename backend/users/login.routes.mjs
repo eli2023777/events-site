@@ -31,12 +31,15 @@ router.post('/', async (req, res) => {
         return res.status(403).send('Invalid email or password');
     }
 
-
     const token = jwt.sign({
         _id: user._id,
         isBusiness: user.isBusiness,
         isAdmin: user.isAdmin,
     }, JWT_SECRET, { expiresIn: '1h' });
+
+    console.log(user);
+
+
     res.send(token);
 });
 

@@ -5,7 +5,6 @@ const eventSchema = new mongoose.Schema({
     date: Date,
     time: String,
     // participants: [{ name: String, email: String }],
-    zoomLink: String,
     location: String,
     image: {
         url: String,

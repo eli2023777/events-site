@@ -2,63 +2,79 @@ import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { GeneralContext } from '../App';
-import '../css/viewEvent.css';
-import { DualIcon } from '../helpers/DualIcon';
-
+import { GeneralContext } from '../../App';
+import '../../css/viewEvent.css';
+import { DualIcon } from '../../helpers/DualIcon';
+import useAPI from '../../hooks/useAPI';
+import { METHOD } from '../../hooks/useAPI';
+import { UI_STATE } from '../../helpers/uiStateObj';
 
 
 
 const ViewEvent = () => {
+
     const location = useLocation();
+    const navigate = useNavigate();
+    const isDark = localStorage.getItem('isDark');
+    const { setLoading } = useContext(GeneralContext);
+
     const [event, setEvent] = useState({});
     const { eventID, uiState } = location.state || {};
-    const navigate = useNavigate();
+
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
-    const { API, setLoading } = useContext(GeneralContext);
-    const isDark = localStorage.getItem('isDark');
+
+    const [isDelete, setIsDelete] = useState(false);
+    const [isNewData, setIsNewData] = useState({});
 
 
+    // urlRegex to check if location is a URL for Zoom-link
+    const urlRegex = /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-./?%&=]*)?$/i;
 
-    const getEvent = async () => {
-        setLoading(true);
-
-        try {
-            const response = await axios.get(`${API}/events/${eventID}`);
-            setEvent(response.data);
-
-
-        } catch (error) {
-            console.log('Error get Event:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const [error, callAPI, payload, data] = useAPI();
 
 
     useEffect(() => {
-        getEvent();
+        callAPI(METHOD.GET_ONE, 'events', eventID);
     }, []);
 
-    const deleteEvent = async () => {
-        if (token) {
-            try {
-                await axios.delete(`${API}/events/${eventID}`,
-                    {
-                        headers: {
-                            'x-auth-token': token
-                        }
-                    }
-                );
+    useEffect(() => {
+        if (isNewData) {
+            setEvent(isNewData); // Get event
 
-                navigate(-1);
-            } catch (error) {
-                console.log('Error delete Event:', error);
-
+            if (isDelete) { // delete event
+                alert('Event succesfully deleted')
+                navigate('/', {
+                    state:
+                        uiState === UI_STATE.EVENTS ? true : undefined
+                })
             }
         }
-    }
+
+        // Reset data
+        setIsNewData(null);
+    }, [isNewData]);
+
+
+    // set 'data' to 'newData' state, for not geting the same data for GET and DELETE methods.
+    useEffect(() => {
+        if (data) {
+            setIsNewData(data);
+        }
+    }, [data]);
+
+
+
+
+    const deleteEvent = async () => {
+        if (window.confirm(`Are you sure you want to delete this Event? 
+            All his data will be gone.`)) {
+            callAPI(METHOD.DELETE, 'events', eventID);
+            setIsDelete(true);
+        } else {
+            return;
+        };
+    };
 
 
 
@@ -67,11 +83,14 @@ const ViewEvent = () => {
             <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <div>
-                    <button onClick={() => {
-                        navigate('/', { state: { uiState } });
-                    }}
-                    >
-                        Back
+                    <button
+                        onClick={() => {
+                            navigate('/', {
+                                state:
+                                    uiState === UI_STATE.EVENTS ? true : undefined
+                            })
+                        }}>
+                        <DualIcon iconName="backward" />
                     </button>
                 </div>
                 <br />
@@ -102,16 +121,18 @@ const ViewEvent = () => {
                                         <p>{event.time}</p>
                                     </div>
                                     <h3>Where?</h3>
-                                    {(event.zoomLink) ?
-                                        (
-                                            <p>
-                                                <a href={event.zoomLink}
-                                                    target="_blank" rel="noopener noreferrer">
-                                                    Zoom Link</a>
-                                            </p>
-                                        ) : (
-                                            <p>{event.location}</p>
-                                        )
+
+                                    {/* Check if location is a URL for Zoom-link */}
+                                    {urlRegex.test(event.location) ? (
+                                        <p>
+                                            <a href={event.location}
+                                                target="_blank" rel="noopener noreferrer">
+                                                {event.location}</a>
+                                        </p>
+                                    ) : (
+                                        <p>{event.location}</p>
+                                    )
+
                                     }
 
 
@@ -134,10 +155,9 @@ const ViewEvent = () => {
                                 </section>
 
                                 <div className='gallery'
-                                //  onClick={image}
                                 >
                                     <img src={event.image?.url} alt={event.image?.alt} className="eventImage" />
-                                    {/* <img src={event.image?.url} alt={event.image?.alt} className="eventImage" /> */}
+
                                 </div>
 
 

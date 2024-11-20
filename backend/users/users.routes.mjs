@@ -78,8 +78,8 @@ router.get('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
 
 // Edit user
 router.put('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
-    const { first, last, phone, email,
-        state, country, city, street, houseNumber, url, alt } = req.body;
+    const { name, phone, email, password,
+        address, image } = req.body;
 
 
     console.log("Data received on server:", req.body);
@@ -98,25 +98,29 @@ router.put('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
     if (!user)
         return res.status(404).send('User not found');
 
-    user.name.first = first || user.name.first;
-    user.name.last = last || user.name.last;
+    user.name.first = name.first || user.name.first;
+    user.name.last = name.last || user.name.last;
 
+    // עדכון פרטי קשר
     user.phone = phone || user.phone;
     user.email = email || user.email;
 
+    // עדכון סיסמא
+    if (password) {
+        user.password = await bcrypt.hash(password, 10);
+    }
 
-    // if (password) {
-    //     user.password = await bcrypt.hash(password, 10);
-    // }
+    // עדכון כתובת
+    user.address.state = address.state || user.address.state;
+    user.address.country = address.country || user.address.country;
+    user.address.city = address.city || user.address.city;
+    user.address.street = address.street || user.address.street;
+    user.address.houseNumber = address.houseNumber || user.address.houseNumber;
 
-    user.address.state = state || user.address.state;
-    user.address.country = country || user.address.country;
-    user.address.city = city || user.address.city;
-    user.address.street = street || user.address.street;
-    user.address.houseNumber = houseNumber || user.address.houseNumber;
+    // עדכון תמונה
+    user.image.url = image.url || user.image.url;
+    user.image.alt = image.alt || user.image.alt;
 
-    user.image.url = url || user.image.url;
-    user.image.alt = alt || user.image.alt;
 
     await user.save();
 

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import User from '../models/User';
 import { Form, Button, Container } from 'react-bootstrap';
-import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import '../css/loginC.css';
 import { GeneralContext } from '../App';
+import useAPI from '../hooks/useAPI';
+import { METHOD } from '../hooks/useAPI';
 
 
 const LogInC = () => {
@@ -13,10 +14,9 @@ const LogInC = () => {
     const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
-    const { API, setLoginC, setLoading, token, setToken } = useContext(GeneralContext);
+    const { setLoginC, setLoading, token, setToken } = useContext(GeneralContext);
+    const [error, callAPI, payload, data] = useAPI();
 
-
-    // const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
         const currUser = new User(user.email, user.password);
@@ -31,32 +31,7 @@ const LogInC = () => {
         currUser.updateField(e.target.name, e.target.value);
         setUser(currUser);
         if (validateUser())
-            setMesssage('You have logged in successfully!');
-
-        onLogin();
-    };
-
-
-    const onLogin = async () => {
-        try {
-            const res =
-                await axios.post(`${API}/login`, {
-                    email: user.email,
-                    password: user.password,
-                });
-
-            localStorage.setItem('token', res.data);
-            setToken(localStorage.getItem('token'));
-
-            saveToken();
-            setMesssage('You have logged in successfully!');
-            setLoginC(false);
-        } catch (e) {
-            // setAPIError(true);
-
-            console.log(e);
-
-        }
+            callAPI(METHOD.LOG_IN, 'login', user);
     };
 
 
@@ -105,6 +80,22 @@ const LogInC = () => {
 
 
 
+    useEffect(() => {
+        if (data) {
+
+            localStorage.setItem('token', data);
+            setToken(localStorage.getItem('token'));
+
+            saveToken();
+            setMesssage('You have logged in successfully!');
+            setLoginC(false);
+
+
+        }
+    }, [data]);
+
+
+
     return (
         <div>
             <div className='loginCFrame' onClick={() => setLoginC(false)}>
@@ -116,6 +107,11 @@ const LogInC = () => {
                     <h6>For your privacy, you have logged out.</h6>
 
                     <h4>Please log in again</h4>
+
+                    <h6>Not registered yet? <a
+                        href="/register" onClick={() => setLoginC(false)}
+                    >Register here!
+                    </a></h6>
 
                     <br />
                     <br />

@@ -1,28 +1,36 @@
-import { React, useState } from 'react';
+import { React, useContext, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Solid icones
 import {
-    faUser as faUserSolid,
     faEdit as faEditSolid,
     faTrash as faTrashSolid,
     faCalendarDays as faCalendarDaysSolid,
     faList as faListSolid,
+    faMoon as faMoonSolid,
+    faSun as faSunSolid,
+    faPlus,
+    faBackward,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Regular icons
 import {
-    faUser as faUserRegular,
     faEdit as faEditRegular,
     faTrashAlt as faTrashRegular,
     faCalendarDays as faCalendarDaysRegular,
     faListAlt as faListRegular,
+    faMoon as faMoonRegular,
+    faSun as faSunRegular,
 } from '@fortawesome/free-regular-svg-icons';
 
+
+
 // Add all icons to library
-library.add(faUserSolid, faEditSolid, faTrashSolid, faCalendarDaysSolid, faListSolid,
-    faUserRegular, faEditRegular, faTrashRegular, faCalendarDaysRegular, faListRegular,);
+library.add(faEditSolid, faTrashSolid, faCalendarDaysSolid,
+    faListSolid, faPlus, faMoonSolid, faSunSolid, faBackward,
+    faEditRegular, faTrashRegular, faCalendarDaysRegular,
+    faListRegular, faMoonRegular, faSunRegular,);
 
 
 export const DualIcon = ({ iconName }) => {
@@ -30,11 +38,14 @@ export const DualIcon = ({ iconName }) => {
 
     // Map of Icons names by their types
     const iconMap = {
-        user: { solid: faUserSolid, regular: faUserRegular },
         edit: { solid: faEditSolid, regular: faEditRegular },
         trash: { solid: faTrashSolid, regular: faTrashRegular },
         calendar: { solid: faCalendarDaysSolid, regular: faCalendarDaysRegular },
         list: { solid: faListSolid, regular: faListRegular },
+        plus: { solid: faPlus, regular: faPlus },
+        backward: { solid: faBackward, regular: faBackward },
+        moon: { solid: faMoonSolid, regular: faMoonRegular },
+        sun: { solid: faSunSolid, regular: faSunRegular },
     };
 
     // Choose regular or solid
@@ -45,9 +56,12 @@ export const DualIcon = ({ iconName }) => {
 
     return (
         <FontAwesomeIcon icon={currentIcon}
+
+            // Define dark / light icons size
+            size={iconName === 'moon' || iconName === 'sun' ? 'lg' : undefined}
+
             onMouseEnter={() => setIsSolid(true)}
             onMouseLeave={() => setIsSolid(false)}
-        // onClick={() => setIsSolid(isLiked ? true : false)}
         />
     );
 };

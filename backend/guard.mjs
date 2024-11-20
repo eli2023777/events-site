@@ -49,8 +49,28 @@ export const isSameUserOrAdmin = (req, res, next) => {
 };
 
 
+export const isSameUserForEvents = async (req, res, next) => {
+
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            return res.status(404).send('Event not found');
+        }
+
+        if (event.user_id.toString() === req.user._id.toString()) {
+            return next();
+        }
+
+        return res.status(403).send('Access denied');
+    } catch (error) {
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
 export const isSameUserOrAdminForEvents = async (req, res, next) => {
-    console.log(req.params.id);
 
     try {
         const event = await Event.findById(req.params.id);
@@ -68,6 +88,7 @@ export const isSameUserOrAdminForEvents = async (req, res, next) => {
         return res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 // Guard middleware to check if the user is admin

@@ -9,7 +9,17 @@
 
 button {
   cursor: pointer;
+  border: none;
 }
+
+.plusIcon {
+  width: 50px;
+  height: 50px;
+  background-color: lightgreen;
+  transform: 0.3 ease;
+  border: #282c34;
+}
+
 
 /* General styling */
 .lightFrame {
@@ -26,7 +36,7 @@ button {
 .darkFrame {
   font-size: 1.2rem;
   /* background-color: #ee0707a0; */
-  background-color: #000000a0;
+  background-color: #1d1d1da0;
   padding: 50px;
   border-radius: 50px;
   border: #999 solid 1px;
@@ -39,21 +49,42 @@ button {
   text-align: center;
 }
 
-.event {
-  width: 200px;
+.title {
+  font-weight: bold;
+  background-color: #e3e0e0;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+.event,
+.hoveredEvent {
+  width: 350px;
+  height: 280px;
   margin: 20px auto;
   padding: 20px;
   cursor: pointer;
-  width: 350px;
-  height: 280px;
   background-color: #f2f2f2;
   border-radius: 20px;
+  box-shadow: '0 10px 10px 10px';
 }
+
+/* .event {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: 20px;
+}
+
+.like {
+  align-items: center;
+  font-size: 1.3rem;
 }
 
 

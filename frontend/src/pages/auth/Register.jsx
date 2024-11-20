@@ -3,9 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './register.css';
 import FullUser from '../../models/FullUser';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../../App';
+import useAPI from '../../hooks/useAPI';
+import { METHOD } from '../../hooks/useAPI';
+
 
 
 const Register = () => {
@@ -15,9 +17,11 @@ const Register = () => {
     const [message, setMesssage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
     const [errors, setErrors] = useState({}); // errors is a JS object, with the key = field name, and value = error message
-    const { API, setLoading } = useContext(GeneralContext);
+    const { setLoading } = useContext(GeneralContext);
     const [isBusiness, setIsBusiness] = useState(false);
     const isDark = localStorage.getItem('isDark');
+
+    const [error, callAPI, payload, data] = useAPI();
 
 
     const handelChange = (e) => {
@@ -26,6 +30,7 @@ const Register = () => {
             user.houseNumber, user.zip);
         currUser.updateField(e.target.name, e.target.value);
         setUser(currUser);
+
     };
 
 
@@ -38,10 +43,9 @@ const Register = () => {
 
         // 1. Check if form is valid?
         if (Object.keys(lclErrors).length === 0) {
-
-
             // 2. Send to server
-            onSignUp();
+            callAPI(METHOD.CREATE, 'users', user, isBusiness, true);
+
 
         } else {
             // 3. Fail
@@ -52,66 +56,27 @@ const Register = () => {
     };
 
 
-    const onSignUp = async () => {
-        try {
-            await axios.post(`${API}/users`, {
-                name: {
-                    first: user.first,
-                    last: user.last,
-                },
-
-                isBusiness: isBusiness,
-
-                phone: user.phone,
-                email: user.email,
-                password: user.password,
-
-                image: {
-                    url: user.url,
-                    alt: user.alt,
-                },
-
-
-                address: {
-                    state: user.state,
-                    country: user.country,
-                    city: user.city,
-                    street: user.street,
-                    houseNumber: user.houseNumber,
-                    zip: user.zip,
-                },
-
-            },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-            setLoading(true);
-            setMesssage('You have registered successfully!');
-            setIsSuccess(true);
-            setIsSignUp(true);
-            setMesssage('You have registered successfully!');
-        } catch (error) {
-            console.error(error);
-            setMesssage('An error occurred. Please try again.');
-        }
-    }
-
     useEffect(() => {
         if (errors)
             setErrors(errors);
-    }, [errors]);
-
-    useEffect(() => {
         if (isSignUp) {
             const timer = setTimeout(() => {
                 navigate('/');
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [isSignUp]);
+    }, [errors, isSignUp]);
+
+
+    useEffect(() => {
+        if (data && Object.keys(data).length > 0) {
+
+            setMesssage('You have registered successfully!');
+            setIsSuccess(true);
+            setIsSignUp(true);
+        }
+    }, [data]);
+
 
 
     return (
@@ -163,7 +128,8 @@ const Register = () => {
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Password" onChange={handelChange} />
+                            <Form.Control type="password" name="password" placeholder="Password"
+                                onChange={handelChange} />
                             <div style={{ color: 'red' }}>{errors && errors['password']}</div>
 
                         </Form.Group>
@@ -247,3 +213,55 @@ const Register = () => {
 }
 
 export default Register
+
+
+
+
+
+
+
+
+// const onSignUp = async () => {
+// try {
+//     await axios.post(`${API}/users`, {
+//         name: {
+//             first: user.first,
+//             last: user.last,
+//         },
+
+//         isBusiness: isBusiness,
+
+//         phone: user.phone,
+//         email: user.email,
+//         password: user.password,
+
+//         image: {
+//             url: user.url,
+//             alt: user.alt,
+//         },
+
+
+//         address: {
+//             state: user.state,
+//             country: user.country,
+//             city: user.city,
+//             street: user.street,
+//             houseNumber: user.houseNumber,
+//             zip: user.zip,
+//         },
+
+//     },
+// {
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+// });
+
+// setLoading(true);
+// setMesssage('You have registered successfully!');
+// setIsSuccess(true);
+// setIsSignUp(true);
+// } catch (error) {
+//     console.error("Error Regiser user:", error);
+// }
+// }

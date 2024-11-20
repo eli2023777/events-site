@@ -3,10 +3,10 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 import React, { useState, useEffect, createContext } from 'react';
-import NewEvent from './pages/NewEvent.jsx';
-import ViewEvent from './pages/ViewEvent.jsx';
+import NewEvent from './pages/crud-events/NewEvent.jsx';
+import ViewEvent from './pages/crud-events/ViewEvent.jsx';
 import Home from './pages/Home.jsx';
-import EditEvent from './pages/EditEvent.jsx';
+import EditEvent from './pages/crud-events/EditEvent.jsx';
 import ViewDate from './pages/ViewDate.jsx';
 import Results from './pages/Results.jsx';
 import NavbarC from './components/NavbarC.js';
@@ -18,6 +18,7 @@ import MyEvents from './pages/MyEvents.jsx';
 import Loader from './components/Loader.jsx';
 import LogInC from './components/LogInC.jsx';
 import Favourites from './pages/Favourites.jsx';
+import Footer from './components/Footer.jsx';
 
 
 
@@ -29,17 +30,22 @@ function App() {
 
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(false);
-  const [loginC, setLoginC] = useState();
-  const API = 'http://localhost:7000';
+  const [loginC, setLoginC] = useState(false);
   const savedIsDark = localStorage.getItem('isDark') === 'true';
   const [isDark, setIsDark] = useState(savedIsDark);
+  const [apiData, setApiData] = useState();
+
 
   // Dark Mode
   useEffect(() => {
     localStorage.setItem('isDark', isDark);
   }, [isDark]);
 
+
+
   // -- Token --
+
+  // Check if token expired
   const isTokenExpired = () => {
     const expDate = localStorage.getItem("expDate");
     if (!expDate) return true;
@@ -51,8 +57,8 @@ function App() {
     const lastReminder = localStorage.getItem("lastLoginReminder");
     if (!lastReminder) return true; // In first time
 
-    const fifteenMinutes = 15 * 60 * 1000;
-    return Date.now() - parseInt(lastReminder, 10) > fifteenMinutes;
+    const halfHour = 30 * 60 * 1000;
+    return Date.now() - parseInt(lastReminder, 10) > halfHour;
   };
 
   const controlLoginC = () => {
@@ -67,12 +73,15 @@ function App() {
 
   // Check if the token expired and if so Ask to Login every 15 minutes
   useEffect(() => {
-    controlLoginC(); // In first time
+
+    setTimeout(() => {
+      controlLoginC(); // In first time
+    }, 15);
 
     const intervalId = setInterval(() => {
       controlLoginC();
 
-    }, 15 * 60 * 1000);
+    }, 30 * 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -88,7 +97,7 @@ function App() {
 
   return (
 
-    <GeneralContext.Provider value={{ API, setLoading, setLoginC, token, setToken, isDark, setIsDark }}>
+    <GeneralContext.Provider value={{ apiData, setApiData, setLoading, setLoginC, token, setToken, isDark, setIsDark }}>
 
       <div className="App">
         <NavbarC />
@@ -113,10 +122,14 @@ function App() {
 
           </Routes >
 
-          {loginC && <LogInC />}
+          {loginC &&
+            <LogInC />
+          }
 
           {loading && <Loader />}
 
+
+          <Footer />
           <div>
 
           </div>

@@ -4,6 +4,8 @@ import { Form, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../../App';
+import useAPI from '../../hooks/useAPI';
+import { METHOD } from '../../hooks/useAPI';
 
 
 const LogIn = () => {
@@ -12,8 +14,10 @@ const LogIn = () => {
     const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
-    const { API, setLoading, token, setToken } = useContext(GeneralContext);
+    const { setLoading, token, setToken } = useContext(GeneralContext);
     const isDark = localStorage.getItem('isDark');
+    const [error, callAPI, payload, data] = useAPI();
+
 
 
     const handleChange = (e) => {
@@ -28,37 +32,13 @@ const LogIn = () => {
         currUser.updateField(e.target.name, e.target.value);
         setUser(currUser);
         if (validateUser())
-            setMesssage('You have logged in successfully!');
-
-        onLogin();
+            callAPI(METHOD.LOG_IN, 'login', user);
     };
 
-    const onLogin = async () => {
-        try {
-            const res =
-                await axios.post(`${API}/login`, {
-                    email: user.email,
-                    password: user.password,
-                });
-
-            localStorage.setItem('token', res.data);
-            setToken(localStorage.getItem('token'));
-
-            saveToken();
-            setAPIError(false);
-            setMesssage('You have logged in successfully!');
-
-        } catch (e) {
-            setAPIError(true);
-
-            console.log(e);
-
-        }
-    };
 
 
     const saveToken = () => {
-        const tokenExpTime = 60 * 60 * 1000; // 1 Hour
+        const tokenExpTime = 30 * 60 * 1000; // 30 minutes
         const expDate = Date.now() + tokenExpTime;
         localStorage.setItem("expDate", expDate);
     };
@@ -101,6 +81,16 @@ const LogIn = () => {
         }
     }, [token]);
 
+
+    useEffect(() => {
+        if (data) {
+            localStorage.setItem('token', data);
+            setToken(localStorage.getItem('token'));
+
+            saveToken();
+            setMesssage('You have logged in successfully!');
+        }
+    }, [data]);
 
 
     return (

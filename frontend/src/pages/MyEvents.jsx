@@ -3,7 +3,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { GeneralContext } from '../App';
-
+import useAPI from '../hooks/useAPI';
+import { METHOD } from '../hooks/useAPI';
+import { DualIcon } from '../helpers/DualIcon';
+import Likes from '../helpers/Likes';
 
 
 const MyEvents = () => {
@@ -12,37 +15,36 @@ const MyEvents = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
-    const { API, setLoading, isDark } = useContext(GeneralContext);
+    const { setLoading, isDark } = useContext(GeneralContext);
+    const [isHoveredIcon, setIsHoveredIcon] = useState(false);
+    const [hoveredEventID, setHoveredEventID] = useState(null);
+    const [isPatch, setIsPatch] = useState(false);
 
+    const [error, callAPI, payload, data] = useAPI();
 
-
-    const fetchEvents = async () => {
-        if (token) {
-
-            setLoading(true);
-
-            try {
-                const response = await axios.get(`${API}/events/my-events`, {
-                    headers: {
-                        'x-auth-token': token
-                    }
-                }
-
-                );
-
-                setEvents(response.data);
-
-            } catch (error) {
-                console.log('Error fetching events:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
 
     useEffect(() => {
-        fetchEvents();
+        if (token)
+            callAPI(METHOD.GET_MY_EVENTS, 'events');
+
     }, []);
+
+    // Update 'myEvents' after patch likes
+    useEffect(() => {
+        if (token)
+            callAPI(METHOD.GET_MY_EVENTS, 'events');
+    }, [isPatch]);
+
+
+    useEffect(() => {
+        if (data)
+            if (Array.isArray(data)) {
+                setEvents(data);
+            } else {
+                alert('Event successfully deleted');
+                setEvents(prevEvents => prevEvents.filter(event => event._id !== data._id));
+            }
+    }, [data]);
 
 
     const handleEventClick = (eventID) => {
@@ -56,28 +58,16 @@ const MyEvents = () => {
     }
 
 
-
-
     const deleteEvent = async (e, eventID) => {
         e.stopPropagation();
-        if (window.confirm(`Are you sure you want to delete this event?`)) {
 
-            try {
-                await axios.delete(`${API}/events/${eventID}`,
-                    {
-                        headers: {
-                            'x-auth-token': token
-                        }
-                    });
-                alert('Event successfully deleted');
-                setEvents(prevEvents => prevEvents.filter(event => event._id !== eventID));
-            } catch (error) {
-                console.log('Error delete Event:', error);
-            }
-
+        if (window.confirm(`Are you sure you want to delete this Event? 
+            All his data will be gone.`)) {
+            callAPI(METHOD.DELETE, 'events', eventID);
         } else {
-            return; // If the user is not confirmed
-        }
+            return;
+        };
+
     };
 
     return (
@@ -85,10 +75,19 @@ const MyEvents = () => {
             <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
                 <h1>My Events</h1>
-                {decodedToken && (decodedToken.isAdmin || decodedToken.isBusiness) &&
 
-                    <button onClick={() => navigate('/new-event')}>
-                        Add new event
+
+                {/* Add new event */}
+                {decodedToken && decodedToken.isBusiness &&
+                    <button
+                        className='plusIcon'
+                        style={{
+                            ...(isHoveredIcon && { transform: 'scale(1.2)' })
+                        }}
+                        onMouseEnter={() => setIsHoveredIcon(true)}
+                        onMouseLeave={() => setIsHoveredIcon(false)}
+                        onClick={() => navigate('/new-event')}>
+                        <DualIcon iconName="plus" />
                     </button>
                 }
 
@@ -99,39 +98,63 @@ const MyEvents = () => {
                         (event, index) => {
                             const eventDate = new Date(event.date);
                             const eventID = event._id;
-
+                            const isLiked = event.likes?.includes(decodedToken?._id);
 
                             return (
-                                <div key={index} className='event'
+
+
+                                <div key={index}
+                                    className={hoveredEventID ? 'hoveredEvent' : 'event'}
                                     style={{
-                                        backgroundImage: `url(${event.image?.url})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        padding: '20px',
+                                        ...(hoveredEventID !== eventID && {
+                                            backgroundImage: `url(${event.image?.url})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center'
+                                        })
                                     }}
+                                    onMouseEnter={() => setHoveredEventID(eventID)}
+                                    onMouseLeave={() => setHoveredEventID(null)}
                                     onClick={() => handleEventClick(eventID)} >
-                                    <h2>{event.title}</h2>
-                                    <p>Date: {eventDate.toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }
-                                    )}</p>
-                                    <p>Time: {event.time}</p>
-                                    <p>Zoom Link: {event.zoomLink}</p>
 
-                                    {decodedToken.isBusiness &&
-                                        decodedToken._id === event.user_id &&
+                                    <h2 className='title'>{event.title}</h2>
+
+                                    {hoveredEventID === eventID &&
                                         <>
-                                            <button onClick={(e) => editEvent(e, eventID)}
-                                            >Edit
-                                            </button>
+                                            <p>{eventDate.toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            }
+                                            )}</p>
 
-                                            <button onClick={(e) => deleteEvent(e, eventID)}>
-                                                Delete
-                                            </button>
+                                            <p>{event.time}</p>
+                                            <p>{event.location}</p>
+
+
+
+                                            {decodedToken.isBusiness &&
+                                                decodedToken._id === event.user_id &&
+                                                <>
+                                                    <button onClick={(e) => editEvent(e, eventID)}   >
+                                                        <DualIcon iconName="edit" />
+                                                    </button>
+
+                                                    <button onClick={(e) => deleteEvent(e, eventID)}>
+                                                        <DualIcon iconName="trash" />
+                                                    </button>
+                                                </>
+                                            }
                                         </>
                                     }
+
+
+                                    <div className='like'        >
+                                        <Likes
+                                            event={event}
+                                            setEvents={setEvents}
+                                            isLiked={isLiked}
+                                            setIsPatch={setIsPatch}
+                                        /></div>
                                 </div>
                             )
                         }

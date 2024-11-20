@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import { Event } from './events.model.mjs';
 import {
-    isAuthenticated, isSameUser, isSameUserOrAdmin,
-    isSameUserOrAdminForEvents, isAdmin, isBusinessUser
+    isAuthenticated,
+    isSameUserForEvents,
+    isSameUserOrAdminForEvents,
+    isBusinessUser,
 } from "../guard.mjs";
 import jwt from "jsonwebtoken";
 
@@ -66,7 +68,7 @@ router.get('/:id', async (req, res) => {
 
 // Add new event
 router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
-    const { title, date, time, location, zoomLink, url, alt } = req.body;
+    const { title, date, time, location, image } = req.body;
 
     const existingEvent = await Event.findOne({ title });
     if (existingEvent) {
@@ -80,14 +82,13 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
     }
 
     const event = new Event({
-        title: req.body.title,
-        date: req.body.date,
-        time: req.body.time,
-        location: req.body.location,
-        zoomLink: req.body.zoomLink,
+        title: title,
+        date: date,
+        time: time,
+        location: location,
         image: {
-            url: req.body.url,
-            alt: req.body.alt,
+            url: image.url,
+            alt: image.alt,
         },
         user_id: user._id
     });
@@ -104,8 +105,8 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
 
 
 // Edit event
-router.put('/:id', isAuthenticated, isSameUser, isBusinessUser, async (req, res) => {
-    const { title, date, time, zoomLink } = req.body;
+router.put('/:id', isAuthenticated, isSameUserForEvents, isBusinessUser, async (req, res) => {
+    const { title, date, time, location, image } = req.body;
 
     const event = await Event.findById(req.params.id);
     if (!event)
@@ -114,8 +115,8 @@ router.put('/:id', isAuthenticated, isSameUser, isBusinessUser, async (req, res)
     event.title = title || event.title;
     event.date = date || event.date;
     event.time = time || event.time;
-    event.zoomLink = zoomLink || event.zoomLink;
-    event.location = req.body.location || event.location;
+    event.location = location || event.location;
+    event.image.url = image.url || event.image.url;
 
     await event.save();
 

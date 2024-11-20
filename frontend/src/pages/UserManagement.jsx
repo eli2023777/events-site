@@ -3,6 +3,8 @@ import axios from 'axios';
 import { DualIcon } from '../helpers/DualIcon';
 import { GeneralContext } from '../App';
 import { useNavigate } from 'react-router-dom';
+import { METHOD } from '../hooks/useAPI';
+import useAPI from '../hooks/useAPI';
 
 
 
@@ -17,35 +19,30 @@ const UserManagement = () => {
     const navigate = useNavigate();
     const isDark = localStorage.getItem('isDark');
 
+    const [error, callAPI, payload, data] = useAPI();
+
 
     // Fetch users 
     const fetchUsers = async () => {
 
         if (token) {
 
-            try {
-                const res = await axios.get(`${API}/users`,
-                    {
-                        headers: {
-                            'x-auth-token': token
-                        }
-                    }
-                );
-                setUsers(res.data);
-            } catch (e) {
-                console.log('Error fetching users:', e); // ניפוי שגיאות
-            } finally {
-                setLoading(false);
-            }
+            callAPI(METHOD.GET_ALL, 'users');
+
+
         }
     };
 
 
     useEffect(() => {
         // Fetch users First time
-        setLoading(true);
         fetchUsers();
     }, []);
+
+    useEffect(() => {
+        if (data)
+            setUsers(data);
+    }, [data]);
 
 
     const handleAdminToggle = (id) => {

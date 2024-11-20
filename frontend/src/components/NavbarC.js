@@ -1,13 +1,24 @@
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState, useContext } from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import '../css/navbarC.css';
 import { GeneralContext } from '../App';
+import { METHOD } from '../hooks/useAPI';
+import useAPI from '../hooks/useAPI';
+import { DualIcon } from '../helpers/DualIcon';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import{
+    faCalendarAlt,
+faUser,
+faUserTie,
+faKey
+} from '@fortawesome/free-solid-svg-icons';
 
+library.add(faCalendarAlt,faUser, faUserTie, faKey);
 
 
 const NavbarC = () => {
@@ -15,11 +26,15 @@ const NavbarC = () => {
 
     const navigate = useNavigate();
     const [inputSearch, setInputSearch] = useState('');
+    const [searchValue, setSearchValue] = useState(''); // for search value
     const [results, setResults] = useState([]);
     // const [] = useContext(localStorage.getItem('token'));
-    const { API, setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
+    const {setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
     const [user, setUser] = useState({});
     // const [isDark, setIsDark] = useState(localStorage.getItem('isDark') || false);
+    const [error, callAPI, payload, data] = useAPI();
+    
+    const [routes, setRoutes] = useState('users');
 
 
     // For Search bar
@@ -29,72 +44,59 @@ const NavbarC = () => {
     };
 
 
-    // For Search bar when using Enter key
-    const handleEnterSearch = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            window.location.href = '/results';
-            fetchSearchData(e.target.value);
-        }
-    };
-
     // For Search bar
-    const fetchSearchData = async (value) => {
-        let response;
-        try {
-            response = await axios.get(`${API}/events`);
-        } catch (e) {
-            console.log(e);
-        }
+    const fetchSearchData = async () => {
+        setRoutes('events');
 
-        const data = response.data;
+        callAPI(METHOD.GET_ALL, routes);
 
-        const dataResult = data.filter((event) => {
-            return (
-                value &&
-                event &&
-                event.title?.toLowerCase().includes(value))
-        });
-
-        console.log(dataResult);
-        setResults(dataResult);
-        navigate('/results', { state: { results } });
     };
 
 
     // Fetch user for log-in mode
-    const fetchUser = async () => {
-
+    const fetchUser = () => {
         if (token) {
             setLoading(true);
-
-            const decodedToken = jwtDecode(token);
+            setRoutes('users');
+            const decodedToken = token ? jwtDecode(token) : null;
             const userID = decodedToken._id;
-            try {
-                const res = await axios.get(`${API}/users/${userID}`,
-                    {
-                        headers: {
-                            'x-auth-token': token
-                        }
-                    }
-                );
-                setUser(res.data);
 
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
+            callAPI(METHOD.GET_ONE, routes, userID);
         }
     };
 
 
     useEffect(() => {
-        if (token) {
+        if (token)
             fetchUser();
-            setToken(token);
+    }, [])
+
+    useEffect(() => {
+        if (token)
+            fetchUser();
+    }, [token])
+
+
+    useEffect(() => {
+        if (routes === 'events' && Array.isArray(data)) { // 1. GET ALL case - for search results
+            const filteredResults = data.filter(event =>
+                event?.title?.toLowerCase().includes(searchValue.toLowerCase())
+                // event?.title?.toLowerCase() === searchValue.toLowerCase()
+            );
+            setResults(filteredResults);
+            
+            navigate('/results', { state: { results: filteredResults } });
         }
-    }, [token]);
+
+
+    }, [data, routes, searchValue]);
+
+    useEffect(()=>{
+        if (data && routes === 'users')  // 2. GET ONE case - fetch user.
+        setUser(data);
+    },[data])
+
+
 
 
     // Change the body's background style dynamically
@@ -109,10 +111,6 @@ const NavbarC = () => {
         }
         localStorage.setItem('isDark', isDark)
 
-        // Cleanup function to reset style on component unmount
-        // return () => {
-        //     document.body.style.backgroundImage = null;
-        // };
     }, [isDark]);
 
 
@@ -123,9 +121,14 @@ const NavbarC = () => {
 
 
             {['md'].map((expand) => (
-                <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 header">
+                <Navbar key={expand} expand={expand} className="mb-3 header" 
+                    bg={isDark ? "dark" : 'light'} variant={isDark ? "dark" : 'light'}  >
                     <Container fluid>
-                        <Navbar.Brand href="/">Events Website</Navbar.Brand>
+                        
+                        <Navbar.Brand href="/" className="me-auto">
+                            <FontAwesomeIcon icon={faCalendarAlt} size="2x" className="me-2 text-warning" />
+</Navbar.Brand>
+
                         <Navbar.Toggle aria-controls={`offcanvasNavbar - expand - ${expand}`} />
                         <Navbar.Offcanvas
                             id={`offcanvasNavbar - expand - ${expand}`}
@@ -138,43 +141,6 @@ const NavbarC = () => {
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
-                                <Nav className="justify-content-end flex-grow-1 pe-3">
-
-                                    {token &&
-                                        < Nav.Link href="/favourites">Favourites</Nav.Link>
-                                    }
-
-                                    {/*  User Management - Only for Admin */}
-                                    {token &&
-                                        user.isAdmin &&
-                                        // <NavDropdown title="Admin" id={`offcanvasNavbarDropdown - expand - ${expand}`}></NavDropdown>
-                                        < Nav.Link href="/user-management">User Management</Nav.Link>
-                                    }
-
-                                    {/*  User Management - Only for Business */}
-                                    {token &&
-                                        user.isBusiness &&
-
-                                        < Nav.Link href="/my-events">My Events</Nav.Link>
-                                    }
-
-
-                                    {/* <NavDropdown
-                                        title="Dropdown"
-                                        id={`offcanvasNavbarDropdown - expand - ${ expand }`}
-                                    >
-                                        <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                        <NavDropdown.Item href="#action4">
-                                            Another action
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#action5">
-                                            Something else here
-                                        </NavDropdown.Item>
-                                    </NavDropdown> */}
-
-
-                                </Nav>
 
                                 {/* <Form className="d-flex">
                                     <Form.Control
@@ -191,37 +157,75 @@ const NavbarC = () => {
                                         className="me-2"
                                         aria-label="Search"
                                         onChange={(e) => handleChange(e.target.value)}
-                                        onKeyDown={handleEnterSearch}
+                                    // onKeyDown={handleEnterSearch}
                                     />
                                     {/* <Button variant="outline-success">Search</Button> */}
                                 </Form>
+                                <Nav className="justify-content-end flex-grow-1 pe-3">
+
+                                    {token &&
+                                        < Nav.Link href="/favourites">Favourites</Nav.Link>
+                                    }
+
+                                    {/*  User Management - Only for Admin */}
+                                    {token &&
+                                        user.isAdmin &&
+                                  
+                                        < Nav.Link href="/user-management">User Management</Nav.Link>
+                                    }
+
+                                    {/*  My Events - Only for Business */}
+                                    {token &&
+                                        user.isBusiness &&
+
+                                        < Nav.Link href="/my-events">My Events</Nav.Link>
+                                    }
+
+
+                                </Nav>
+
+                       
 
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <Button variant="none" onClick={() =>
+                                    <Button variant={isDark ? 'light' : ''}   
+                                        className='darkIcon'  
+                                    onClick={() =>
                                         setIsDark(isDark ? false : true)} >
-                                        {isDark ? 'light' : 'dark'}
+                                            
+                                        {isDark ? 
+                                            <DualIcon iconName="sun" />
+                                         : 
+                                            <DualIcon iconName="moon" />
+                                    }
+                                    
                                     </Button>
                                 </Nav>
 
+
+
                                 {/* Register and Log-in */}
-                                <Nav className="justify-content-end flex-grow-1 pe-3">
                                     {!token && (
+                                        <>
                                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                                            <Link to="/register"
-                                            // className={isDark ? 'darkLink' : 'link'}
-                                            >Register</Link>
-                                            <Link to="/logIn"
-                                            // className={isDark ? 'darkLink' : 'link'}
-                                            >Log In</Link>
+                                            <Nav.Item>
+                                                <Nav.Link as={Link} to="/register">
+                                                    Register
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link as={Link} to="/logIn">
+                                                    Log In
+                                                </Nav.Link>
+                                            </Nav.Item>
                                         </Nav>
+                                    </>
                                     )}
-                                </Nav>
 
                                 {/* Log out */}
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
 
                                     {token && (
-                                        <Button variant="none"
+                                        <Button variant={isDark ? 'light' : ''} 
                                             onClick={() => {
                                                 localStorage.removeItem('token');
                                                 setToken(null);
@@ -232,18 +236,49 @@ const NavbarC = () => {
                                     )}
 
                                     {token &&
-                                        <Nav className="justify-content-end flex-grow-1 pe-3">
-                                            Welcome back <br /> {user.name?.first} {user.name?.last}
-                                        </Nav>
+                                        <Nav  className="justify-content-end flex-grow-1 pe-3">
+                                            <span className="navbar-text">
+                                                Welcome back <br /> {user.name?.first} {user.name?.last}
+                                            </span>
+                                                                                    </Nav>
                                     }
 
                                     {token &&
 
                                         <NavDropdown title={
-                                            <img className='profileImg'
-                                                src={user.image?.url || ""}
-                                                alt={user.image?.alt || ""}
-                                            />
+                                            // Check if there is a image url,
+                                            // if not - put default image by role
+                                            
+                                                user.image?.url ? (
+                                                    <img
+                                                        className="profileImg"
+                                                        src={user.image.url}
+                                                        alt={user.image.alt}
+                                                    />
+                                                ) : (
+                                                    <FontAwesomeIcon
+                                                        icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
+                                                        size="3x" 
+                                                        className="profileIcon" 
+                                                    />
+                                                )
+                                            
+
+
+                                            // <img className='profileImg'
+                                            //     src={user.image?.url || <FontAwesomeIcon icon={faUser} size="1x" />
+                                                    
+                                            //         // `/images/${user.isAdmin ? (isDark ? 'darkAdmin' : 'admin')
+                                            //         // : user.isBusiness ? (isDark ? 'darkBusiness' :'business') 
+                                            //         //     : (isDark ? 'darkUser' :'user')}.png`
+                                            //         }
+
+                                            //     alt={user.image?.alt ||
+                                            //          (user.isAdmin ? 'admin' :
+                                            //         user.isBusiness ? 'business' : 'user'
+                                            //     )} 
+                                                
+                                            // />
                                         }
                                             id="navbarScrollingDropdown"
                                             // Addinng a class for CSS to delete the arrow icon
@@ -259,14 +294,14 @@ const NavbarC = () => {
                                                 rel="noopener noreferrer"
                                             >
                                                 View image prophile                                                    </NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item
+                                            {/* <NavDropdown.Divider /> */}
+                                            {/* <NavDropdown.Item
                                                 href={user.image?.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
                                                 Log Out
-                                            </NavDropdown.Item>
+                                            </NavDropdown.Item> */}
 
                                         </NavDropdown>
                                     }
@@ -284,3 +319,61 @@ const NavbarC = () => {
 }
 
 export default NavbarC
+
+
+
+// For Search bar when using Enter key
+// const handleEnterSearch = (e) => {
+//     if (e.key === 'Enter') {
+//         e.preventDefault();
+//         window.location.href = '/results';
+//         setSearchValue(e.target.value);
+//     }
+// };
+
+
+
+
+// -- FETCH USER --
+
+// try {
+//     const res = await axios.get(`${API}/users/${userID}`,
+//         {
+//             headers: {
+//                 'x-auth-token': token
+//             }
+//         }
+//     );
+
+// } catch (e) {
+//     console.log(e);
+// } finally {
+//     setLoading(false);
+// }
+
+
+
+    // useEffect(() => {
+
+
+    //     if (data && Array.isArray(data)) { 
+    //         console.log(data);
+
+    //         const dataResult = data.filter((event) => {
+
+    //             event?.title?.toLowerCase().includes(searchValue.toLowerCase());
+
+    //             // return (
+    //             //     value &&
+    //             //     event &&
+    //             // event.title?.toLowerCase().includes(value))
+    //         });
+
+    //         setResults(dataResult);
+    //         navigate('/results', { state: { results: dataResult } });
+
+    //     } else if (token && data && !Array.isArray(data)) {  
+    //         setUser(data);
+    //     }
+
+    // }, [token, data, searchValue]);
