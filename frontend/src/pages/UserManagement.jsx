@@ -9,7 +9,6 @@ import useAPI from '../hooks/useAPI';
 
 
 
-
 const UserManagement = () => {
 
 
@@ -22,26 +21,22 @@ const UserManagement = () => {
     const [error, callAPI, payload, data] = useAPI();
 
 
-    // Fetch users 
-    const fetchUsers = async () => {
-
-        if (token) {
-
-            callAPI(METHOD.GET_ALL, 'users');
-
-
-        }
-    };
-
-
+    // Fetch users
     useEffect(() => {
-        // Fetch users First time
-        fetchUsers();
+        if (token) {
+            callAPI(METHOD.GET_ALL, 'users');
+        }
     }, []);
+
 
     useEffect(() => {
         if (data)
-            setUsers(data);
+            if (Array.isArray(data)) { // GET users case (Array)
+                setUsers(data);
+            } else { // Delete user case (NOT Array)
+                setUsers(prevUsers => prevUsers.filter((user) => user._id !== data._id));
+                alert('User successfully Deleted');
+            }
     }, [data]);
 
 
@@ -60,23 +55,8 @@ const UserManagement = () => {
         if (!confirmed) {
             return; // If the user is not confirmed
         }
+        callAPI(METHOD.DELETE, 'users', id);
 
-
-        try {
-            await axios.delete(`${API}/users/${id}`, {
-                headers: {
-                    'x-auth-token': token
-                }
-            });
-
-            setUsers(prevUsers => prevUsers.filter((user) => user._id !== id));
-
-            alert('User successfully Deleted');
-
-        } catch (error) {
-            console.log('Error deleting user:', error);
-            alert('Error deleting user:', error);
-        }
     };
 
 
@@ -106,25 +86,16 @@ const UserManagement = () => {
                                     <thead>
                                         <tr>
                                             <th
-                                            // className='text-white'
                                             >Full Name</th>
 
 
                                             <th
-                                            // className='text-white'
 
-                                            // >Role</th>
-                                            // <th
-                                            // className='text-white'
                                             >Email</th>
                                             <th
-                                            // className='text-white'
-                                            // >סיסמא</th>
-                                            // <th
-                                            // className='text-white'
+
                                             >Edit</th>
                                             <th
-                                            // className='text-white'
                                             >Delete</th>
                                         </tr>
                                     </thead>
@@ -133,24 +104,17 @@ const UserManagement = () => {
                                             <React.Fragment key={user.id}>
                                                 <tr>
                                                     <td
-                                                    // className='text-white'
                                                     >{user.name.first} {user.name.last}</td>
 
 
-                                                    {/* <td className='text-white'>{user.role}</td> */}
                                                     <td
-                                                    // className='text-white'
                                                     >{user.email}</td>
                                                     <td
-                                                    // className='text-white'
-                                                    // >{user.password}</td>
-                                                    // <td
-                                                    // className='text-white'
+
                                                     >
 
                                                         <button className="btn btn-success btn-sm"
                                                             onClick={() => {
-                                                                // const id = user._id;
                                                                 navigate('/edit-user',
                                                                     { state: { user } })
                                                             }}
