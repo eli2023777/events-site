@@ -101,23 +101,19 @@ router.put('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
     user.name.first = name.first || user.name.first;
     user.name.last = name.last || user.name.last;
 
-    // עדכון פרטי קשר
     user.phone = phone || user.phone;
     user.email = email || user.email;
 
-    // עדכון סיסמא
     if (password) {
         user.password = await bcrypt.hash(password, 10);
     }
 
-    // עדכון כתובת
     user.address.state = address.state || user.address.state;
     user.address.country = address.country || user.address.country;
     user.address.city = address.city || user.address.city;
     user.address.street = address.street || user.address.street;
     user.address.houseNumber = address.houseNumber || user.address.houseNumber;
 
-    // עדכון תמונה
     user.image.url = image.url || user.image.url;
     user.image.alt = image.alt || user.image.alt;
 

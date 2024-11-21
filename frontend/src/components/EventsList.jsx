@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { DualIcon } from '../helpers/DualIcon';
 import Likes from '../helpers/Likes';
@@ -14,8 +13,8 @@ const EventsList = ({ setIsView, setEventID }) => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
     const { apiData, setApiData, setLoading } = useContext(GeneralContext);
-    const navigate = useNavigate();
     const [isPatch, setIsPatch] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     const [hoveredEventID, setHoveredEventID] = useState(null);
 
     const [error, callAPI, payload, data] = useAPI();
@@ -34,9 +33,10 @@ const EventsList = ({ setIsView, setEventID }) => {
 
             if (Array.isArray(apiData)) {// 1. Check if data is array of events - GET events case.
                 setEvents(apiData);
-            } else if (decodedToken?.isAdmin && !isPatch) { // 2. DELETE event case.
+            } else if (decodedToken?.isAdmin && !isPatch && isDelete) { // 2. DELETE event case.
                 alert('Event succesfully deleted')
                 setEvents(prevEvents => prevEvents.filter(event => event._id !== payload));
+                setIsDelete(false);
             }
 
             // Reset apiData
@@ -47,9 +47,7 @@ const EventsList = ({ setIsView, setEventID }) => {
 
 
     useEffect(() => {
-        // setLikes(likes);
         setEvents(events);
-
     }, [events]);
 
 
@@ -66,7 +64,7 @@ const EventsList = ({ setIsView, setEventID }) => {
             All his data will be gone.`)) {
 
             callAPI(METHOD.DELETE, 'events', eventID);
-
+            setIsDelete(true);
         } else {
             return; // If the user is not confirmed
         }

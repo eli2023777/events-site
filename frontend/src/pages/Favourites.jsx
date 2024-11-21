@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { GeneralContext } from '../App';
 import { jwtDecode } from 'jwt-decode';
 import useAPI from '../hooks/useAPI';
@@ -108,45 +107,6 @@ const Favourites = () => {
 
                                         </>
                                     }
-
-                                    {/* <div key={index} className='event'
-                                    style={{
-                                        backgroundImage: `url(${event.image?.url})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        padding: '20px',
-                                    }}
-\                                >
-                                    <h2>{event.title}</h2>
-                                    <p>Date: {eventDate.toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }
-                                    )}</p>
-                                    <p>{event.time}</p>
-                                    <p>{event.location}</p>
-
-                                    <div><Likes
-                                        event={event}
-                                        setEvents={setEvents}
-                                        isLiked={isLiked}
-                                        setIsPatch={setIsPatch}
-                                    /></div> */}
-
-
-                                    {/* {decodedToken.isBusiness &&
-                                    decodedToken._id === event.user_id &&
-                                    <>
-                                        <button onClick={(e) => editEvent(e, eventID)}
-                                        >Edit
-                                        </button>
-
-                                        <button onClick={(e) => deleteEvent(e, eventID)}>
-                                            Delete
-                                        </button>
-                                    </>
-                                } */}
                                 </div>
                             )
 

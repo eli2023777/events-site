@@ -221,14 +221,6 @@ app.use('/events', eventRoutes);
 app.use('/users', userRoutes);
 app.use('/login', loginRoutes);
 
-// app.use((req, res) => {
-//     const filePath = path.join(__dirname, 'public', req.path);
-//     res.sendFile(filePath, (err) => {
-//         if (err) {
-//             res.status(404).send('The requested resource was not found on the server');
-//         }
-//     });
-// });
 
 app.listen(7000, () => {
     console.log('listening on port 7000');

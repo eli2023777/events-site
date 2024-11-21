@@ -94,8 +94,6 @@ const Home = () => {
                             <DualIcon iconName="calendar" />
                         </button>
                         <EventsList
-                            // events={events}
-                            // setEvents={setEvents}
                             setIsView={setIsView}
                             setEventID={setEventID} />
                     </div>

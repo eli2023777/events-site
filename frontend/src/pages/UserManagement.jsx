@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useContext } from 'react';
 import { DualIcon } from '../helpers/DualIcon';
 import { GeneralContext } from '../App';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ const UserManagement = () => {
 
     const [users, setUsers] = useState([]);
     const token = localStorage.getItem('token');
-    const { API, setLoading } = useContext(GeneralContext);
     const navigate = useNavigate();
     const isDark = localStorage.getItem('isDark');
 

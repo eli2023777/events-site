@@ -28,10 +28,8 @@ const NavbarC = () => {
     const [inputSearch, setInputSearch] = useState('');
     const [searchValue, setSearchValue] = useState(''); // for search value
     const [results, setResults] = useState([]);
-    // const [] = useContext(localStorage.getItem('token'));
     const { setLoading, token, setToken, isDark, setIsDark } = useContext(GeneralContext);
     const [user, setUser] = useState({});
-    // const [isDark, setIsDark] = useState(localStorage.getItem('isDark') || false);
     const [error, callAPI, payload, data] = useAPI();
 
     const [routes, setRoutes] = useState('users');
@@ -142,13 +140,6 @@ const NavbarC = () => {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
 
-                                {/* <Form className="d-flex">
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        className="me-2"
-                                        aria-label="Search"
-                                    /> */}
 
                                 <Form className="d-flex search">
                                     <Form.Control
@@ -157,10 +148,9 @@ const NavbarC = () => {
                                         className="me-2"
                                         aria-label="Search"
                                         onChange={(e) => handleChange(e.target.value)}
-                                    // onKeyDown={handleEnterSearch}
                                     />
-                                    {/* <Button variant="outline-success">Search</Button> */}
                                 </Form>
+
                                 <Nav className="mx-auto d-flex align-items-center">
 
                                     {token &&

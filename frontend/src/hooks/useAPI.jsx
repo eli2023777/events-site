@@ -1,15 +1,12 @@
 import { useState, useContext } from 'react';
 import { GeneralContext } from '../App';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import React from 'react';
 
 
 const useAPI = () => {
     const [data, setData] = useState(null);
     const [payload, setPayload] = useState('' || {});
     const [error, setError] = useState('');
-    // const [isLoading, setLoading] = useState(false);
     let { setApiData, setLoading } = useContext(GeneralContext);
 
 
@@ -20,7 +17,6 @@ const useAPI = () => {
         setApiData(null);
 
         const token = localStorage.getItem('token');
-        const decodedToken = token ? jwtDecode(token) : null;
         setPayload(payload);
         let eventObj;
         let userObj;
@@ -190,10 +186,6 @@ const useAPI = () => {
                                 'x-auth-token': token
                             },
                         },
-
-                        // {
-                        //     "bizNumber": payload.bizNumber,
-                        // }
 
                     );
                     break;

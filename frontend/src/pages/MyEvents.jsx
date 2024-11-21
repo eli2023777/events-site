@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -15,7 +14,7 @@ const MyEvents = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
-    const { setLoading, isDark } = useContext(GeneralContext);
+    const { isDark } = useContext(GeneralContext);
     const [isHoveredIcon, setIsHoveredIcon] = useState(false);
     const [hoveredEventID, setHoveredEventID] = useState(null);
     const [isPatch, setIsPatch] = useState(false);

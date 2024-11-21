@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import User from '../models/User';
-import { Form, Button, Container } from 'react-bootstrap';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import '../css/loginC.css';
 import { GeneralContext } from '../App';
 import useAPI from '../hooks/useAPI';

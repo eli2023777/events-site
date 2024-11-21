@@ -1,14 +1,11 @@
-import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { GeneralContext } from '../App';
 
 
 const Results = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { results } = location.state || '';
-    const { setLoading } = useContext(GeneralContext);
     const isDark = localStorage.getItem('isDark');
 
 
