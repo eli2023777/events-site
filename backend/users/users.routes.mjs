@@ -13,7 +13,6 @@ export const router = Router();
 // Add new user
 router.post('/', async (req, res) => {
     const { name, isBusiness, phone, email, password, image, address } = req.body;
-    console.log('req.body', req.body);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -48,7 +47,6 @@ router.post('/', async (req, res) => {
     });
 
     const newUser = await user.save();
-    console.log('newUser', newUser);
 
 
     res.send(newUser);
@@ -82,13 +80,12 @@ router.put('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
         address, image } = req.body;
 
 
-    console.log("Data received on server:", req.body);
+
 
 
     const validate = UserRegisterOrEdit.validate({ email });
 
     if (validate.error) {
-        console.log("Validation error:", validate.error.details[0].message);
 
         return res.status(403).send(validate.error.details[0].message);
     }
@@ -120,7 +117,7 @@ router.put('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
 
     await user.save();
 
-    console.log("Updated user in database:", user);
+
 
     res.send(user);
 });

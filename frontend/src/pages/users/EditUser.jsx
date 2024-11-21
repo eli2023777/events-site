@@ -89,7 +89,6 @@ const EditUser = () => {
             setMesssage('Invalid form values. Please try again.');
             setIsSuccess(false);
             setErrors(lclErrors)
-            console.log(lclErrors);
 
         }
 

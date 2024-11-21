@@ -51,13 +51,11 @@ const Calendar = ({ events, setEvents, setIsView, setEventID }) => {
 
 
     const handleEventClick = (info) => {
-        console.log(info.event);
         setIsView(true);
         setEventID(info.event.id.toString());
     };
 
     const handleDateClick = (info) => {
-        console.log('info', info);
         const date = info.dateStr;
 
         navigate('/view-date', { state: { date } });

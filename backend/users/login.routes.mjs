@@ -37,7 +37,6 @@ router.post('/', async (req, res) => {
         isAdmin: user.isAdmin,
     }, JWT_SECRET, { expiresIn: '1h' });
 
-    console.log(user);
 
 
     res.send(token);

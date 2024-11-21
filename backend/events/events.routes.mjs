@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 
 router.get('/my-events', isAuthenticated, isBusinessUser, async (req, res) => {
     const events = await Event.find({ user_id: req.user._id });
-    console.log(events);
     res.send(events);
 })
 
@@ -94,11 +93,9 @@ router.post('/', isAuthenticated, isBusinessUser, async (req, res) => {
         user_id: user._id
     });
 
-    console.log(event);
 
 
     const newEvent = await event.save();
-    console.log(newEvent);
 
 
     res.send(newEvent);
