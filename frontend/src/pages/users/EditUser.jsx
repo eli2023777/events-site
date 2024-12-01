@@ -31,13 +31,12 @@ const EditUser = () => {
     // --- Get One - Fetch User ---
     useEffect(() => {
         if (token) {
-
             // 'location.state.id' = From User Managment page(from Admin),
             // OR 'userID' from Regular user.
             callAPI(METHOD.GET_ONE, 'users', location.state ? location.state.user._id : userID);
         }
-
     }, []);
+
 
     useEffect(() => {
         if (data)
