@@ -61,30 +61,34 @@ const EditEvent = () => {
                 <br />
                 <br />
 
-                <h1>Edit Prophile</h1>
+                <h1>Edit Event</h1>
                 <br /><br />
 
                 {event && (
                     <>
                         <form onSubmit={handleSubmit}>
                             <label for="title">Title</label>
-                            <input type="text" name="title" value={event.title || ''} onChange={handleChange} />
+                            <input type="text" name="title" placeholder={event.title || ''} onChange={handleChange} />
                             <br />
                             <br />
                             <label for="date">Date</label>
-                            <input type="date" name="date" value={event.date || ''} onChange={handleChange} />
+                            <input type="date" name="date" placeholder={event.date || ''} onChange={handleChange} />
                             <br />
                             <br />
                             <label for="time">Time</label>
-                            <input type="time" name="time" value={event.time || ''} onChange={handleChange} />
+                            <input type="time" name="time" placeholder={event.time || ''} onChange={handleChange} />
                             <br />
                             <br />
                             <label for="zoom-link">Location / Zoom Link</label>
-                            <input type="text" name="location" value={event.location || ''} onChange={handleChange} />
+                            <input type="text" name="location" placeholder={event.location || ''} onChange={handleChange} />
+                            <br />
+                            <br />
+                            <label for="description">Description</label>
+                            <input type="text" name="description" placeholder={event.description || ''} onChange={handleChange} />
                             <br />
                             <br />
                             <label for="image-url">Image URL</label>
-                            <input type="url" name="url" value={event.image?.url || ''} onChange={handleChange} />
+                            <input type="url" name="url" placeholder={event.image?.url || ''} onChange={handleChange} />
                             <br />
                             <br />
                             <Button variant="success" type="submit"  >
