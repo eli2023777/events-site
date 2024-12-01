@@ -86,7 +86,7 @@ const Register = () => {
                 <h1>Register</h1>
                 <br /><br />
 
-                <Form onSubmit={handelSubmit}>
+                <Form id='register' onSubmit={handelSubmit}>
 
                     <div class="grid">
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -190,7 +190,7 @@ const Register = () => {
                     </div>
 
                     <div>
-                        <Button variant="success" form='logInForm' type="submit"  >
+                        <Button variant="success" form='register' type="submit"  >
                             Submit
                         </Button>
 
