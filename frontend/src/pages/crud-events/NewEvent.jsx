@@ -107,6 +107,17 @@ const NewEvent = () => {
 
                     </Form.Group>
 
+                    <br />
+
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control type="location" name="description" placeholder="description"
+                            onChange={handleChange} />
+
+                    </Form.Group>
+
+                    <br />
+
                     <Form.Group className="mb-3" controlId="formBasicPhone">
                         <Form.Label>Image URL</Form.Label>
                         <Form.Control type="url" name="url" placeholder="url" onChange={handleChange} />
