@@ -21,6 +21,36 @@
 
 ## Getting Started
 
+## Initial Users
+This project includes a feature to automatically create three initial users in the database when the application starts. These users are defined with distinct roles to facilitate testing and understanding of the system's functionality. The users are:
+
+Admin User
+
+Email: admin@10.com
+Password: Admin123!
+Role: Admin
+Description: This user has administrative privileges and can perform actions like managing users and events.
+
+
+Business User
+
+Email: business@10.com
+Password: Business123!
+Role: Business
+Description: This user represents a business account with specific permissions and features tailored for business operations.
+
+
+Regular User
+
+Email: regular@10.com
+Password: Regular123!
+Role: Regular
+Description: A standard user account for general usage.
+Behavior
+These users are created only if they do not already exist in the database.
+Passwords are securely hashed using bcrypt before being stored in the database.
+You can use these users to explore the different roles and permissions available within the application. Modify or delete them as needed for production use
+
 ### Prerequisites
 
 Make sure you have the following installed on your machine:
