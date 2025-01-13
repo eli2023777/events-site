@@ -120,11 +120,14 @@ const NavbarC = () => {
 
             {['md'].map((expand) => (
                 <Navbar key={expand} expand={expand} className="mb-3 header"
-                    bg={isDark ? "dark" : 'light'} variant={isDark ? "dark" : 'light'}  >
-                    <Container fluid>
+                    style={{ backgroundColor: isDark ? "#390135" : "#f6f4ef" }} variant={isDark ? "dark" : 'light'}
+                >
+                    <Container fluid className="d-flex justify-content-between align-items-center">
 
-                        <Navbar.Brand href="/" className="me-auto">
-                            <FontAwesomeIcon icon={faCalendarAlt} size="2x" className="me-2 text-warning" />
+                        {/* Logo */}
+                        <Navbar.Brand href="/" className="me-2">
+                            <FontAwesomeIcon icon={faCalendarAlt} size="2x"
+                                className={isDark ? "me-2 text-success" : "me-2 text-warning"} />
                         </Navbar.Brand>
 
                         <Navbar.Toggle aria-controls={`offcanvasNavbar - expand - ${expand}`} />
@@ -140,8 +143,8 @@ const NavbarC = () => {
                             </Offcanvas.Header>
                             <Offcanvas.Body>
 
-
-                                <Form className="d-flex search">
+                                {/* Search bar */}
+                                <Form className="flex-grow-1 mx-4 search">
                                     <Form.Control
                                         type="search"
                                         placeholder="Search"
@@ -151,7 +154,7 @@ const NavbarC = () => {
                                     />
                                 </Form>
 
-                                <Nav className="mx-auto d-flex align-items-center">
+                                <Nav className="d-flex justify-content-end align-items-centerr">
 
                                     {token &&
                                         < Nav.Link href="/favourites">Favourites</Nav.Link>
@@ -176,7 +179,7 @@ const NavbarC = () => {
 
 
 
-                                <Nav className="justify-content-end flex-grow-1 pe-3">
+                                <Nav className="mx-auto d-flex align-items-center">
                                     <Button variant={isDark ? 'light' : ''}
                                         className='darkIcon'
                                         onClick={() =>

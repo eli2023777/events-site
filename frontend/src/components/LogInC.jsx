@@ -103,58 +103,90 @@ const LogInC = () => {
 
 
     return (
-        <div>
-            <div className='loginCFrame' onClick={() => setLoginC(false)}>
-                <div className="loginC" onClick={(e) => {
-                    e.stopPropagation(); setLoginC(true);
-                }}>
+
+        // <div>
+        //     <div className='loginCFrame' onClick={() => setLoginC(false)}>
+        //         <div className="loginC" onClick={(e) => {
+        //             e.stopPropagation(); setLoginC(true);
+        //         }}>
 
 
-                    <h6>For your privacy, you have logged out.</h6>
+        //             <h6>For your privacy, you have logged out.</h6>
 
-                    <h4>Please log in again</h4>
+        //             <h4>Please log in again</h4>
 
-                    <h6>Not registered yet? <a
-                        href="/register" onClick={() => setLoginC(false)}
-                    >Register here!
-                    </a></h6>
+        //             <h6>Not registered yet? <a
+        //                 href="/register" onClick={() => setLoginC(false)}
+        //             >Register here!
+        //             </a></h6>
 
-                    <br />
-                    <br />
-                    <Form id='logInForm' onSubmit={handleSubmit} >
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" name='email' placeholder="Enter email" onChange={handleChange} />
-                            <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                            </Form.Text>
-                            <div style={{ color: 'red' }}>{errors && errors['email']}</div>
-                        </Form.Group>
+        //             <br />
+        //             <br />
+        //             <Form id='logInForm' onSubmit={handleSubmit} >
+        //                 <Form.Group className="mb-3" controlId="formBasicEmail">
+        //                     <Form.Label>Email address</Form.Label>
+        //                     <Form.Control type="email" name='email' placeholder="Enter email" onChange={handleChange} />
+        //                     <Form.Text className="text-muted">
+        //                         We'll never share your email with anyone else.
+        //                     </Form.Text>
+        //                     <div style={{ color: 'red' }}>{errors && errors['email']}</div>
+        //                 </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
-                            <div style={{ color: 'red' }}>{errors && errors['password']}</div>
-                        </Form.Group>
+        //                 <Form.Group className="mb-3" controlId="formBasicPassword">
+        //                     <Form.Label>Password</Form.Label>
+        //                     <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
+        //                     <div style={{ color: 'red' }}>{errors && errors['password']}</div>
+        //                 </Form.Group>
 
-                    </Form>
-
-
-
-                    <Button variant="primary" form='logInForm' type="submit" style={{ width: '100%' }} >
-                        Submit
-                    </Button>
-
-                    {APIError &&
-                        <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
-                    }
-
-                    <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
+        //             </Form>
 
 
+
+        //             <Button variant="primary" form='logInForm' type="submit" style={{ width: '100%' }} >
+        //                 Submit
+        //             </Button>
+
+        //             {APIError &&
+        //                 <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>
+        //             }
+
+        //             <div style={{ color: isSuccess ? 'green' : 'red' }}>{message}</div>
+
+
+        //         </div>
+        //     </div>
+        // </div >
+
+        <>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                    <input type="text" class="form-control" id="recipient-name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div >
+        </>
     )
 }
 

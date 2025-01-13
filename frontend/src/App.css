@@ -34,10 +34,11 @@ button {
 
 .darkFrame {
   font-size: 1.2rem;
-  background-color: #ffffffc7;
+  /* background-color: #ffffff27; */
+  color: #fff;
   padding: 50px;
   border-radius: 50px;
-  border: #999 solid 1px;
+  /* border: #999 solid 1px; */
   width: 90%;
   margin: 0 auto;
 }
@@ -49,7 +50,7 @@ button {
 
 .title {
   font-weight: bold;
-  background-color: #e3e0e0;
+  background-color: #131212;
   border-radius: 10px;
   display: inline-block;
   padding: 5px 10px;

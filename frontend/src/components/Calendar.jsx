@@ -8,6 +8,7 @@ import { GeneralContext } from '../App';
 import { jwtDecode } from 'jwt-decode';
 import { METHOD } from '../hooks/useAPI';
 import useAPI from '../hooks/useAPI';
+import '../css/calendar.css';
 
 
 
@@ -63,8 +64,6 @@ const Calendar = ({ events, setEvents, setIsView, setEventID }) => {
 
     return (
         <div>
-
-
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"

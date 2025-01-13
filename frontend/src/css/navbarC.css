@@ -1,14 +1,19 @@
 .header {
-    border-bottom: #006d31 5px solid;
+    /* border-bottom: #006d31 5px solid; */
     border-radius: 0 0 10px 10px;
     box-shadow: #919191 0 0 2px 2px;
     z-index: 1000;
     position: fixed;
     top: 0;
-    width: 95%;
+    width: 100%;
     left: 50%;
     transform: translateX(-50%);
+    /* background-color: #f6f4ef; */
 }
+
+
+
+
 
 body {
     padding-top: 100px;
