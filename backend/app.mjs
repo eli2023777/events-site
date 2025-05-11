@@ -176,8 +176,13 @@ const createInitialEvents = async () => {
 const main = async () => {
     try {
         // await mongoose.connect('mongodb://localhost:27017/events')
-        const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/events';
-        await mongoose.connect(mongoUri)
+        const mongoUri = process.env.MONGO_URI;
+        await mongoose.connect(mongoUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 5000, // 5 sec connecting time 
+        })
+            // await mongoose.connect(mongoUri)
             .then(() => console.log(chalk.blue(`Connected to MongoDB`)))
             .catch(err => console.error('Error connecting to MongoDB', err));
 
