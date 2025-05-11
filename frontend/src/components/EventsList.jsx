@@ -7,6 +7,7 @@ import useAPI from '../hooks/useAPI';
 import { GeneralContext } from '../App';
 
 
+
 const EventsList = ({ setIsView, setEventID }) => {
 
     const [events, setEvents] = useState([]);

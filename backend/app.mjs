@@ -175,7 +175,9 @@ const createInitialEvents = async () => {
 // Main function to connect to MongoDB and create the admin user if necessary
 const main = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/events')
+        // await mongoose.connect('mongodb://localhost:27017/events')
+        const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/events';
+        await mongoose.connect(mongoUri)
             .then(() => console.log(chalk.blue(`Connected to MongoDB`)))
             .catch(err => console.error('Error connecting to MongoDB', err));
 
