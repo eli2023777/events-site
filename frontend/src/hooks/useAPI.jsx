@@ -21,7 +21,8 @@ const useAPI = () => {
         let eventObj;
         let userObj;
         let loginObj;
-        const API = 'http://localhost:7000';
+        // const API = 'http://localhost:7000';
+        const API = 'https://events-site-backend-reu1.onrender.com/';
         const newAPI = `${API}/${routes}`;
 
         if (payload) {
