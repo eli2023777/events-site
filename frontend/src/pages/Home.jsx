@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Calendar from '../components/Calendar.jsx';
 import EventsList from '../components/EventsList.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';

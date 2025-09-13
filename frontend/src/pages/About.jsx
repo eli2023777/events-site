@@ -1,13 +1,13 @@
-import React from 'react';
 import '../css/About.css'
-const isDark = localStorage.getItem('isDark');
 
 
 const About = () => {
+    const isDark = localStorage.getItem('isDark');
+
     return (
         <div>
-            <div className={isDark ? 'darkFrame' : 'lightFrame'}>
-                <div class="about">
+            <div className={isDark ? 'lightFrame' : 'darkFrame'}>
+                <div className="about">
                     <h1>About Us</h1>
 
                     <p>Welcome to [Your Event Management Website Name], where every event becomes an unforgettable experience!</p>

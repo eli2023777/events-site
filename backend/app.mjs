@@ -205,7 +205,7 @@ app.use(express.json());
 
 app.use(cors({
     origin: ['https://eli2023777.github.io', 'https://eli2023777.github.io/events-site',
-        'http://localhost:3000'],
+        'http://localhost:3000/events-site'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: 'Content-Type, Accept, x-auth-token',

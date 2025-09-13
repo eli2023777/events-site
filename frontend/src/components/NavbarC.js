@@ -125,7 +125,7 @@ const NavbarC = () => {
                     <Container fluid className="d-flex justify-content-between align-items-center">
 
                         {/* Logo */}
-                        <Navbar.Brand href="/" className="me-2">
+                        <Navbar.Brand href="/events-site" className="me-2">
                             <FontAwesomeIcon icon={faCalendarAlt} size="2x"
                                 className={isDark ? "me-2 text-success" : "me-2 text-warning"} />
                         </Navbar.Brand>
@@ -157,21 +157,21 @@ const NavbarC = () => {
                                 <Nav className="d-flex justify-content-end align-items-centerr">
 
                                     {token &&
-                                        < Nav.Link href="/favourites">Favourites</Nav.Link>
+                                        < Nav.Link href="/events-site/favourites">Favourites</Nav.Link>
                                     }
 
                                     {/*  User Management - Only for Admin */}
                                     {token &&
                                         user.isAdmin &&
 
-                                        < Nav.Link href="/user-management">User Management</Nav.Link>
+                                        < Nav.Link href="/events-site/user-management">User Management</Nav.Link>
                                     }
 
                                     {/*  My Events - Only for Business */}
                                     {token &&
                                         user.isBusiness &&
 
-                                        < Nav.Link href="/my-events">My Events</Nav.Link>
+                                        < Nav.Link href="/events-site/my-events">My Events</Nav.Link>
                                     }
 
 

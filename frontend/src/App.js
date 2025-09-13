@@ -114,7 +114,6 @@ function App() {
           {/* Routes definition */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
             <Route path="/new-event" element={<NewEvent />} />
             <Route path="/view-event" element={<ViewEvent />} />
             <Route path="/view-date" element={<ViewDate />} />
@@ -122,6 +121,8 @@ function App() {
             <Route path='/my-events' element={<MyEvents />} />
             <Route path='/results' element={<Results />} />
             <Route path='/register' element={<Register />} />
+            <Route path="/about" element={<About />} />
+
             <Route path='/logIn' element={<LogIn />} />
             <Route path='/user-management' element={<UserManagement />} />
             <Route path='/edit-user' element={<EditUser />} />

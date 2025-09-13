@@ -41,9 +41,17 @@ const LogInC = () => {
 
 
     const saveToken = () => {
-        const expDate = Date.now() + 1;
+        const expDate = Date.now() + 60 * 60 * 1000; // One Hour
         localStorage.setItem("expDate", expDate);
     };
+
+    useEffect(() => {
+        const expDate = localStorage.getItem("expDate");
+        if (!expDate || Date.now() > +expDate) {
+            setToken(null);
+            setLoginC(true); // מחזיר למסך login
+        }
+    }, []);
 
 
     const validateUser = () => {

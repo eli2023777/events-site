@@ -66,7 +66,7 @@ const Footer = () => {
             >
                 {/* Home */}
                 <Nav.Item >
-                    <Nav.Link href="/" onClick={() =>
+                    <Nav.Link href="/events-site" onClick={() =>
                         setUIFooterState(UI_ICONS_FOOTER_STATE.HOME)
                     } >
                         {homeIconFooter ?
@@ -83,7 +83,7 @@ const Footer = () => {
                 {/* Fav Cards */}
                 {token &&
                     <Nav.Item>
-                        <Nav.Link href='/favourites'
+                        <Nav.Link href='/events-site/favourites'
                             onClick={() => {
                                 setUIFooterState(UI_ICONS_FOOTER_STATE.LIKE);
                             }} >
@@ -96,7 +96,7 @@ const Footer = () => {
 
                 {/* About */}
                 <Nav.Item >
-                    <Nav.Link href='/about'
+                    <Nav.Link href='/events-site/about'
                         onClick={() =>
                             setUIFooterState(UI_ICONS_FOOTER_STATE.ABOUT)
                         }>
