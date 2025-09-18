@@ -106,6 +106,7 @@ function App() {
     <GeneralContext.Provider value={{ apiData, setApiData, setLoading, setLoginC, token, setToken, isDark, setIsDark }}>
 
       <div className="App">
+
         <NavbarC />
 
         <div>
@@ -138,13 +139,12 @@ function App() {
 
 
           <Footer />
-          <div>
-
-          </div>
         </div>
+
+
       </div>
 
-    </GeneralContext.Provider>
+    </GeneralContext.Provider >
 
   );
 }
