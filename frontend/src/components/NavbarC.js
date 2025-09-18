@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState, useContext } from 'react';
-import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import '../css/navbarC.css';
@@ -157,21 +157,21 @@ const NavbarC = () => {
                                 <Nav className="d-flex justify-content-end align-items-centerr">
 
                                     {token &&
-                                        < Nav.Link href="/events-site/favourites">Favourites</Nav.Link>
+                                        <Nav.Link as={Link} to="/favourites">Favourites</Nav.Link>
                                     }
 
                                     {/*  User Management - Only for Admin */}
                                     {token &&
                                         user.isAdmin &&
 
-                                        < Nav.Link href="/events-site/user-management">User Management</Nav.Link>
+                                        <Nav.Link as={Link} to="/user-management">User Management</Nav.Link>
                                     }
 
                                     {/*  My Events - Only for Business */}
                                     {token &&
                                         user.isBusiness &&
 
-                                        < Nav.Link href="/events-site/my-events">My Events</Nav.Link>
+                                        <Nav.Link as={Link} to="/my-events">My Events</Nav.Link>
                                     }
 
 

@@ -5,6 +5,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { METHOD } from '../hooks/useAPI';
 import useAPI from '../hooks/useAPI';
 import '../css/footer.css';
+import { Link } from 'react-router-dom';
 
 
 const Footer = () => {
@@ -83,7 +84,7 @@ const Footer = () => {
                 {/* Fav Cards */}
                 {token &&
                     <Nav.Item>
-                        <Nav.Link href='/events-site/favourites'
+                        <Nav.Link as={Link} to='/favourites'
                             onClick={() => {
                                 setUIFooterState(UI_ICONS_FOOTER_STATE.LIKE);
                             }} >
@@ -96,7 +97,7 @@ const Footer = () => {
 
                 {/* About */}
                 <Nav.Item >
-                    <Nav.Link href='/events-site/about'
+                    <Nav.Link as={Link} to='/about'
                         onClick={() =>
                             setUIFooterState(UI_ICONS_FOOTER_STATE.ABOUT)
                         }>

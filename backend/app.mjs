@@ -204,8 +204,10 @@ app.use(morgan(':method :url :status :response-time ms - :date[iso]'));
 app.use(express.json());
 
 app.use(cors({
-    origin: ['https://eli2023777.github.io', 'https://eli2023777.github.io/events-site',
-        'http://localhost:3000/events-site'],
+    origin: ['http://localhost:3000/events-site',
+        'https://eli2023777.github.io',
+        'https://eli2023777.github.io/events-site'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: 'Content-Type, Accept, x-auth-token',
