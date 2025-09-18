@@ -10,7 +10,7 @@ const About = () => {
                 <div className="about">
                     <h1>About Us</h1>
 
-                    <p>Welcome to [Your Event Management Website Name], where every event becomes an unforgettable experience!</p>
+                    <p>Welcome to our Events site, where every event becomes an unforgettable experience!</p>
 
                     <p>We are passionate about simplifying event planning and providing tools to ensure seamless coordination and enjoyment for every occasion. Whether it’s a wedding, corporate conference, birthday party, or a casual gathering, our platform is designed to cater to your unique needs.</p>
 
