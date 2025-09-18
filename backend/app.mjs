@@ -204,7 +204,7 @@ app.use(morgan(':method :url :status :response-time ms - :date[iso]'));
 app.use(express.json());
 
 app.use(cors({
-    origin: ['http://localhost:3000/events-site',
+    origin: ['http://localhost:3000',
         'https://eli2023777.github.io',
         'https://eli2023777.github.io/events-site'
     ],
