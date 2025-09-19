@@ -75,74 +75,82 @@ const EventsList = ({ setIsView, setEventID }) => {
 
     return (
         <div>
+            {/* If events unavailable  */}
             {data && data.length === 0 ? (
-                <p>No events available</p>
+                <h5>
+                    Oops! Unfortunately, there are no events available at the moment.
+                    Please come back later.
+                </h5>
             ) : (
                 <>
                     <br />
-                    <h2>Events list</h2>
+                    <h2>Events List</h2>
                     <br />
+
 
                     <div className='grid'>
 
-                        {events.map(
-                            (event, index) => {
-                                const eventDate = new Date(event.date);
-                                const eventID = event._id;
-                                const isLiked = event.likes?.includes(decodedToken?._id);
+                        {[...events] // using (...) instead of changing the state (events) itself.
+                            // Ordering events from the oldest event to the newest event
+                            .sort((a, b) => new Date(b.date) - new Date(a.date))
+                            .map(
+                                (event, index) => {
+                                    const eventDate = new Date(event.date);
+                                    const eventID = event._id;
+                                    const isLiked = event.likes?.includes(decodedToken?._id);
 
 
-                                return (
-                                    <div key={index}
-                                        className={hoveredEventID ? 'hoveredEvent' : 'event'}
-                                        style={{
-                                            ...(hoveredEventID !== eventID && {
-                                                backgroundImage: `url(${event.image?.url})`,
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center'
-                                            })
-                                        }}
-                                        onMouseEnter={() => setHoveredEventID(eventID)}
-                                        onMouseLeave={() => setHoveredEventID(null)}
-                                        onClick={() => handleEventClick(eventID)} >
+                                    return (
+                                        <div key={index}
+                                            className={hoveredEventID ? 'hoveredEvent' : 'event'}
+                                            style={{
+                                                ...(hoveredEventID !== eventID && {
+                                                    backgroundImage: `url(${event.image?.url})`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center'
+                                                })
+                                            }}
+                                            onMouseEnter={() => setHoveredEventID(eventID)}
+                                            onMouseLeave={() => setHoveredEventID(null)}
+                                            onClick={() => handleEventClick(eventID)} >
 
-                                        <h2 className='title'>{event.title}</h2>
+                                            <h2 className='title'>{event.title}</h2>
 
-                                        {hoveredEventID === eventID &&
-                                            <>
-                                                <p>{eventDate.toLocaleDateString("en-US", {
-                                                    year: "numeric",
-                                                    month: "long",
-                                                    day: "numeric",
-                                                }
-                                                )}</p>
+                                            {hoveredEventID === eventID &&
+                                                <>
+                                                    <p>{eventDate.toLocaleDateString("en-US", {
+                                                        year: "numeric",
+                                                        month: "long",
+                                                        day: "numeric",
+                                                    }
+                                                    )}</p>
 
-                                                <p>{event.time}</p>
-                                                <p>{event.location}</p>
-
-
-                                                {token &&
-                                                    decodedToken.isAdmin &&
-                                                    <button onClick={(e) => deleteEvent(e, eventID)}>
-                                                        <DualIcon iconName="trash" />
-                                                    </button>
-                                                }
-                                            </>
-                                        }
-                                        <div className='like'        >
-                                            <Likes
-                                                event={event}
-                                                setEvents={setEvents}
-                                                isLiked={isLiked}
-                                                setIsPatch={setIsPatch}
-                                            /></div>
+                                                    <p>{event.time}</p>
+                                                    <p>{event.location}</p>
 
 
-                                    </div>
-                                )
-                            }
+                                                    {token &&
+                                                        decodedToken.isAdmin &&
+                                                        <button onClick={(e) => deleteEvent(e, eventID)}>
+                                                            <DualIcon iconName="trash" />
+                                                        </button>
+                                                    }
+                                                </>
+                                            }
+                                            <div className='like'        >
+                                                <Likes
+                                                    event={event}
+                                                    setEvents={setEvents}
+                                                    isLiked={isLiked}
+                                                    setIsPatch={setIsPatch}
+                                                /></div>
 
-                        )}
+
+                                        </div>
+                                    )
+                                }
+
+                            )}
 
                     </div>
                 </>

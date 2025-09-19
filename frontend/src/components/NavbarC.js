@@ -35,6 +35,17 @@ const NavbarC = () => {
     const [routes, setRoutes] = useState('users');
 
 
+    const isInitialUserCheck = () => {
+        if (user.email === 'business@10.com' || 'admin@10.com' || 'regular @10.com')
+            return true;
+        else
+            return false;
+    }
+
+    const [isInitialUser] = useState(isInitialUserCheck);
+
+
+
     // For Search bar
     const handleChange = (value) => {
         setInputSearch(value);
@@ -62,6 +73,8 @@ const NavbarC = () => {
             callAPI(METHOD.GET_ONE, routes, userID);
         }
     };
+
+
 
 
     useEffect(() => {
@@ -110,6 +123,7 @@ const NavbarC = () => {
         localStorage.setItem('isDark', isDark)
 
     }, [isDark]);
+
 
 
 
@@ -237,45 +251,75 @@ const NavbarC = () => {
                                     }
 
                                     {token &&
+                                        (
+                                            isInitialUser ? (
 
-                                        <NavDropdown title={
-                                            // Check if there is a image url,
-                                            // if not - put default image by role
+                                                <Nav className="mx-auto d-flex align-items-center">
+                                                    {/* Check if there is a image url, */}
+                                                    {/* if not - put default image by role */}
+                                                    {user.image?.url ? (
+                                                        <img
+                                                            className="profileImg"
+                                                            src={user?.image?.url}
+                                                            alt={user?.image?.alt}
+                                                        />
+                                                    ) : (
+                                                        <FontAwesomeIcon
+                                                            icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
+                                                            size="3x"
+                                                            className="profileIcon"
+                                                        />
+                                                    )}
 
-                                            user.image?.url ? (
-                                                <img
-                                                    className="profileImg"
-                                                    src={user.image.url}
-                                                    alt={user.image.alt}
-                                                />
+
+                                                </Nav>
+
                                             ) : (
-                                                <FontAwesomeIcon
-                                                    icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
-                                                    size="3x"
-                                                    className="profileIcon"
-                                                />
-                                            )
+
+                                                < NavDropdown title={
+                                                    // Check if there is a image url,
+                                                    // if not - put default image by role
+                                                    user.image?.url ? (
+                                                        <img
+                                                            className="profileImg"
+                                                            src={user.image.url}
+                                                            alt={user.image.alt}
+                                                        />
+                                                    ) : (
+                                                        <FontAwesomeIcon
+                                                            icon={user.isAdmin ? faKey : user.isBusiness ? faUserTie : faUser}
+                                                            size="3x"
+                                                            className="profileIcon"
+                                                        />
+                                                    )
 
 
-                                        }
-                                            id="navbarScrollingDropdown"
-                                            // Addinng a class for CSS to delete the arrow icon
-                                            className="no-arrow-dropdown mx-auto d-flex align-items-center"
-                                            align="end"
-                                        >
-                                            <NavDropdown.Item href="/edit-user">
-                                                Edit prophile
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item
-                                                href={user.image?.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                View image prophile                                                    </NavDropdown.Item>
+                                                }
+                                                    id="navbarScrollingDropdown"
+                                                    // Addinng a class for CSS to delete the arrow icon
+                                                    className="no-arrow-dropdown mx-auto d-flex align-items-center"
+                                                    align="end"
+                                                >
 
-                                        </NavDropdown>
-                                    }
+                                                    {/* unavailable for initial users */}
+                                                    {/* {isInitialUser === false && ( */}
+                                                    <>
+                                                        <NavDropdown.Item as={Link} to="/edit-user">
+                                                            Edit prophile
+                                                        </NavDropdown.Item>
+                                                        <NavDropdown.Divider />
+                                                        <NavDropdown.Item
+                                                            as={Link} to={user.image?.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            View image prophile
+                                                        </NavDropdown.Item>
+                                                    </>
+
+
+                                                </NavDropdown>
+                                            ))}
                                 </Nav>
 
                             </Offcanvas.Body>
