@@ -4,6 +4,7 @@ import { isAuthenticated, isSameUser, isSameUserOrAdmin, isAdmin } from "../guar
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import { UserRegisterOrEdit } from './users.joi.mjs';
+import { createInitialUsers } from '../app.mjs';
 
 
 
@@ -162,6 +163,10 @@ router.patch('/:id', isAuthenticated, isSameUser, async (req, res) => {
 router.delete('/:id', isAuthenticated, isSameUserOrAdmin, async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
+
+        // Prevent initial users from being deleted
+        await createInitialUsers();
+
         if (!user) {
             return res.status(404).send('User not found');
         }

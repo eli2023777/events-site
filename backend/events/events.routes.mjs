@@ -7,7 +7,7 @@ import {
     isBusinessUser,
 } from "../guard.mjs";
 import jwt from "jsonwebtoken";
-
+import { createInitialEvents } from '../app.mjs';
 
 export const router = Router();
 
@@ -182,6 +182,9 @@ router.patch('/:id', isAuthenticated, async (req, res) => {
 router.delete('/:id', isAuthenticated, isSameUserOrAdminForEvents, async (req, res) => {
     try {
         const event = await Event.findByIdAndDelete(req.params.id);
+
+        // Prevent initial events from being deleted
+        await createInitialEvents();
 
         if (!event) {
             return res.status(404).send('Event not found');

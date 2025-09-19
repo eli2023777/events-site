@@ -231,6 +231,7 @@ app.use('/events', eventRoutes);
 app.use('/users', userRoutes);
 app.use('/login', loginRoutes);
 
+export { createInitialUsers, createInitialEvents };
 
 
 app.listen(7000, () => {
