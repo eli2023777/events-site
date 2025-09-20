@@ -47,9 +47,12 @@ const LogInC = () => {
 
     useEffect(() => {
         const expDate = localStorage.getItem("expDate");
-        if (!expDate || Date.now() > +expDate) {
+        console.log(expDate);
+
+        // !expDate || 
+        if (Date.now() > +expDate) {
             setToken(null);
-            setLoginC(true); // מחזיר למסך login
+            setLoginC(true); // Show login modal
         }
     }, []);
 

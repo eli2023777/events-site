@@ -54,11 +54,11 @@ function App() {
   // Check if token expired
   const isTokenExpired = () => {
     const expDate = localStorage.getItem("expDate");
-    if (!expDate) return true;
+    // if (!expDate) return true;
     return Date.now() > expDate;
   };
 
-  // Check if 15 minutes passed since last reminder
+  // Check if 30 minutes passed since last reminder
   const isReminderTimeElapsed = () => {
     const lastReminder = localStorage.getItem("lastLoginReminder");
     if (!lastReminder) return true; // In first time
@@ -93,10 +93,10 @@ function App() {
   }, []);
 
 
-  // Check if the token expired and if so Ask to Login every 15 minutes
   useEffect(() => {
     localStorage.setItem('loading', loading);
   }, []);
+
 
 
 

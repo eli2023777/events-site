@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { DualIcon } from '../helpers/DualIcon';
 import Likes from '../helpers/Likes';
@@ -10,6 +10,7 @@ import { GeneralContext } from '../App';
 
 const EventsList = ({ setIsView, setEventID }) => {
 
+    const { isDark } = useContext(GeneralContext);
     const [events, setEvents] = useState([]);
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
@@ -114,7 +115,8 @@ const EventsList = ({ setIsView, setEventID }) => {
                                             onMouseLeave={() => setHoveredEventID(null)}
                                             onClick={() => handleEventClick(eventID)} >
 
-                                            <h2 className='title'>{event.title}</h2>
+
+                                            <h2 className={isDark ? 'title' : 'darkTitle'}>{event.title}</h2>
 
                                             {hoveredEventID === eventID &&
                                                 <>

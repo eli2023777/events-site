@@ -20,7 +20,7 @@ const ViewDate = () => {
     const token = localStorage.getItem('token');
     const decodedToken = token ? jwtDecode(token) : null;
 
-    const isDark = localStorage.getItem('isDark');
+    const { isDark } = useContext(GeneralContext);
 
     const [isHoveredIcon, setIsHoveredIcon] = useState(false);
     const [hoveredEventID, setHoveredEventID] = useState(null);
@@ -55,13 +55,15 @@ const ViewDate = () => {
 
     return (
         <div>
+            <h2>{(new Date(date)).toLocaleDateString('en-GB')}</h2>
+
             <div className={isDark ? 'darkFrame' : 'lightFrame'}>
 
-                <h2>{(new Date(date)).toLocaleDateString('en-GB')}</h2>
 
                 <button onClick={() => navigate(-1)}>
                     <DualIcon iconName="backward" />
                 </button>
+
 
                 {/* Add new event */}
                 {decodedToken && decodedToken.isBusiness &&
@@ -76,6 +78,7 @@ const ViewDate = () => {
                         <DualIcon iconName="plus" />
                     </button>
                 }
+
 
 
                 <div className='grid'>
@@ -107,7 +110,8 @@ const ViewDate = () => {
                                         onMouseLeave={() => setHoveredEventID(null)}
                                         onClick={() => handleEventClick(eventID)} >
 
-                                        <h2 className='title'>{event.title}</h2>
+                                        <h2 className={isDark ? 'title' : 'darkTitle'}>{event.title}</h2>
+
 
                                         {hoveredEventID === eventID &&
                                             <>

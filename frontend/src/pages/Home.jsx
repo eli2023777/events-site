@@ -14,7 +14,7 @@ const Home = () => {
 
     const { apiData, setApiData, isDark } = useContext(GeneralContext);
     const location = useLocation();
-    const [uiState, setUIState] = useState(location.state ? UI_STATE.EVENTS : UI_STATE.CALENDAR);
+    const [uiState, setUIState] = useState(location.state ? UI_STATE.CALENDAR : UI_STATE.EVENTS);
     const [isView, setIsView] = useState(false);
     const [eventID, setEventID] = useState();
     const [events, setEvents] = useState([]);

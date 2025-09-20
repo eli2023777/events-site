@@ -48,12 +48,21 @@ button {
   text-align: center;
 }
 
-.title {
-  font-weight: bold;
-  background-color: #131212;
+.title,
+.darkTitle {
   border-radius: 10px;
   display: inline-block;
   padding: 5px 10px;
+  font-weight: bold;
+}
+
+.title {
+  background-color: #131212;
+
+}
+
+.darkTitle {
+  background-color: #fff;
 }
 
 .event,
