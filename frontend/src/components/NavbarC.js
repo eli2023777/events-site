@@ -250,6 +250,8 @@ const NavbarC = () => {
                                         </Nav>
                                     }
 
+
+                                    {/* Profile */}
                                     {token &&
                                         (
                                             isInitialUser ? (

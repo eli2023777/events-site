@@ -6,3 +6,19 @@
     border-radius: 10px 10px 0 0;
     background-color: #ffffff36;
 }
+
+.underFooter {
+    width: 100vw;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 75vw;
+    text-align: left;
+    align-items: center;
+}
+
+.underFooterP {
+    margin: auto;
+    letter-spacing: 0.3px;
+}

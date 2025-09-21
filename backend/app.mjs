@@ -100,14 +100,15 @@ const createInitialUsers = async () => {
 // Create initial Events
 const createInitialEvents = async () => {
 
-    const event1_title = 'Tech Innovators Conference 2024';
-    const event2_title = 'Summer Beach Party 2024';
+    const now = new Date();
+
+    const event1_title = `Tech Innovators Conference ${now.getFullYear()}`;
+    const event2_title = `Summer Beach Party ${now.getFullYear()}`;
     const event3_title = 'Annual Soccer Tournament';
 
     const existingEvent1 = await Event.findOne({ title: event1_title });
     const existingEvent2 = await Event.findOne({ title: event2_title });
     const existingEvent3 = await Event.findOne({ title: event3_title });
-    const now = new Date();
 
     if (!existingEvent1) {
 

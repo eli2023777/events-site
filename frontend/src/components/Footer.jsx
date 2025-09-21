@@ -107,6 +107,17 @@ const Footer = () => {
                     </Nav.Link>
                 </Nav.Item>
             </Nav>
+
+            <div className='underFooter'
+                style={{ backgroundColor: isDark ? "#390135" : "#f6f4ef" }}
+            >
+                <p className='underFooterP'
+                    style={{ color: isDark ? "#fff" : "#000" }}
+                >Eli Holzman</p>
+                <p className='underFooterP'
+                    style={{ color: isDark ? "#fff" : "#000" }}
+                >Copyright &copy; {new Date().getFullYear()}</p>
+            </div>
         </div>
     )
 }
