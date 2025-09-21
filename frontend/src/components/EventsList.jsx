@@ -79,7 +79,10 @@ const EventsList = ({ setIsView, setEventID }) => {
             {/* If events unavailable  */}
             {data && data.length === 0 ? (
                 <h5>
-                    Oops! Unfortunately, there are no events available at the moment.
+                    Oops!
+                    <br />
+                    Unfortunately, there are no events available at the moment.
+                    <br />
                     Please come back later.
                 </h5>
             ) : (

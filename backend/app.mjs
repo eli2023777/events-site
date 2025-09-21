@@ -107,13 +107,17 @@ const createInitialEvents = async () => {
     const existingEvent1 = await Event.findOne({ title: event1_title });
     const existingEvent2 = await Event.findOne({ title: event2_title });
     const existingEvent3 = await Event.findOne({ title: event3_title });
+    const now = new Date();
 
     if (!existingEvent1) {
 
         const event1 = new Event({
             title: event1_title,
 
-            date: new Date('2024-11-20'),
+            // date: new Date('2024-11-20'),
+
+            // Using date on this month
+            date: new Date(now.getFullYear(), now.getMonth(), 4),
             time: '09:30',
             location: 'Silicon Valley Convention Center',
             description: `Explore the latest advancements in technology with industry leaders and innovators. Keynote speakers include top CEOs and tech pioneers.`,
@@ -136,7 +140,10 @@ const createInitialEvents = async () => {
         const event2 = new Event({
             title: event2_title,
 
-            date: new Date('2024-12-05'),
+            // date: new Date('2024-12-05'),
+
+            // Using date on this month
+            date: new Date(now.getFullYear(), now.getMonth(), 17),
             time: '16:00',
             location: 'Miami Beach, Florida',
             description: `Celebrate the summer with good vibes, live DJ music, and refreshing cocktails. Don't forget your swimsuit!`,
@@ -155,7 +162,10 @@ const createInitialEvents = async () => {
         const event3 = new Event({
             title: event3_title,
 
-            date: new Date('2024-10-22'),
+            // date: new Date('2024-10-22'),
+
+            // Using date on last month
+            date: new Date(now.getFullYear(), now.getMonth() - 1, 15),
             time: '10:00',
             location: 'National Stadium, Los Angeles',
             description: `Watch your favorite teams compete in this exciting annual soccer tournament. Cheer for the players and experience the thrill of the game!`,
