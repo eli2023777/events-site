@@ -9,7 +9,9 @@ import { GeneralContext } from '../App';
 import { METHOD } from '../hooks/useAPI';
 import useAPI from '../hooks/useAPI';
 import { DualIcon } from '../helpers/DualIcon';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { UI_ICONS_FOOTER_STATE } from '../helpers/uiIconsFooterState';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCalendarAlt,
@@ -127,7 +129,6 @@ const NavbarC = () => {
 
 
 
-
     return (
         <div>
 
@@ -139,7 +140,11 @@ const NavbarC = () => {
                     <Container fluid className="d-flex justify-content-between align-items-center">
 
                         {/* Logo */}
-                        <Navbar.Brand href="/events-site" className="me-2">
+                        <Navbar.Brand href="/events-site" className="me-2"
+                            onClick={() => {
+                                localStorage.setItem('uiFooterState', UI_ICONS_FOOTER_STATE.HOME);
+                                navigate("/events-site");
+                            }}>
                             <FontAwesomeIcon icon={faCalendarAlt} size="2x"
                                 className={isDark ? "me-2 text-success" : "me-2 text-warning"} />
                         </Navbar.Brand>

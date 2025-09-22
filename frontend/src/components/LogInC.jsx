@@ -14,7 +14,7 @@ const LogInC = () => {
     const [APIError, setAPIError] = useState(false);
     const [message, setMesssage] = useState('');
     const navigate = useNavigate();
-    const { setLoginC, setLoading, token, setToken } = useContext(GeneralContext);
+    const { setLoginC, token, setToken } = useContext(GeneralContext);
     const [error, callAPI, payload, data] = useAPI();
     const [isSuccess, setIsSuccess] = useState();
 
@@ -121,41 +121,55 @@ const LogInC = () => {
                     e.stopPropagation(); setLoginC(true);
                 }}>
 
+                    <div className="logInCText">
 
-                    <h6>For your privacy, you have logged out.</h6>
+                        <h6>For your privacy, you have logged out.</h6>
 
-                    <h4>Please log in again</h4>
+                        <h4>Please log in again</h4>
 
-                    <h6>Not registered yet? <a
-                        href="/register" onClick={() => setLoginC(false)}
-                    >Register here!
-                    </a></h6>
+                        <h6>Not registered yet? <a
+                            href="/register" onClick={() => setLoginC(false)}
+                        >Register here!
+                        </a></h6>
 
-                    <br />
-                    <br />
-                    <Form id='logInForm' onSubmit={handleSubmit} >
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" name='email' placeholder="Enter email" onChange={handleChange} />
-                            <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                            </Form.Text>
+                    </div>
+
+
+                    <Form id="logInForm" onSubmit={handleSubmit}>
+                        <Form.Floating className="floating-input mb-3">
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                placeholder=" "
+                                onChange={handleChange}
+                                required
+                            />
+                            <label htmlFor="email">Email</label>
                             <div style={{ color: 'red' }}>{errors && errors['email']}</div>
-                        </Form.Group>
+                        </Form.Floating>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} />
+                        <Form.Floating className="floating-input mb-3">
+                            <Form.Control
+                                type="password"
+                                name="password"
+                                placeholder=" "
+                                onChange={handleChange}
+                                required
+                            />
+                            <label htmlFor="password">Password</label>
                             <div style={{ color: 'red' }}>{errors && errors['password']}</div>
-                        </Form.Group>
-
+                        </Form.Floating>
                     </Form>
 
+                    <div className="logInCButtons">
+                        <Button variant="success" form='logInForm' type="submit" >
+                            Submit
+                        </Button>
 
-
-                    <Button variant="primary" form='logInForm' type="submit" style={{ width: '100%' }} >
-                        Submit
-                    </Button>
+                        <Button variant="none" form='logInForm' type="reset" >
+                            <svg width={'25px'} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fb4646" d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z" /></svg>
+                        </Button>
+                    </div>
 
                     {APIError &&
                         <div style={{ color: 'red' }}>Email or password is incorrect. Please try again.</div>

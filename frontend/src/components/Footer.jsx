@@ -1,21 +1,13 @@
 import { Button, Container, Form, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { GeneralContext } from '../App';
-import { DualIcon } from '../helpers/DualIcon';
 import React, { useEffect, useState, useContext } from 'react';
-import { METHOD } from '../hooks/useAPI';
-import useAPI from '../hooks/useAPI';
 import '../css/footer.css';
 import { Link } from 'react-router-dom';
+import { UI_ICONS_FOOTER_STATE } from '../helpers/uiIconsFooterState';
 
 
 const Footer = () => {
 
-    // Footer Method
-    const UI_ICONS_FOOTER_STATE = {
-        HOME: 'HOME',
-        LIKE: 'LIKE',
-        ABOUT: 'ABOUT'
-    }
 
     // Footer icons states
     const [uiFooterState, setUIFooterState] = useState(localStorage.getItem('uiFooterState'));
@@ -50,11 +42,10 @@ const Footer = () => {
 
     useEffect(() => {
         localStorage.setItem('uiFooterState', uiFooterState);
+        footerToggel(uiFooterState);
     }, [uiFooterState]);
 
-    useEffect(() => {
-        footerToggel(uiFooterState);
-    }, []);
+
 
 
     return (
